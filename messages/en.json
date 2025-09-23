@@ -1,0 +1,11 @@
+{
+    "HomePage": {
+      "title": "Hello world!" ,
+      "contact": "Contact me"
+    } ,
+    "nav": {
+      "projects": "Projects",
+      "about": "About",
+      "contact": "Contact"
+    }
+  }

@@ -1,0 +1,696 @@
+{
+  "navigation": {
+    "mainLinks": [
+      {
+        "id": "1",
+        "label": "Home",
+        "href": "/",
+        "external": false,
+        "icon": "home"
+      },
+      {
+        "id": "2",
+        "label": "About",
+        "href": "/about",
+        "external": false,
+        "icon": "info"
+      },
+      {
+        "id": "3",
+        "label": "Services",
+        "href": "/services",
+        "external": false,
+        "icon": "services"
+      },
+      {
+        "id": "4",
+        "label": "Portfolio",
+        "href": "/portfolio",
+        "external": false,
+        "icon": "portfolio"
+      },
+      {
+        "id": "5",
+        "label": "Contact",
+        "href": "/contact",
+        "external": false,
+        "icon": "contact"
+      }
+    ],
+    "additionalMenus": [
+      {
+        "id": "1",
+        "title": "Products",
+        "items": [
+          {
+            "id": "1-1",
+            "label": "Web Design",
+            "href": "/products/web-design",
+            "external": false
+          },
+          {
+            "id": "1-2",
+            "label": "Development",
+            "href": "/products/development",
+            "external": false
+          },
+          {
+            "id": "1-3",
+            "label": "E-commerce",
+            "href": "/products/ecommerce",
+            "external": false
+          },
+          {
+            "id": "1-4",
+            "label": "Mobile Apps",
+            "href": "/products/mobile-apps",
+            "external": false
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "title": "Industries",
+        "items": [
+          {
+            "id": "2-1",
+            "label": "Healthcare",
+            "href": "/industries/healthcare",
+            "external": false
+          },
+          {
+            "id": "2-2",
+            "label": "Education",
+            "href": "/industries/education",
+            "external": false
+          },
+          {
+            "id": "2-3",
+            "label": "Finance",
+            "href": "/industries/finance",
+            "external": false
+          },
+          {
+            "id": "2-4",
+            "label": "Retail",
+            "href": "/industries/retail",
+            "external": false
+          }
+        ]
+      }
+    ],
+    "backgroundColor": "#ffffff",
+    "textColor": "#000000",
+    "sticky": true
+  },
+  "footer": {
+    "copyrightText": "© 2024 Creative Solutions. All rights reserved.",
+    "sections": [
+      {
+        "id": "1",
+        "title": "Quick Links",
+        "links": [
+          {
+            "id": "1-1",
+            "label": "Home",
+            "href": "/",
+            "external": false
+          },
+          {
+            "id": "1-2",
+            "label": "About",
+            "href": "/about",
+            "external": false
+          },
+          {
+            "id": "1-3",
+            "label": "Services",
+            "href": "/services",
+            "external": false
+          },
+          {
+            "id": "1-4",
+            "label": "Portfolio",
+            "href": "/portfolio",
+            "external": false
+          },
+          {
+            "id": "1-5",
+            "label": "Contact",
+            "href": "/contact",
+            "external": false
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "title": "Services",
+        "links": [
+          {
+            "id": "2-1",
+            "label": "Web Development",
+            "href": "/services/web-development",
+            "external": false
+          },
+          {
+            "id": "2-2",
+            "label": "Mobile Apps",
+            "href": "/services/mobile-apps",
+            "external": false
+          },
+          {
+            "id": "2-3",
+            "label": "UI/UX Design",
+            "href": "/services/ui-ux-design",
+            "external": false
+          },
+          {
+            "id": "2-4",
+            "label": "Digital Marketing",
+            "href": "/services/digital-marketing",
+            "external": false
+          },
+          {
+            "id": "2-5",
+            "label": "SEO Optimization",
+            "href": "/services/seo",
+            "external": false
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "title": "Support",
+        "links": [
+          {
+            "id": "3-1",
+            "label": "Contact",
+            "href": "/contact",
+            "external": false
+          },
+          {
+            "id": "3-2",
+            "label": "Help Center",
+            "href": "/help",
+            "external": false
+          },
+          {
+            "id": "3-3",
+            "label": "Privacy Policy",
+            "href": "/privacy",
+            "external": false
+          },
+          {
+            "id": "3-4",
+            "label": "Terms of Service",
+            "href": "/terms",
+            "external": false
+          },
+          {
+            "id": "3-5",
+            "label": "FAQ",
+            "href": "/faq",
+            "external": false
+          }
+        ]
+      }
+    ],
+    "socialLinks": [
+      {
+        "platform": "facebook",
+        "url": "https://facebook.com/creativesolutions",
+        "icon": "facebook"
+      },
+      {
+        "platform": "twitter",
+        "url": "https://twitter.com/creativesolutions",
+        "icon": "twitter"
+      },
+      {
+        "platform": "instagram",
+        "url": "https://instagram.com/creativesolutions",
+        "icon": "instagram"
+      },
+      {
+        "platform": "linkedin",
+        "url": "https://linkedin.com/company/creativesolutions",
+        "icon": "linkedin"
+      },
+      {
+        "platform": "youtube",
+        "url": "https://youtube.com/creativesolutions",
+        "icon": "youtube"
+      }
+    ],
+    "backgroundColor": "#0f172a",
+    "textColor": "#94a3b8",
+    "showSocialLinks": true
+  },
+  "logo": {
+    "imageUrl": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80",
+    "altText": "Creative Solutions - Digital Innovation",
+    "width": 180,
+    "height": 60
+  },
+  "meta": {
+    "title": "Creative Solutions - Digital Innovation & Web Development",
+    "description": "We create stunning digital experiences that drive growth. Professional web development, mobile apps, and digital marketing services.",
+    "keywords": "web development, digital agency, mobile apps, UI/UX design, SEO, digital marketing",
+    "author": "Creative Solutions",
+    "ogImage": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80"
+  },
+  "homePage": {
+    "en": {
+      "hero": {
+        "title": "Transform Your Digital Presence",
+        "subtitle": "We create stunning digital experiences that drive growth and engage your audience. Let's build something amazing together.",
+        "primaryButton": {
+          "text": "Start Your Project",
+          "link": "/get-started",
+          "variant": "primary"
+        },
+        "secondaryButton": {
+          "text": "View Our Work",
+          "link": "/portfolio",
+          "variant": "secondary"
+        },
+        "backgroundVideo": "https://www.shutterstock.com/shutterstock/videos/3567804163/preview/stock-footage-murabba-or-mukaab-is-a-mega-project-in-riyadh-with-state-of-the-art-infrastructure-commercial-and.webm",
+        "overlayColor": "rgba(15, 23, 42, 0.7)"
+      },
+      "banners": [
+        {
+          "id": "1",
+          "title": "Special Startup Offer",
+          "description": "Get 40% off on all our services for startups registered this month",
+          "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          "link": "/offers/startup",
+          "position": "top"
+        },
+        {
+          "id": "2",
+          "title": "Free E-commerce Design",
+          "description": "Complete e-commerce solution with free design package",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80",
+          "link": "/offers/ecommerce",
+          "position": "middle"
+        },
+        {
+          "id": "3",
+          "title": "24/7 Support Included",
+          "description": "All our plans include round-the-clock technical support",
+          "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+          "link": "/offers/support",
+          "position": "bottom"
+        }
+      ],
+      "whyUs": {
+        "title": "Why Choose Creative Solutions?",
+        "subtitle": "We combine cutting-edge technology with creative design to deliver exceptional results",
+        "features": [
+          {
+            "id": "1",
+            "icon": "🚀",
+            "title": "Fast Delivery",
+            "description": "We deliver projects 30% faster than industry standards without compromising quality"
+          },
+          {
+            "id": "2",
+            "icon": "💎",
+            "title": "Premium Quality",
+            "description": "Enterprise-grade solutions with rigorous testing and quality assurance"
+          },
+          {
+            "id": "3",
+            "icon": "🔒",
+            "title": "Secure & Reliable",
+            "description": "Bank-level security protocols to protect your data and business"
+          },
+          {
+            "id": "4",
+            "icon": "📱",
+            "title": "Mobile First",
+            "description": "Responsive designs that work perfectly on all devices and screen sizes"
+          },
+          {
+            "id": "5",
+            "icon": "🔄",
+            "title": "Continuous Support",
+            "description": "24/7 technical support and regular updates for all our solutions"
+          },
+          {
+            "id": "6",
+            "icon": "💡",
+            "title": "Innovative Approach",
+            "description": "Creative solutions tailored to your unique business needs and goals"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "What Our Clients Say",
+        "subtitle": "Join 500+ satisfied clients who trust our services",
+        "testimonials": [
+          {
+            "id": "1",
+            "name": "Sarah Johnson",
+            "position": "Marketing Director",
+            "company": "Tech Innovations Inc.",
+            "content": "Creative Solutions transformed our online presence completely. Our website traffic increased by 300% and conversion rates doubled within 3 months.",
+            "avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "2",
+            "name": "Michael Chen",
+            "position": "CEO",
+            "company": "Startup Ventures",
+            "content": "The team delivered our mobile app ahead of schedule and under budget. The quality exceeded our expectations in every way.",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "3",
+            "name": "Emily Rodriguez",
+            "position": "Operations Manager",
+            "company": "Global Solutions Group",
+            "content": "Outstanding service from start to finish. The attention to detail and communication throughout the project was exceptional.",
+            "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "4",
+            "name": "David Thompson",
+            "position": "CTO",
+            "company": "Enterprise Systems",
+            "content": "We've worked with many agencies, but Creative Solutions stands out with their technical expertise and creative approach.",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          }
+        ]
+      },
+      "aboutUs": {
+        "title": "About Creative Solutions",
+        "content": "Founded in 2015, Creative Solutions has been at the forefront of digital innovation, helping businesses of all sizes transform their digital presence. Our team of 50+ experts combines technical expertise with creative vision to deliver solutions that drive real business results.\n\nWe believe in building long-term partnerships with our clients, focusing on understanding their unique challenges and delivering tailored solutions that exceed expectations.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+        "stats": [
+          {
+            "id": "1",
+            "value": "500+",
+            "label": "Happy Clients"
+          },
+          {
+            "id": "2",
+            "value": "1000+",
+            "label": "Projects Completed"
+          },
+          {
+            "id": "3",
+            "value": "50+",
+            "label": "Expert Team Members"
+          },
+          {
+            "id": "4",
+            "value": "98%",
+            "label": "Client Satisfaction"
+          }
+        ]
+      },
+      "contactUs": {
+        "title": "Ready to Start Your Project?",
+        "subtitle": "Let's discuss how we can help your business grow",
+        "description": "Get in touch with our team for a free consultation. We'll analyze your needs and provide a customized solution that fits your goals and budget.",
+        "enabled": true,
+        "email": "hello@creativesolutions.com",
+        "phone": "+1 (555) 123-4567",
+        "address": "123 Business District, Suite 500, New York, NY 10001",
+        "formEnabled": true,
+        "contactInfo": {
+          "address": "123 Business District, Suite 500, New York, NY 10001",
+          "phone": "+1 (555) 123-4567",
+          "email": "hello@creativesolutions.com",
+          "workingHours": "Monday - Friday: 9:00 AM - 6:00 PM EST"
+        },
+        "form": {
+          "enabled": true,
+          "fields": [
+            {
+              "name": "name",
+              "label": "Full Name",
+              "required": true,
+              "type": "text"
+            },
+            {
+              "name": "email",
+              "label": "Email Address",
+              "required": true,
+              "type": "email"
+            },
+            {
+              "name": "company",
+              "label": "Company Name",
+              "required": false,
+              "type": "text"
+            },
+            {
+              "name": "phone",
+              "label": "Phone Number",
+              "required": false,
+              "type": "tel"
+            },
+            {
+              "name": "budget",
+              "label": "Project Budget",
+              "required": false,
+              "type": "text"
+            },
+            {
+              "name": "message",
+              "label": "Project Details",
+              "required": true,
+              "type": "textarea"
+            }
+          ]
+        },
+        "map": {
+          "enabled": true,
+          "embedCode": "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.9503398796587!2d-74.00594948459418!3d40.71278367933185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a4c13a0c5a5%3A0x3e2ee3d9a6a5a5a5!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sus!4v1234567890' width='100%' height='300' style='border:0;' allowfullscreen='' loading='lazy'></iframe>"
+        }
+      }
+    },
+    "ar": {
+      "hero": {
+        "title": "حوّل وجودك الرقمي",
+        "subtitle": "نحن نصنع تجارب رقمية مذهلة تدفع النمو وتجذب جمهورك. دعونا نبني شيئًا رائعًا معًا.",
+        "primaryButton": {
+          "text": "ابدأ مشروعك",
+          "link": "/get-started",
+          "variant": "primary"
+        },
+        "secondaryButton": {
+          "text": "شاهد أعمالنا",
+          "link": "/portfolio",
+          "variant": "secondary"
+        },
+        "backgroundVideo": "https://www.shutterstock.com/shutterstock/videos/3567804163/preview/stock-footage-murabba-or-mukaab-is-a-mega-project-in-riyadh-with-state-of-the-art-infrastructure-commercial-and.webm",
+        "overlayColor": "rgba(15, 23, 42, 0.7)"
+      },
+      "banners": [
+        {
+          "id": "1",
+          "title": "عرض خاص للشركات الناشئة",
+          "description": "احصل على خصم 40٪ على جميع خدماتنا للشركات المسجلة هذا الشهر",
+          "image": "https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+          "link": "/offers/startup",
+          "position": "top"
+        },
+        {
+          "id": "2",
+          "title": "تصميم مجاني للتجارة الإلكترونية",
+          "description": "حل متكامل للتجارة الإلكترونية مع باقة تصميم مجانية",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80",
+          "link": "/offers/ecommerce",
+          "position": "middle"
+        },
+        {
+          "id": "3",
+          "title": "دعم فني على مدار الساعة",
+          "description": "جميع خططنا تشمل دعمًا فنيًا مستمرًا 24/7",
+          "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+          "link": "/offers/support",
+          "position": "bottom"
+        }
+      ],
+      "whyUs": {
+        "title": "لماذا تختار الحلول الإبداعية؟",
+        "subtitle": "نحن نجمع بين أحدث التقنيات والتصميم الإبداعي لتقديم نتائج استثنائية",
+        "features": [
+          {
+            "id": "1",
+            "icon": "🚀",
+            "title": "تسليم سريع",
+            "description": "نسلم المشاريع أسرع بـ 30٪ من المعايير الصناعية دون المساس بالجودة"
+          },
+          {
+            "id": "2",
+            "icon": "💎",
+            "title": "جودة فائقة",
+            "description": "حلول بمستوى المؤسسات مع اختبارات صارمة وضمان الجودة"
+          },
+          {
+            "id": "3",
+            "icon": "🔒",
+            "title": "آمن وموثوق",
+            "description": "بروتوكولات أمان بمستوى البنوك لحماية بياناتك وأعمالك"
+          },
+          {
+            "id": "4",
+            "icon": "📱",
+            "title": "تصميم متجاوب",
+            "description": "تصميمات تعمل بشكل مثالي على جميع الأجهزة وأحجام الشاشات"
+          },
+          {
+            "id": "5",
+            "icon": "🔄",
+            "title": "دعم مستمر",
+            "description": "دعم فني 24/7 وتحديثات منتظمة لجميع حلولنا"
+          },
+          {
+            "id": "6",
+            "icon": "💡",
+            "title": "نهج مبتكر",
+            "description": "حلول إبداعية مصممة خصيصًا لاحتياجات أعمالك وأهدافك"
+          }
+        ]
+      },
+      "testimonials": {
+        "title": "ماذا يقول عملاؤنا",
+        "subtitle": "انضم إلى 500+ عميل راضٍ يثقون بخدماتنا",
+        "testimonials": [
+          {
+            "id": "1",
+            "name": "أحمد محمد",
+            "position": "مدير التسويق",
+            "company": "الشركة التقنية المتطورة",
+            "content": "الحلول الإبداعية غيرت وجودنا على الإنترنت تمامًا. زادت حركة المرور على موقعنا بنسبة 300٪ وتضاعفت معدلات التحويل خلال 3 أشهر.",
+            "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "2",
+            "name": "فاطمة علي",
+            "position": "الرئيس التنفيذي",
+            "company": "مؤسسة النجاح",
+            "content": "الفريق أنجز تطبيقنا المحمول قبل الموعد المحدد وتحت الميزانية. الجودة فاقت توقعاتنا بكل طريقة.",
+            "avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "3",
+            "name": "خالد سالم",
+            "position": "مدير العمليات",
+            "company": "مجموعة الأعمال المتحدة",
+            "content": "خدمة استثنائية من البداية إلى النهاية. الاهتمام بالتفاصيل والتواصل خلال المشروع كان ممتازًا.",
+            "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          },
+          {
+            "id": "4",
+            "name": "نورة عبدالله",
+            "position": "مدير التقنية",
+            "company": "أنظمة المؤسسات",
+            "content": "لقد عملنا مع العديد من الوكالات، لكن الحلول الإبداعية تبرز بخبرتها التقنية ونهجها الإبداعي.",
+            "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            "rating": 5
+          }
+        ]
+      },
+      "aboutUs": {
+        "title": "عن الحلول الإبداعية",
+        "content": "تأسست الحلول الإبداعية في عام 2015، وكانت في طليعة الابتكار الرقمي، مساعدة الشركات من جميع الأحجام على تحويل وجودها الرقمي. يجمع فريقنا المكون من 50+ خبيرًا بين الخبرة التقنية والرؤية الإبداعية لتقديم حلول تحقق نتائج أعمال حقيقية.\n\nنؤمن ببناء شراكات طويلة الأمد مع عملائنا، والتركيز على فهم تحدياتهم الفريدة وتقديم حلول مخصصة تتجاوز التوقعات.",
+        "image": "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+        "stats": [
+          {
+            "id": "1",
+            "value": "500+",
+            "label": "عميل سعيد"
+          },
+          {
+            "id": "2",
+            "value": "1000+",
+            "label": "مشروع مكتمل"
+          },
+          {
+            "id": "3",
+            "value": "50+",
+            "label": "فريق محترف"
+          },
+          {
+            "id": "4",
+            "value": "98%",
+            "label": "رضا العملاء"
+          }
+        ]
+      },
+      "contactUs": {
+        "title": "مستعد لبدء مشروعك؟",
+        "subtitle": "دعونا نناقش كيف يمكننا مساعدة عملك على النمو",
+        "description": "تواصل مع فريقنا للحصول على استشارة مجانية. سنقوم بتحليل احتياجاتك وتقديم حل مخصص يناسب أهدافك وميزانيتك.",
+        "enabled": true,
+        "email": "hello@creativesolutions.com",
+        "phone": "+966 5X XXX XXXX",
+        "address": "الرياض، المملكة العربية السعودية",
+        "formEnabled": true,
+        "contactInfo": {
+          "address": "الرياض، المملكة العربية السعودية",
+          "phone": "+966 5X XXX XXXX",
+          "email": "hello@creativesolutions.com",
+          "workingHours": "الأحد - الخميس: 9:00 ص - 6:00 م"
+        },
+        "form": {
+          "enabled": true,
+          "fields": [
+            {
+              "name": "name",
+              "label": "الاسم الكامل",
+              "required": true,
+              "type": "text"
+            },
+            {
+              "name": "email",
+              "label": "البريد الإلكتروني",
+              "required": true,
+              "type": "email"
+            },
+            {
+              "name": "company",
+              "label": "اسم الشركة",
+              "required": false,
+              "type": "text"
+            },
+            {
+              "name": "phone",
+              "label": "رقم الهاتف",
+              "required": false,
+              "type": "tel"
+            },
+            {
+              "name": "budget",
+              "label": "ميزانية المشروع",
+              "required": false,
+              "type": "text"
+            },
+            {
+              "name": "message",
+              "label": "تفاصيل المشروع",
+              "required": true,
+              "type": "textarea"
+            }
+          ]
+        },
+        "map": {
+          "enabled": true,
+          "embedCode": "<iframe src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.367123399758!2d46.67541531500035!3d24.813265584076725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2ee3d9a6a5a5a5%3A0x3e2ee3d9a6a5a5a5!2sRiyadh%2C%20Saudi%20Arabia!5e0!3m2!1sen!2sus!4v1234567890' width='100%' height='300' style='border:0;' allowfullscreen='' loading='lazy'></iframe>"
+        }
+      }
+    }
+  }
+}

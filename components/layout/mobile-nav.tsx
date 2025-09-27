@@ -9,7 +9,6 @@ import { docsConfig } from "@/config/docs";
 import { marketingConfig } from "@/config/marketing";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { DocsSidebarNav } from "@/components/docs/sidebar-nav";
 import { Icons } from "@/components/shared/icons";
 import { ModeToggle } from "./mode-toggle";
 
@@ -120,11 +119,7 @@ export function NavMobile() {
           )}
         </ul>
 
-        {documentation && (
-          <div className="mt-8 block md:hidden">
-            <DocsSidebarNav setOpen={setOpen} />
-          </div>
-        )}
+
 
         <div className="mt-5 flex items-center justify-end space-x-4">
         

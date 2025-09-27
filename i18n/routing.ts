@@ -1,9 +1,9 @@
 import { createNavigation } from "next-intl/navigation";
 import { defineRouting } from "next-intl/routing";
+ 
 
 export const routing = defineRouting({
   locales: ["ar", "en"],
-
   defaultLocale: "ar",
 
   pathnames: {
@@ -19,6 +19,14 @@ export const routing = defineRouting({
       en: "/dashboard",
       ar: "/dashboard",
     },
+    "/dashboard/global": {
+      en: "/dashboard/global",
+      ar: "/dashboard/global",
+    },
+    "/dashboard/settings": {
+      en: "/dashboard/settings",
+      ar: "/dashboard/settings",
+    },
     "/login": {
       en: "/login",
       ar: "/login",
@@ -27,7 +35,7 @@ export const routing = defineRouting({
       en: "/register",
       ar: "/register",
     },
-     "/projects": {
+    "/projects": {
       en: "/projects",
       ar: "/projects",
     },
@@ -39,15 +47,34 @@ export const routing = defineRouting({
       en: "/contact",
       ar: "/contact",
     },
+    "/docs": {
+      en: "/docs",
+      ar: "/docs",
+    },
+    "/admin/projects": {
+      en: "/admin/projects",
+      ar: "/admin/projects",
+    },
+    "/admin/forms": {
+      en: "/admin/forms",
+      ar: "/admin/forms",
+    },
+    "/admin/blogs": {
+      en: "/admin/blogs",
+      ar: "/admin/blogs",
+    },
+    "/admin/media": {
+      en: "/admin/media",
+      ar: "/admin/media",
+    },
     "/404": {
       en: "/404",
       ar: "/404",
     },
- 
   },
 });
 
-// ✅ هتكون الأنواع (types) مضبوطة مع TypeScript
+// ✅ الأنواع (types)
 export type Locale = (typeof routing.locales)[number];
 export type Pathnames = keyof typeof routing["pathnames"];
 

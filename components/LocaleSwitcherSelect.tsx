@@ -7,7 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Locale, Pathnames, routing, usePathname, useRouter } from "@/i18n/routing";
+import { useHomePageStore } from "@/store/home-page-store";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -18,6 +20,9 @@ export default function LocaleSwitcherSelect({ label }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const [currentLocale, setCurrentLocale] = useState<Locale>(routing.defaultLocale);
+  
+  // Use the home page store for the button variant
+  const { currentLang, setCurrentLang } = useHomePageStore();
 
   // 🧹 دالة تنظف أي prefix لغة موجود في المسار
   const stripLocale = (path: string): string => {
@@ -30,17 +35,22 @@ export default function LocaleSwitcherSelect({ label }: Props) {
     return path || "/";
   };
 
-  // 📌 detect locale from URL
+  // 📌 detect locale from URL and sync with store
   useEffect(() => {
     const segments = pathname.split("/").filter(Boolean);
 
     if (segments.length > 0 && routing.locales.includes(segments[0] as Locale)) {
-      setCurrentLocale(segments[0] as Locale);
+      const detectedLocale = segments[0] as Locale;
+      setCurrentLocale(detectedLocale);
+      // Sync store with detected locale
+      setCurrentLang(detectedLocale);
     } else {
       // enforce defaultLocale لو مفيش prefix
       setCurrentLocale(routing.defaultLocale);
+      // Sync store with default locale
+      setCurrentLang(routing.defaultLocale);
     }
-  }, [pathname]);
+  }, [pathname, setCurrentLang]);
 
   function onSelectChange(nextLocale: string) {
     let cleanPath = stripLocale(pathname) as Pathnames;
@@ -49,6 +59,9 @@ export default function LocaleSwitcherSelect({ label }: Props) {
     if (!(cleanPath in routing.pathnames)) {
       cleanPath = "/" as Pathnames;
     }
+
+    // Update the store when locale changes
+    setCurrentLang(nextLocale as 'en' | 'ar');
   
     router.replace(cleanPath, { locale: nextLocale as Locale });
   }

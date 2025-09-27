@@ -3,9 +3,48 @@
       "title": "Hello world!" ,
       "contact": "Contact me"
     } ,
+
     "nav": {
       "projects": "Projects",
       "about": "About",
-      "contact": "Contact"
+      "contact": "Contact",
+      "signin": "Sign In",
+      "dashboard": "Dashboard"
+    },
+    "sidebar": {
+      "menu": "MENU",
+      "global": "Global",
+      "options": "OPTIONS",
+      "adminPanel": "Admin Panel",
+      "charts": "Charts",
+      "orders": "Orders",
+      "projects": "Projects",
+      "forms": "Forms",
+      "blogs": "Blogs",
+      "media": "Media",
+      "settings": "Settings",
+      "homepage": "Homepage",
+      "documentation": "Documentation",
+      "support": "Support"
+    },
+    "SaveModal": {
+      "title": {
+        "idle": "Save Changes",
+        "saving": "Saving...",
+        "success": "Success!",
+        "error": "Error"
+      },
+      "description": {
+        "idle": "Save your changes to global settings?",
+        "saving": "Please wait while we save your settings.",
+        "success": "Your changes have been saved successfully.",
+        "error": "Failed to save settings. Please try again."
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "save": "Save Changes",
+        "close": "Close",
+        "retry": "Try Again"
+      }
     }
   }

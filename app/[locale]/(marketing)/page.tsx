@@ -1,10 +1,11 @@
  import { HeroSection } from "@/components/home-page/sections/hero-section";
-import AppointmentComponent from "@/components/home-page/sections/banners-section";
+import { BannersSection } from "@/components/home-page/sections/banners-section";
 import { WhyUsSection } from "@/components/home-page/sections/why-us-section";
 import { AboutUsSection } from "@/components/home-page/sections/about-us-section";
 import { TestimonialsSection } from "@/components/home-page/sections/testimonials-section";
 import { ContactUsSection } from "@/components/home-page/sections/contact-us-section";
 import {  PartnersBanner } from "@/components/home-page/sections/partners-banner.tsx";
+import ApartmentsPage from "@/components/home-page/sections/ApartmentsPage";
 
 async function getHomePageData(locale: string) {
   try {
@@ -87,8 +88,9 @@ export default async function Home({ params }: { params: { locale: string } }) {
   return (
     <div className="min-h-screen bg-white">
        <HeroSection content={content.hero}   />
+       <ApartmentsPage />
        <PartnersBanner logos={content.partners}  />
-      <AppointmentComponent banners={content.banners}  />
+      <BannersSection banners={content.banners}  />
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs}  />
       <TestimonialsSection content={content.testimonials}    />

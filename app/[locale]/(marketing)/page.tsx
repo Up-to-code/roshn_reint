@@ -1,5 +1,5 @@
  import { HeroSection } from "@/components/home-page/sections/hero-section";
-import { BannersSection } from "@/components/home-page/sections/banners-section";
+import AppointmentComponent from "@/components/home-page/sections/banners-section";
 import { WhyUsSection } from "@/components/home-page/sections/why-us-section";
 import { AboutUsSection } from "@/components/home-page/sections/about-us-section";
 import { TestimonialsSection } from "@/components/home-page/sections/testimonials-section";
@@ -88,7 +88,7 @@ export default async function Home({ params }: { params: { locale: string } }) {
     <div className="min-h-screen bg-white">
        <HeroSection content={content.hero}   />
        <PartnersBanner logos={content.partners}  />
-      <BannersSection banners={content.banners}  />
+      <AppointmentComponent banners={content.banners}  />
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs}  />
       <TestimonialsSection content={content.testimonials}    />

@@ -60,6 +60,7 @@
     "cmdk": "^1.0.0",
     "concurrently": "^8.2.2",
     "date-fns": "^3.6.0",
+    "gsap": "^3.13.0",
     "lucide-react": "^0.414.0",
     "minimist": "^1.2.8",
     "ms": "^2.1.3",

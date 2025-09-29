@@ -1,62 +1,98 @@
-// app/page.tsx
-"use client";
-
-import { useEffect } from "react";
-import { useHomePageStore } from "@/store/home-page-store";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import { HeroSection } from "@/components/home-page/sections/hero-section";
+ import { HeroSection } from "@/components/home-page/sections/hero-section";
 import { BannersSection } from "@/components/home-page/sections/banners-section";
 import { WhyUsSection } from "@/components/home-page/sections/why-us-section";
 import { AboutUsSection } from "@/components/home-page/sections/about-us-section";
 import { TestimonialsSection } from "@/components/home-page/sections/testimonials-section";
 import { ContactUsSection } from "@/components/home-page/sections/contact-us-section";
+import {  PartnersBanner } from "@/components/home-page/sections/partners-banner.tsx";
 
-export default function Home() {
-  const { data, currentLang, loadData, isLoading } = useHomePageStore();
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#2C2C2C]">
-        <div className="text-center text-white">
-          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-[#FF8C42]"></div>
-          <p className="mt-4 text-gray-300">
-            {currentLang === 'en' ? 'Loading...' : 'جاري التحميل...'}
-          </p>
-        </div>
-      </div>
-    );
+async function getHomePageData(locale: string) {
+  try {
+    // Use absolute URL for API call
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const response = await fetch(`${baseUrl}/api/home-page?locale=${locale}`, {
+      cache: 'no-store', // Ensure fresh data on each request
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+     console.log(result.data.partners);
+    if (result.success) {
+      return result.data;
+    }
+    
+    throw new Error('Failed to load home page data');
+  } catch (error) {
+    console.error('Error fetching home page data:', error);
+    // Return fallback data structure
+    return {
+      hero: {
+        title: locale === 'ar' ? 'مرحباً بكم' : 'Welcome',
+        subtitle: locale === 'ar' ? 'نحن هنا لمساعدتك' : 'We are here to help you',
+        primaryButton: { text: locale === 'ar' ? 'ابدأ الآن' : 'Get Started', link: "/signup", variant: "primary" as const },
+        secondaryButton: { text: locale === 'ar' ? 'اعرف المزيد' : 'Learn More', link: "/about", variant: "secondary" as const },
+        backgroundVideo: "",
+        overlayColor: "rgba(0,0,0,0.4)"
+      },
+      banners: [],
+      whyUs: { 
+        title: locale === 'ar' ? 'لماذا نختارنا' : 'Why Choose Us', 
+        subtitle: locale === 'ar' ? 'أفضل الخدمات' : 'Best Services', 
+        features: [] 
+      },
+      testimonials: { 
+        title: locale === 'ar' ? 'آراء العملاء' : 'Testimonials', 
+        subtitle: locale === 'ar' ? 'ما يقوله عملاؤنا' : 'What our clients say', 
+        testimonials: [] 
+      },
+      aboutUs: { 
+        title: locale === 'ar' ? 'من نحن' : 'About Us', 
+        content: locale === 'ar' ? 'شركة رائدة' : 'Leading company', 
+        image: "", 
+        stats: [] 
+      },
+      contactUs: {
+        title: locale === 'ar' ? 'اتصل بنا' : 'Contact Us', 
+        subtitle: locale === 'ar' ? 'ابق على تواصل' : 'Get in touch', 
+        description: locale === 'ar' ? 'نحن سعداء بتواصلك معنا' : 'We are happy to hear from you', 
+        enabled: true,
+        email: "info@company.com", 
+        phone: "+1234567890", 
+        address: locale === 'ar' ? 'الشارع الرئيسي' : 'Main Street', 
+        formEnabled: true,
+        contactInfo: { 
+          address: locale === 'ar' ? 'الشارع الرئيسي' : 'Main Street', 
+          phone: "+1234567890", 
+          email: "info@company.com", 
+          workingHours: locale === 'ar' ? '9ص-5م' : '9AM-5PM' 
+        },
+        form: { enabled: true, fields: [] },
+        map: { enabled: true, embedCode: "" }
+      }
+    };
   }
+}
 
-  const content = data[currentLang];
-
-  if (!content) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#2C2C2C]">
-        <div className="text-center text-white">
-          <h1 className="text-2xl font-bold text-gray-300">
-            {currentLang === 'en' ? 'No content available' : 'لا يوجد محتوى متاح'}
-          </h1>
-          <p className="mt-2 text-gray-400">
-            {currentLang === 'en' ? 'Please configure your home page content' : 'يرجى تكوين محتوى الصفحة الرئيسية'}
-          </p>
-        </div>
-      </div>
-    );
-  }
+export default async function Home({ params }: { params: { locale: string } }) {
+  // Get the locale from params, default to 'en' if not provided
+  const locale = params.locale || 'en';
+  const content = await getHomePageData(locale);
 
   return (
-    <div className="min-h-screen bg-white" dir={currentLang === 'ar' ? 'rtl' : 'ltr'}>
-      <LanguageSwitcher />
-      <HeroSection content={content.hero} />
-      <BannersSection banners={content.banners} />
+    <div className="min-h-screen bg-white">
+       <HeroSection content={content.hero}   />
+       <PartnersBanner logos={content.partners}  />
+      <BannersSection banners={content.banners}  />
       <WhyUsSection content={content.whyUs} />
-      <AboutUsSection content={content.aboutUs} />
-      <TestimonialsSection content={content.testimonials} />
-      <ContactUsSection content={content.contactUs} />
+      <AboutUsSection content={content.aboutUs}  />
+      <TestimonialsSection content={content.testimonials}    />
+      <ContactUsSection content={content.contactUs}   />
     </div>
   );
 }

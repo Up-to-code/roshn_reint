@@ -3,26 +3,33 @@ import { useState, useEffect } from "react";
 import { useHomePageStore } from "@/store/home-page-store";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { HeroEditor } from "@/components/home-page/hero-editor";
 import { BannersEditor } from "@/components/home-page/banners-editor";
 import { AboutUsEditor } from "@/components/home-page/about-us-editor";
 import { TestimonialsEditor } from "@/components/home-page/testimonials-editor";
 import { WhyUsEditor } from "@/components/home-page/why-us-editor";
 import { ContactUsEditor } from "@/components/home-page/contact-us-editor";
+import { PartnersEditor } from "@/components/home-page/partners-editor"; // ✨ جديد
 import { Download, Upload, Languages, Save } from "lucide-react";
 import { toast } from "sonner";
 
 export default function HomePageEditor() {
-  const { 
-    data, 
-    currentLang, 
-    isLoading, 
-    isSaving, 
-    setCurrentLang, 
-    loadData, 
+  const {
+    data,
+    currentLang,
+    isLoading,
+    isSaving,
+    setCurrentLang,
+    loadData,
     saveData,
-    setData
+    setData,
   } = useHomePageStore();
   const [activeTab, setActiveTab] = useState("hero");
 
@@ -37,7 +44,9 @@ export default function HomePageEditor() {
       const url = URL.createObjectURL(dataBlob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `home-page-content-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `home-page-content-${
+        new Date().toISOString().split("T")[0]
+      }.json`;
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 100);
       toast.success("Data exported successfully!");
@@ -54,8 +63,7 @@ export default function HomePageEditor() {
     reader.onload = (e) => {
       try {
         const content = JSON.parse(e.target?.result as string);
-        
-        // Validate the imported data structure
+
         if (content.en && content.ar) {
           setData(content);
           toast.success("Data imported successfully! Don't forget to save.");
@@ -67,7 +75,7 @@ export default function HomePageEditor() {
       }
     };
     reader.readAsText(file);
-    event.target.value = ''; // Reset file input
+    event.target.value = "";
   };
 
   const handleSave = async () => {
@@ -100,27 +108,34 @@ export default function HomePageEditor() {
     { value: "about", label: "About Us", component: <AboutUsEditor /> },
     { value: "testimonials", label: "Testimonials", component: <TestimonialsEditor /> },
     { value: "whyus", label: "Why Choose Us", component: <WhyUsEditor /> },
-    { value: "contact", label: "Contact Us", component: <ContactUsEditor /> }
+    { value: "contact", label: "Contact Us", component: <ContactUsEditor /> },
+    { value: "partners", label: "Partners", component: <PartnersEditor /> }, // ✨ جديد
   ];
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Section */}
+      {/* Header */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col gap-4">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Home Page Editor</h1>
-              <p className="text-muted-foreground">Manage content in multiple languages</p>
+              <h1 className="text-3xl font-bold tracking-tight">
+                Home Page Editor
+              </h1>
+              <p className="text-muted-foreground">
+                Manage content in multiple languages
+              </p>
             </div>
-            
+
             {/* Controls */}
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
               <div className="flex items-center gap-3">
                 <Languages className="h-4 w-4 text-muted-foreground" />
                 <select
                   value={currentLang}
-                  onChange={(e) => setCurrentLang(e.target.value as 'en' | 'ar')}
+                  onChange={(e) =>
+                    setCurrentLang(e.target.value as "en" | "ar")
+                  }
                   className="rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
                   <option value="en">English</option>
@@ -139,7 +154,9 @@ export default function HomePageEditor() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => document.getElementById('import-file')?.click()}
+                  onClick={() =>
+                    document.getElementById("import-file")?.click()
+                  }
                 >
                   <Upload className="mr-2 h-4 w-4" />
                   Import
@@ -158,10 +175,9 @@ export default function HomePageEditor() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Tabs */}
       <div className="container mx-auto px-4 py-6">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          {/* Fixed Tabs Navigation */}
           <div className="border-b">
             <TabsList className="h-auto w-full justify-start rounded-none bg-transparent p-0">
               {tabs.map((tab) => (
@@ -184,7 +200,6 @@ export default function HomePageEditor() {
             </TabsList>
           </div>
 
-          {/* Tab Contents */}
           {tabs.map((tab) => (
             <TabsContent key={tab.value} value={tab.value} className="space-y-4">
               <Card>
@@ -194,14 +209,11 @@ export default function HomePageEditor() {
                     Current language: {currentLang.toUpperCase()}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  {tab.component}
-                </CardContent>
+                <CardContent className="space-y-4">{tab.component}</CardContent>
               </Card>
             </TabsContent>
           ))}
         </Tabs>
-
       </div>
     </div>
   );

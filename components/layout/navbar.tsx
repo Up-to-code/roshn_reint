@@ -1,105 +1,79 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { useScroll } from "@/hooks/use-scroll";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ModalContext } from "@/components/modals/providers";
-import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import LocaleSwitcher from "../LocaleSwitcher";
 import { Link } from "@/i18n/routing";
 import { Menu, X } from "lucide-react";
 
-interface NavBarProps {
-  scroll?: boolean;
-  large?: boolean;
-}
-
-export function NavBar({ scroll = false }: NavBarProps) {
-  const scrolled = useScroll(50);
-  const { data: session, status } = useSession();
-  const { setShowSignInModal } = useContext(ModalContext);
+export function NavBar() {
+  const { data: session } = useSession();
   const t = useTranslations("nav");
 
   const allLinks = [
     { title: t("projects"), href: "/projects" },
     { title: t("about"), href: "/about" },
     { title: t("contact"), href: "/contact" }
-  ] as const;
+  ];
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
-      {/* 🔹 Top bar (like WordPress) */}
+      {/* Dashboard bar */}
       {session && (
-        <div className="w-full border-b bg-muted py-1 text-center text-sm">
-          <Link
-            href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
-            className="font-medium text-primary hover:underline"
-          >
-            Go to Dashboard
-          </Link>
+        <div className="fixed top-0 z-50 w-full border-b bg-blue-600 py-2 text-center">
+          <MaxWidthWrapper>
+            <Link
+              href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
+              className="font-semibold text-white hover:underline"
+            >
+              → Go to Dashboard
+            </Link>
+          </MaxWidthWrapper>
         </div>
       )}
 
-      {/* 🔹 Main Nav */}
+      {/* Main Nav */}
       <header
         className={cn(
-          "sticky top-0 z-40 flex w-full justify-center bg-background/60 backdrop-blur-xl transition-all",
-          scroll ? (scrolled ? "border-b" : "bg-transparent") : "border-b"
+          "sticky z-40 w-full border-b bg-black/80 backdrop-blur-md transition-all duration-300",
+          session ? "top-[40px]" : "top-0"
         )}
       >
-        <MaxWidthWrapper
-          className="flex h-14 items-center justify-between py-4"
-          large={false}
-        >
-          {/* logo */}
-          <Link href="/" className="flex items-center space-x-1.5">
-            {/* your logo here */}
-            {/* <Image src={siteConfig.logo} alt="logo" width={40} height={40} /> */}
+        <MaxWidthWrapper className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2 text-xl font-bold">
+            <div className="flex size-10 items-center justify-center rounded-lg bg-blue-600 text-white">
+              VG
+            </div>
+            <span className="text-white">{siteConfig.name}</span>
           </Link>
 
-          {/* desktop links */}
-          <nav className="hidden flex-1 justify-center gap-6 md:flex">
+          {/* Desktop links */}
+          <nav className="hidden items-center gap-6 md:flex">
             {allLinks.map((item, index) => (
               <Link
                 key={index}
-                href={item.href}
-                prefetch={true}
-                className="flex items-center text-lg font-medium text-foreground/60 transition-colors hover:text-foreground/80 sm:text-sm"
+                href={item.href as any}
+                className="font-medium text-gray-200 transition-colors hover:text-blue-300"
               >
                 {item.title}
               </Link>
             ))}
           </nav>
 
-          {/* right section */}
+          {/* Right */}
           <div className="flex items-center gap-4">
-            {status === "unauthenticated" ? (
-              <Button
-                className="hidden gap-2 px-4 md:flex"
-                size="sm"
-                onClick={() => setShowSignInModal(true)}
-              >
-                <span>{t("signin")}</span>
-                <Icons.arrowRight className="size-4" />
-              </Button>
-            ) : status === "loading" ? (
-              <Skeleton className="hidden h-9 w-24 rounded-xl lg:flex" />
-            ) : null}
-
             <LocaleSwitcher />
-
-            {/* mobile menu toggle */}
             <button
-              className="p-2 md:hidden"
+              className="rounded-lg p-2 text-white hover:bg-white/10 md:hidden"
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -107,34 +81,38 @@ export function NavBar({ scroll = false }: NavBarProps) {
           </div>
         </MaxWidthWrapper>
 
-        {/* mobile menu */}
-        {mobileOpen && (
-          <div className="absolute left-0 top-14 flex w-full flex-col items-center gap-4 border-t bg-background py-6 md:hidden">
+        {/* Mobile menu */}
+        <div
+          className={cn(
+            "absolute left-0 w-full overflow-hidden border-t bg-black/95 backdrop-blur-lg transition-all duration-300 md:hidden",
+            mobileOpen ? "top-16 opacity-100" : "pointer-events-none top-0 opacity-0"
+          )}
+        >
+          <div className="flex flex-col items-center gap-2 py-4">
             {allLinks.map((item, index) => (
               <Link
                 key={index}
-                href={item.href}
-                className="text-lg font-medium text-foreground/80 hover:text-foreground"
+                href={item.href as any}
+                className="w-full px-4 py-3 text-center font-medium text-white hover:bg-white/10"
                 onClick={() => setMobileOpen(false)}
               >
                 {item.title}
               </Link>
             ))}
 
-            {session ? (
+            {session && (
               <Link
                 href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
                 onClick={() => setMobileOpen(false)}
+                className="w-full px-4 py-3"
               >
-                <Button size="sm">Dashboard</Button>
+                <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">
+                  Dashboard
+                </Button>
               </Link>
-            ) : status === "unauthenticated" ? (
-              <Button size="sm" onClick={() => setShowSignInModal(true)}>
-                {t("signin")}
-              </Button>
-            ) : null}
+            )}
           </div>
-        )}
+        </div>
       </header>
     </>
   );

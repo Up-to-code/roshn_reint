@@ -4,9 +4,17 @@ export interface HomePageData {
   ar: HomePageContent;
 }
 
+export interface Partner {
+  id: string;
+  name: string;
+  logo: string; // image url
+  link?: string; // optional link
+}
+
 export interface HomePageContent {
   hero: HeroSection;
   banners: Banner[];
+  partners: Partner[];
   whyUs: WhyUsSection;
   testimonials: TestimonialsSection;
   aboutUs: AboutUsSection;

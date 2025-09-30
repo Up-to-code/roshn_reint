@@ -1,50 +1,161 @@
 {
-    "HomePage": {
-      "title": "Hello world!" ,
-      "contact": "Contact me"
-    } ,
-
-    "nav": {
-      "projects": "Projects",
-      "about": "About",
-      "contact": "Contact",
-      "signin": "Sign In",
-      "dashboard": "Dashboard"
+  "HomePage": {
+    "title": "Hello World!",
+    "contact": "Contact Me"
+  },
+  "nav": {
+    "projects": "Projects",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "signin": "Sign In",
+    "dashboard": "Dashboard"
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "global": "Global",
+    "options": "Options",
+    "adminPanel": "Admin Panel",
+    "charts": "Charts",
+    "orders": "Orders",
+    "projects": "Projects",
+    "forms": "Forms",
+    "blogs": "Blogs",
+    "media": "Media",
+    "settings": "Settings",
+    "homepage": "Homepage",
+    "documentation": "Documentation",
+    "support": "Support"
+  },
+  "SaveModal": {
+    "title": {
+      "idle": "Save Changes",
+      "saving": "Saving...",
+      "success": "Success!",
+      "error": "Error"
     },
-    "sidebar": {
-      "menu": "MENU",
-      "global": "Global",
-      "options": "OPTIONS",
-      "adminPanel": "Admin Panel",
-      "charts": "Charts",
-      "orders": "Orders",
-      "projects": "Projects",
-      "forms": "Forms",
-      "blogs": "Blogs",
-      "media": "Media",
-      "settings": "Settings",
-      "homepage": "Homepage",
-      "documentation": "Documentation",
-      "support": "Support"
+    "description": {
+      "idle": "Do you want to save changes in general settings?",
+      "saving": "Please wait while saving settings.",
+      "success": "Changes saved successfully.",
+      "error": "Failed to save settings. Please try again."
     },
-    "SaveModal": {
-      "title": {
-        "idle": "Save Changes",
-        "saving": "Saving...",
-        "success": "Success!",
-        "error": "Error"
-      },
-      "description": {
-        "idle": "Save your changes to global settings?",
-        "saving": "Please wait while we save your settings.",
-        "success": "Your changes have been saved successfully.",
-        "error": "Failed to save settings. Please try again."
-      },
-      "buttons": {
-        "cancel": "Cancel",
-        "save": "Save Changes",
-        "close": "Close",
-        "retry": "Try Again"
-      }
+    "buttons": {
+      "cancel": "Cancel",
+      "save": "Save Changes",
+      "close": "Close",
+      "retry": "Try Again"
     }
+  },
+  "properties": {
+    "title": "Properties",
+    "subtitle": "Manage your property portfolio",
+    "stats": {
+      "total": "Total Properties",
+      "available": "Available",
+      "rented": "Rented",
+      "sold": "Sold"
+    },
+    "search": {
+      "placeholder": "Search properties..."
+    },
+    "filters": {
+      "all": "All Status"
+    },
+    "status": {
+      "available": "Available",
+      "rented": "Rented",
+      "sold": "Sold"
+    },
+    "types": {
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "office": "Office",
+      "shop": "Shop"
+    },
+    "badges": {
+      "featured": "Featured"
+    },
+    "actions": {
+      "addProperty": "Add Property",
+      "moreFilters": "More Filters",
+      "view": "View Details",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "empty": {
+      "title": "No properties found",
+      "description": "Try adjusting your search or filter criteria"
+    },
+    "currency": "SAR"
+  },
+  "property": {
+    "title": "Add New Property",
+    "subtitle": "Add all property details easily",
+    "tabs": {
+      "basic": "Basic Info",
+      "details": "Details",
+      "features": "Features",
+      "images": "Images"
+    },
+    "sections": {
+      "basic": "Basic Information",
+      "details": "Property Details",
+      "features": "Features & Amenities",
+      "images": "Property Images"
+    },
+    "form": {
+      "title": "Property Title",
+      "description": "Description",
+      "price": "Price",
+      "type": "Property Type",
+      "city": "City",
+      "district": "District",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "area": "Area",
+      "parking": "Parking"
+    },
+    "placeholders": {
+      "title": "Luxury Apartment in City",
+      "description": "Detailed property description...",
+      "city": "Enter city",
+      "district": "Enter district"
+    },
+    "types": {
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "office": "Office",
+      "shop": "Shop"
+    },
+    "features": {
+      "list": [
+        "Parking",
+        "Security",
+        "AC",
+        "Pool",
+        "Gym",
+        "Internet",
+        "Kitchen",
+        "Balcony",
+        "Elevator"
+      ],
+      "selected": "{{count}} features selected"
+    },
+    "images": {
+      "upload": "Click to upload images",
+      "requirements": "PNG, JPG, GIF up to 10MB"
+    },
+    "actions": {
+      "preview": "Preview",
+      "save": "Save Property"
+    },
+    "summary": {
+      "title": "Quick Summary",
+      "price": "Price",
+      "bedrooms": "Bedrooms",
+      "area": "Area (m²)",
+      "images": "Images"
+    },
+    "success": "Property saved successfully!"
   }
+}

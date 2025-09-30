@@ -11,7 +11,7 @@ export default function MarketingLayout({ children }: MarketingLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <NavMobile />
-      <NavBar scroll={true} />
+      <NavBar   />
       <main className="flex-1">{children}</main>
       <SiteFooter />
     </div>

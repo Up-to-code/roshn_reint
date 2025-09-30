@@ -87,9 +87,9 @@ export default async function Home({ params }: { params: { locale: string } }) {
 
   return (
     <div className="min-h-screen bg-white">
-       <HeroSection content={content.hero}   />
+       <HeroSection content={content.hero}   />       <PartnersBanner logos={content.partners}  />
+
        <ApartmentsPage />
-       <PartnersBanner logos={content.partners}  />
       <BannersSection banners={content.banners}  />
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs}  />

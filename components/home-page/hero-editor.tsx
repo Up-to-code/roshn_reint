@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CustomUploader } from "@/components/ui/custom-uploader";
+import { isAvailableEndpoint } from "@/lib/uploadthing";
 
 // Default hero data as fallback
 const defaultHero = {
@@ -30,6 +32,9 @@ export function HeroEditor() {
   // Safe data access with fallbacks
   const content = data?.[currentLang];
   const hero = content?.hero || defaultHero;
+
+  // Check endpoint availability at the component level
+  const hasVideoUploader = isAvailableEndpoint("videoUploader");
 
   // If data isn't loaded yet, show loading state
   if (!content) {
@@ -68,12 +73,26 @@ export function HeroEditor() {
         </div>
 
         <div>
-          <label className="text-sm font-medium">Background Video URL</label>
-          <Input
-            value={hero.backgroundVideo}
-            onChange={(e) => updateHero({ backgroundVideo: e.target.value })}
-            placeholder="/videos/hero-bg.mp4"
-          />
+          <label className="text-sm font-medium">Background Video</label>
+          <div className="space-y-3">
+            <Input
+              value={hero.backgroundVideo}
+              onChange={(e) => updateHero({ backgroundVideo: e.target.value })}
+              placeholder="/videos/hero-bg.mp4"
+            />
+            
+            {hasVideoUploader ? (
+              <CustomUploader
+                endpoint="videoUploader"
+                onUploadComplete={(url) => updateHero({ backgroundVideo: url })}
+                buttonText="Upload Background Video"
+              />
+            ) : (
+              <div className="text-sm text-muted-foreground p-2 border rounded bg-muted/20">
+                Video upload endpoint not available. Please provide a direct video URL.
+              </div>
+            )}
+          </div>
         </div>
 
         <div>

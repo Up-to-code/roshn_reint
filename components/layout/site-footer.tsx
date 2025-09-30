@@ -9,81 +9,71 @@ import { NewsletterForm } from "../forms/newsletter-form";
 import { Icons } from "../shared/icons";
 
 export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
+  const propertyData = {
+    id: "PR-2025-001",
+    title: "شقق فندقية فاخرة على الكورنيش",
+    subtitle: "إطلالة بحرية ساحرة مع تصميم عصري", 
+    agent: {
+      name: "العقارية الخليجية",
+      title: "وكيل عقاري معتمد",
+      phone: "+966 50 123 4567",
+      whatsapp: "+966 50 123 4567",
+      email: "info@realestate.sa",
+      logo: "ع",
+      license: "رخصة فال: 1234567890",
+      rating: 4.8,
+      deals: 150,
+      city: "جدة",
+    },
+    breadcrumb: ["الرئيسية", "عقارات", "جدة", "الخالدية"],
+    location: {
+      street: "طريق الكورنيش",
+      nearbyPlaces: ["مركز ريد سي مول", "كورنيش جدة", "مطار الملك عبدالعزيز"],
+      coordinates: { lat: 21.5433, lng: 39.1728 },
+      city: "جدة",
+    },
+  }
   return (
-    <footer className={cn("border-t", className)}>
-      <div className="container grid max-w-6xl grid-cols-2 gap-6 py-14 md:grid-cols-5">
-        {footerLinks.map((section) => (
-          <div key={section.title}>
-            <span className="text-sm font-medium text-foreground">
-              {section.title}
-            </span>
-            <ul className="mt-4 list-inside space-y-3">
-              {section.items?.map((link) => (
-                <li key={link.title}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted-foreground hover:text-primary"
-                  >
-                    {link.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+       <footer className="bg-card border-t py-12 mt-20">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">{propertyData.agent.name}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                منصة عقارية رائدة في المملكة العربية السعودية، نوفر أفضل العقارات والخدمات الاحترافية
+              </p>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">روابط سريعة</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">الرئيسية</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">عقارات للبيع</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">عقارات للإيجار</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">من نحن</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">خدماتنا</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">شراء عقار</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">بيع عقار</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">إيجار عقار</a></li>
+                <li><a href="#" className="text-muted-foreground hover:text-primary transition">استشارات عقارية</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-bold mb-4">تواصل معنا</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p>{propertyData.location.city}، المملكة العربية السعودية</p>
+                <p>{propertyData.agent.phone}</p>
+                <p>{propertyData.agent.email}</p>
+              </div>
+            </div>
           </div>
-        ))}
-        <div className="col-span-full flex flex-col items-end sm:col-span-1 md:col-span-2">
-          <NewsletterForm />
-        </div>
-      </div>
-
-      <div className="border-t py-4">
-        <div className="container flex max-w-6xl items-center justify-between">
-          {/* <span className="text-muted-foreground text-sm">
-            Copyright &copy; 2024. All rights reserved.
-          </span> */}
-          <p className="text-left text-sm text-muted-foreground">
-            Built by{" "}
-            <Link
-              href={siteConfig.links.twitter}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              mickasmt
-            </Link>
-            . Hosted on{" "}
-            <Link
-              href="https://vercel.com"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Vercel
-            </Link>
-            . Illustrations by{" "}
-            <Link
-              href="https://popsy.co"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              Popsy
-            </Link>
-          </p>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium underline underline-offset-4"
-            >
-              <Icons.gitHub className="size-5" />
-            </Link>
-            <ModeToggle />
+          <div className="text-center text-muted-foreground text-sm pt-8 border-t">
+            © 2025 {propertyData.agent.name}. جميع الحقوق محفوظة
           </div>
         </div>
-      </div>
-    </footer>
+      </footer>
   );
 }

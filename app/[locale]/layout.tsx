@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Cairo } from "next/font/google";
+import "@uploadthing/react/styles.css";
 
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";

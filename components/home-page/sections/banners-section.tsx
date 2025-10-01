@@ -12,11 +12,11 @@ export function BannersSection({ banners }: BannersSectionProps) {
   if (!banners || banners.length === 0) return null;
 
   return (
-    <section className="py-20 bg-white">
+    <section className="bg-white py-20">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-4">
+        <div className="mx-auto mb-16 max-w-3xl text-center">
+          <h2 className="mb-4 text-4xl font-bold text-[#2C2C2C] md:text-5xl">
             Our Portfolio
           </h2>
           <p className="text-xl text-gray-600">
@@ -25,17 +25,17 @@ export function BannersSection({ banners }: BannersSectionProps) {
         </div>
 
         {/* Portfolio Grid - 2 rows of 3 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {banners.map((banner) => (
             <div
               key={banner.id}
-              className="group relative overflow-hidden rounded-lg bg-white border border-gray-200 shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               <div className="relative h-64 overflow-hidden">
                 <img
                   src={banner.image}
                   alt={banner.title}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="size-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-black/20 transition-colors duration-300 group-hover:bg-black/10" />
               </div>
@@ -44,11 +44,11 @@ export function BannersSection({ banners }: BannersSectionProps) {
                 <h3 className="mb-2 text-xl font-bold text-[#2C2C2C]">
                   {banner.title}
                 </h3>
-                <p className="mb-4 text-gray-600 line-clamp-2">
+                <p className="mb-4 line-clamp-2 text-gray-600">
                   {banner.description}
                 </p>
                 
-                <Button className="bg-[#FF8C42] hover:bg-[#FF8C42]/90 text-white">
+                <Button className="bg-[#FF8C42] text-white hover:bg-[#FF8C42]/90">
                   <a href={banner.link}>View Project</a>
                 </Button>
               </div>

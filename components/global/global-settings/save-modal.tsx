@@ -156,10 +156,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
 
   return (
     <Modal 
-      isOpen={isOpen} 
       onClose={handleClose} 
-      title={getTitle()}
-      size="md"
     >
       <div 
         className="space-y-6 p-1" // Added padding for better spacing
@@ -173,7 +170,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
         <div className="flex justify-center px-2 py-1"> {/* Added padding */}
           <div 
             className={cn(
-              "relative flex h-20 w-20 items-center justify-center rounded-full transition-all duration-500",
+              "relative flex size-20 items-center justify-center rounded-full transition-all duration-500",
               status === 'idle' && "bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400",
               status === 'saving' && "bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400",
               status === 'success' && "bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400",
@@ -182,21 +179,21 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
             aria-hidden="true"
           >
             {status === 'idle' && (
-              <Save className="h-8 w-8" />
+              <Save className="size-8" />
             )}
             {status === 'saving' && (
               <div className="relative">
-                <Loader className="h-8 w-8 animate-spin" />
+                <Loader className="size-8 animate-spin" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-xs font-bold">{progress}%</span>
                 </div>
               </div>
             )}
             {status === 'success' && (
-              <CheckCircle className="h-8 w-8" />
+              <CheckCircle className="size-8" />
             )}
             {status === 'error' && (
-              <AlertCircle className="h-8 w-8" />
+              <AlertCircle className="size-8" />
             )}
           </div>
         </div>
@@ -224,7 +221,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
         )}
 
         {/* Content with better typography and spacing */}
-        <div className="text-center px-2 space-y-3"> {/* Added padding and gap */}
+        <div className="space-y-3 px-2 text-center"> {/* Added padding and gap */}
           <h3 
             id="modal-title"
             ref={modalTitleRef}
@@ -236,7 +233,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
           <p 
             id="modal-description"
             className={cn(
-              "text-muted-foreground transition-all duration-300 leading-relaxed", // Better line height
+              "leading-relaxed text-muted-foreground transition-all duration-300", // Better line height
               status === 'success' && "text-green-600 dark:text-green-400",
               status === 'error' && "text-red-600 dark:text-red-400"
             )}
@@ -256,7 +253,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
                 size="lg"
                 aria-label="Cancel saving changes"
               >
-                <X className="h-4 w-4 mr-2" />
+                <X className="mr-2 size-4" />
                 Cancel
               </Button>
               <Button 
@@ -266,7 +263,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
                 autoFocus // Focus the save button by default
                 aria-label="Confirm save changes"
               >
-                <Save className="h-4 w-4 mr-2" />
+                <Save className="mr-2 size-4" />
                 Save Now
               </Button>
             </>
@@ -281,7 +278,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
               aria-live="polite"
               aria-label="Saving in progress"
             >
-              <Loader className="h-4 w-4 mr-2 animate-spin" />
+              <Loader className="mr-2 size-4 animate-spin" />
               Saving... Please wait
             </Button>
           )}
@@ -294,7 +291,7 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
               variant="secondary"
               aria-label="Continue after successful save"
             >
-              <CheckCircle className="h-4 w-4 mr-2" />
+              <CheckCircle className="mr-2 size-4" />
               Awesome! Continue
             </Button>
           )}
@@ -308,17 +305,16 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
                 size="lg"
                 aria-label="Close error message"
               >
-                <X className="h-4 w-4 mr-2" />
+                <X className="mr-2 size-4" />
                 Close
               </Button>
               <Button 
                 onClick={handleRetry}
                 className="flex-1 px-6 py-3" // Better padding
                 size="lg"
-                variant="destructive"
-                aria-label="Retry saving changes"
+                 aria-label="Retry saving changes"
               >
-                <RotateCcw className="h-4 w-4 mr-2" />
+                <RotateCcw className="mr-2 size-4" />
                 Try Again
               </Button>
             </>
@@ -327,25 +323,25 @@ export function SaveModal({ isOpen, onClose, onSave }: SaveModalProps) {
 
         {/* Additional Info with better spacing */}
         {status === 'success' && (
-          <div className="rounded-lg bg-green-50 dark:bg-green-900/20 p-4 border border-green-200 dark:border-green-800 mx-2"> {/* Added margin */}
-            <p className="text-sm text-green-700 dark:text-green-300 text-center leading-tight"> {/* Better text size */}
+          <div className="mx-2 rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20"> {/* Added margin */}
+            <p className="text-center text-sm leading-tight text-green-700 dark:text-green-300"> {/* Better text size */}
               ✓ Settings applied successfully • ✓ Configuration saved • ✓ Changes are now live
             </p>
           </div>
         )}
 
         {status === 'error' && (
-          <div className="rounded-lg bg-red-50 dark:bg-red-900/20 p-4 border border-red-200 dark:border-red-800 mx-2"> {/* Added margin */}
-            <p className="text-sm text-red-700 dark:text-red-300 text-center leading-tight"> {/* Better text size */}
-              Don't worry, your changes are still safe in the editor. 
+          <div className="mx-2 rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/20"> {/* Added margin */}
+            <p className="text-center text-sm leading-tight text-red-700 dark:text-red-300"> {/* Better text size */}
+              Don&apos;t worry, your changes are still safe in the editor. 
               Try saving again or check your internet connection.
             </p>
           </div>
         )}
 
         {/* Keyboard shortcut hints */}
-        <div className="px-2 pt-2 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center">
+        <div className="border-t border-border px-2 pt-2">
+          <p className="text-center text-xs text-muted-foreground">
             {status === 'idle' && "Press Enter to save or Escape to cancel"}
             {status === 'saving' && "Saving in progress... Please wait"}
             {status === 'success' && "Settings saved successfully!"}

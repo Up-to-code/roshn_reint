@@ -29,18 +29,18 @@ const ModernApartmentGrid: React.FC<ModernApartmentGridProps> = ({
   onContactAgent,
 }) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
+    <div className="mx-auto max-w-7xl px-4 py-12">
       {/* Header */}
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <div className="mb-16 text-center">
+        <h1 className="mb-4 text-4xl font-bold text-gray-900">
           Premium Apartments for Sale
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <p className="mx-auto max-w-2xl text-xl text-gray-600">
           Discover modern living spaces in prime locations with exceptional amenities
         </p>
         
         {/* Stats */}
-        <div className="flex justify-center gap-8 mt-8">
+        <div className="mt-8 flex justify-center gap-8">
           <div className="text-center">
             <div className="text-3xl font-bold text-orange-500">{apartments.length}</div>
             <div className="text-gray-600">Properties</div>
@@ -55,7 +55,7 @@ const ModernApartmentGrid: React.FC<ModernApartmentGridProps> = ({
       </div>
 
       {/* Apartments Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
         {apartments.map((apartment) => (
           <ModernApartmentCard
             key={apartment.id}

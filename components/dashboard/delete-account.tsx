@@ -42,8 +42,7 @@ export function DeleteAccountSection() {
           <div className="flex items-center gap-2">
             <Button
               type="submit"
-              variant="destructive"
-              onClick={() => setShowDeleteAccountModal(true)}
+               onClick={() => setShowDeleteAccountModal(true)}
             >
               <Icons.trash className="mr-2 size-4" />
               <span>Delete Account</span>

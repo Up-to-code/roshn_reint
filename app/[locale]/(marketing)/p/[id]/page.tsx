@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
 import { 
   ArrowLeft, MapPin, Bed, Bath, Square, Car, Share2, Heart,
   Phone, Mail, Users, Star, Home, Building, CheckCircle,
@@ -24,7 +23,6 @@ interface PropertyDetailPageProps {
   };
 }
 
-// Add this fallback HTML description
 const FALLBACK_HTML_DESCRIPTION = `
   <p>This beautiful property offers modern living in a prime location. Featuring spacious rooms, 
   contemporary design, and premium finishes throughout.</p>
@@ -39,30 +37,6 @@ const FALLBACK_HTML_DESCRIPTION = `
   
   <p>Contact us today to schedule a viewing and experience this exceptional property for yourself.</p>
 `;
-
-// Loading Component
-function PropertyLoading() {
-  return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-7xl px-4 py-6">
-        <Skeleton className="mb-6 h-10 w-40" />
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-2">
-            <Skeleton className="aspect-video rounded-xl" />
-            <div className="grid grid-cols-4 gap-4">
-              {[1,2,3,4].map(i => <Skeleton key={i} className="h-24 rounded-lg" />)}
-            </div>
-            <Skeleton className="h-48 rounded-lg" />
-          </div>
-          <div className="space-y-6">
-            <Skeleton className="h-64 rounded-xl" />
-            <Skeleton className="h-80 rounded-lg" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 // Generate SEO Metadata
 export async function generateMetadata({ params }: PropertyDetailPageProps): Promise<Metadata> {
@@ -92,11 +66,9 @@ export async function generateMetadata({ params }: PropertyDetailPageProps): Pro
 
 // HTML Description Formatter Component
 function PropertyDescription({ content, isRTL }: { content: string | null; isRTL: boolean }) {
-  // Function to safely render HTML content
   const formatDescription = (html: string | null) => {
     if (!html) return FALLBACK_HTML_DESCRIPTION;
 
-    // Basic sanitization and formatting
     const formattedHtml = html
       .replace(/<p>/g, '<p class="mb-4 leading-relaxed text-foreground">')
       .replace(/<h1>/g, '<h1 class="text-2xl font-bold mb-4 text-foreground">')
@@ -150,7 +122,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     notFound();
   }
 
-  // Helper functions
   const getStatusColor = (status: PropertyStatus) => {
     const colors = {
       [PropertyStatus.AVAILABLE]: 'bg-green-500 text-white',
@@ -178,10 +149,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     { key: 'kitchen', label: 'Kitchen', icon: Utensils },
   ];
 
-  // Safe access to features array
   const propertyFeatures = property.features || [];
 
-  // Structured Data for SEO
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
@@ -541,5 +510,4 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   );
 }
 
-// Export with loading state
-export { PropertyLoading as Loading };
+// REMOVED: export { PropertyLoading as Loading };

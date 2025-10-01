@@ -91,8 +91,7 @@ export function HeroEditor() {
               placeholder="/videos/hero-bg.mp4"
             />
             <CustomUploader
-              endpoint="videoUploader"
-              onUploadComplete={(url) => updateHero({ backgroundVideo: url })}
+               onUploadComplete={(url) => updateHero({ backgroundVideo: url })}
               buttonText="Upload Video"
             />
           </div>

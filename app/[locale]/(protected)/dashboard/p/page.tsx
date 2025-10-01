@@ -71,8 +71,8 @@ export default function PropertiesDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-        <div className="max-w-7xl mx-auto text-center py-12">
-          <div className="text-lg text-text-secondary">{commonT('loading')}</div>
+        <div className="mx-auto max-w-7xl py-12 text-center">
+          <div className="text-text-secondary text-lg">{commonT('loading')}</div>
         </div>
       </div>
     );
@@ -80,17 +80,17 @@ export default function PropertiesDashboard() {
 
   return (
     <div className="min-h-screen bg-background p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         {/* Header */}
-        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+        <div className={`mb-6 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
           <div className={isRTL ? 'text-right' : ''}>
-            <h1 className="text-2xl font-bold text-text-primary">{t('title')}</h1>
+            <h1 className="text-text-primary text-2xl font-bold">{t('title')}</h1>
             <p className="text-text-secondary mt-1">{t('subtitle')}</p>
           </div>
           <div className={`flex gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Link 
               href={`/${locale}/dashboard/p/create`}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors"
+              className="hover:bg-primary-dark rounded-lg bg-primary px-4 py-2 text-white transition-colors"
             >
               + {t('actions.add')}
             </Link>
@@ -98,14 +98,14 @@ export default function PropertiesDashboard() {
         </div>
 
         {/* Search */}
-        <div className="bg-background-card border border-border rounded-lg p-4 mb-6">
+        <div className="bg-background-card mb-6 rounded-lg border border-border p-4">
           <div className="relative">
             <input
               type="text"
               placeholder={t('searchPlaceholder')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className={`w-full p-3 border border-border rounded-lg bg-background text-text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+              className={`text-text-primary w-full rounded-lg border border-border bg-background p-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary ${
                 isRTL ? 'pr-12' : 'pl-12'
               }`}
             />
@@ -116,61 +116,61 @@ export default function PropertiesDashboard() {
         </div>
 
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredProperties.map((property) => (
-            <div key={property.id} className="bg-background-card border border-border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+            <div key={property.id} className="bg-background-card overflow-hidden rounded-lg border border-border transition-shadow hover:shadow-lg">
               <div className="relative">
                 <img
                   src={property.images[0] || '/api/placeholder/400/250'}
                   alt={getLocalizedTitle(property)}
-                  className="w-full h-48 object-cover"
+                  className="h-48 w-full object-cover"
                 />
-                <div className={`absolute top-3 right-3 px-3 py-1 rounded-full text-white text-sm ${statusColors[property.status]}`}>
+                <div className={`absolute right-3 top-3 rounded-full px-3 py-1 text-sm text-white ${statusColors[property.status]}`}>
                   {getStatusText(property.status)}
                 </div>
               </div>
               
               <div className="p-4">
-                <div className={`flex justify-between items-start mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-sm text-text-secondary capitalize bg-background-alt px-2 py-1 rounded">
+                <div className={`mb-3 flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <span className="text-text-secondary bg-background-alt rounded px-2 py-1 text-sm capitalize">
                     {getTypeText(property.type)}
                   </span>
                   <div className={`flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                     <Link 
                       href={`/${locale}/dashboard/p/edit/${property.id}`}
-                      className="text-primary hover:text-primary-dark p-1"
+                      className="hover:text-primary-dark p-1 text-primary"
                     >
                       ✏️
                     </Link>
                     <button 
                       onClick={() => handleDelete(property.id)}
-                      className="text-error hover:text-red-700 p-1"
+                      className="text-error p-1 hover:text-red-700"
                     >
                       🗑️
                     </button>
                   </div>
                 </div>
 
-                <h3 className={`font-semibold text-lg mb-2 text-text-primary ${isRTL ? 'text-right' : ''}`}>
+                <h3 className={`text-text-primary mb-2 text-lg font-semibold ${isRTL ? 'text-right' : ''}`}>
                   {getLocalizedTitle(property)}
                 </h3>
                 
-                <div className={`flex items-center text-text-secondary mb-3 ${
+                <div className={`text-text-secondary mb-3 flex items-center ${
                   isRTL ? 'flex-row-reverse' : ''
                 }`}>
                   <span className={`${isRTL ? 'ml-2' : 'mr-2'}`}>📍</span>
                   <span className="text-sm">{property.city}</span>
                 </div>
 
-                <div className={`flex justify-between items-center mb-4 ${
+                <div className={`mb-4 flex items-center justify-between ${
                   isRTL ? 'flex-row-reverse' : ''
                 }`}>
-                  <span className="text-xl font-bold text-text-primary">
+                  <span className="text-text-primary text-xl font-bold">
                     ${property.price.toLocaleString()}
                   </span>
                 </div>
 
-                <div className={`flex justify-between border-t border-border pt-3 text-sm text-text-secondary ${
+                <div className={`text-text-secondary flex justify-between border-t border-border pt-3 text-sm ${
                   isRTL ? 'flex-row-reverse' : ''
                 }`}>
                   <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -192,14 +192,14 @@ export default function PropertiesDashboard() {
         </div>
 
         {filteredProperties.length === 0 && (
-          <div className="text-center py-12">
+          <div className="py-12 text-center">
             <p className="text-text-secondary text-lg">
               {properties.length === 0 ? t('createFirst') : t('noProperties')}
             </p>
             {properties.length === 0 && (
               <Link 
                 href={`/${locale}/dashboard/p/create`}
-                className="inline-block mt-4 bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
+                className="hover:bg-primary-dark mt-4 inline-block rounded-lg bg-primary px-6 py-2 text-white transition-colors"
               >
                 + {t('actions.add')}
               </Link>

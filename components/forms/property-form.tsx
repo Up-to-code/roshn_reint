@@ -108,8 +108,7 @@ export function PropertyForm({
         </CardHeader>
         <CardContent className="space-y-4">
           <CustomUploader
-            endpoint="imageUploader"
-            onUploadComplete={handleImageUpload}
+             onUploadComplete={handleImageUpload}
             onMultipleUploadComplete={handleMultipleImageUpload}
             buttonText={t('uploadImage')}
             multiple={true}

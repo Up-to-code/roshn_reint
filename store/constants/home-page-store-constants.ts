@@ -11,6 +11,7 @@ const defaultContactFormFields: ContactFormField[] = [
 
 // Real Estate Theme Content
 export const defaultContent: HomePageContent = {
+  partners: [],
   hero: {
     title: "Modern Architecture & Real Estate",
     subtitle: "Discover exceptional properties and innovative architectural designs",
@@ -101,11 +102,11 @@ export const defaultContent: HomePageContent = {
     }
   }
 };
-
 const arabicContent: HomePageContent = {
+  partners: [],
   hero: {
     title: "مرحبًا بكم في منصتنا المذهلة",
-    subtitle: "اكتشف مستقبل الابتكار الرقمي مع حلولنا المتطورة",
+     subtitle: "اكتشف مستقبل الابتكار الرقمي مع حلولنا المتطورة",
     primaryButton: {
       text: "ابدأ الآن",
       link: "/get-started",

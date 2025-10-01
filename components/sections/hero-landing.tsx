@@ -12,7 +12,7 @@ export default async function HeroLanding() {
         <Link
           href="https://next-saas-stripe-starter.vercel.app/"
           className={cn(
-            buttonVariants({ variant: "outline", size: "sm", rounded: "xl" }),
+            buttonVariants({ variant: "outline", size: "sm",  }),
             "px-4",
           )}
           target="_blank"
@@ -37,7 +37,7 @@ export default async function HeroLanding() {
             href="/docs"
             prefetch={true}
             className={cn(
-              buttonVariants({ rounded: "xl", size: "lg" }),
+              buttonVariants({   size: "lg" }),
               "gap-2 px-5 text-[15px]",
             )}
           >
@@ -51,7 +51,7 @@ export default async function HeroLanding() {
             className={cn(
               buttonVariants({
                 variant: "outline",
-                rounded: "xl",
+                
                 size: "lg",
               }),
               "px-4 text-[15px]",

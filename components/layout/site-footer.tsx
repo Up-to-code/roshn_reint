@@ -34,35 +34,35 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
     },
   }
   return (
-       <footer className="bg-card border-t py-12 mt-20">
+       <footer className="mt-20 border-t bg-card py-12">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-4">
             <div>
-              <h3 className="text-xl font-bold mb-4">{propertyData.agent.name}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <h3 className="mb-4 text-xl font-bold">{propertyData.agent.name}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 منصة عقارية رائدة في المملكة العربية السعودية، نوفر أفضل العقارات والخدمات الاحترافية
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">روابط سريعة</h4>
+              <h4 className="mb-4 font-bold">روابط سريعة</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">الرئيسية</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">عقارات للبيع</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">عقارات للإيجار</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">من نحن</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">الرئيسية</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">عقارات للبيع</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">عقارات للإيجار</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">من نحن</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">خدماتنا</h4>
+              <h4 className="mb-4 font-bold">خدماتنا</h4>
               <ul className="space-y-2 text-sm">
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">شراء عقار</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">بيع عقار</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">إيجار عقار</a></li>
-                <li><a href="#" className="text-muted-foreground hover:text-primary transition">استشارات عقارية</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">شراء عقار</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">بيع عقار</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">إيجار عقار</a></li>
+                <li><a href="#" className="text-muted-foreground transition hover:text-primary">استشارات عقارية</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">تواصل معنا</h4>
+              <h4 className="mb-4 font-bold">تواصل معنا</h4>
               <div className="space-y-2 text-sm text-muted-foreground">
                 <p>{propertyData.location.city}، المملكة العربية السعودية</p>
                 <p>{propertyData.agent.phone}</p>
@@ -70,7 +70,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
               </div>
             </div>
           </div>
-          <div className="text-center text-muted-foreground text-sm pt-8 border-t">
+          <div className="border-t pt-8 text-center text-sm text-muted-foreground">
             © 2025 {propertyData.agent.name}. جميع الحقوق محفوظة
           </div>
         </div>

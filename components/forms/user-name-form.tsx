@@ -75,8 +75,7 @@ export function UserNameForm({ user }: UserNameFormProps) {
           />
           <Button
             type="submit"
-            variant={updated ? "default" : "disable"}
-            disabled={isPending || !updated}
+             disabled={isPending || !updated}
             className="w-[67px] shrink-0 px-0 sm:w-[130px]"
           >
             {isPending ? (

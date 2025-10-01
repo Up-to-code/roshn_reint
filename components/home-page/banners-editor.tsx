@@ -46,8 +46,7 @@ export function BannersEditor() {
                 className="mb-2"
               />
               <CustomUploader
-                endpoint="imageUploader"
-                onUploadComplete={(url) => updateBanner(banner.id, { image: url })}
+                 onUploadComplete={(url) => updateBanner(banner.id, { image: url })}
                 buttonText="Upload Banner Image"
               />
               <Input
@@ -94,8 +93,7 @@ export function BannersEditor() {
             className="mb-2"
           />
           <CustomUploader
-            endpoint="imageUploader"
-            onUploadComplete={(url) => setNewBanner({ ...newBanner, image: url })}
+             onUploadComplete={(url) => setNewBanner({ ...newBanner, image: url })}
             buttonText="Upload Banner Image"
           />
           <Input

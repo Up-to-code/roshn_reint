@@ -72,7 +72,6 @@ export function TestimonialsEditor() {
                 className="mb-2"
               />
               <CustomUploader
-                endpoint="imageUploader"
                 onUploadComplete={(url) => updateTestimonial(testimonial.id, { avatar: url })}
                 buttonText="Upload Avatar"
               />
@@ -129,7 +128,6 @@ export function TestimonialsEditor() {
               className="mb-2"
             />
             <CustomUploader
-              endpoint="imageUploader"
               onUploadComplete={(url) => setNewTestimonial({ ...newTestimonial, avatar: url })}
               buttonText="Upload Avatar"
             />

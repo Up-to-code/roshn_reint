@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import { useRouter, usePathname } from "next/navigation";
 import { useHomePageStore } from "@/store/home-page-store";
+import { cn } from "@/lib/utils";
 
 type Props = {
   label: string;
@@ -35,14 +36,39 @@ export default function LocaleSwitcherSelect({ label }: Props) {
   return (
     <Select value={currentLang} onValueChange={onSelectChange}>
       <SelectTrigger
-        className="h-8 min-w-[120px] border-none bg-transparent focus:ring-0 focus:ring-offset-0"
+        className={cn(
+          "h-9 w-[120px] border border-gray-700 bg-black text-white",
+          "focus:ring-1 focus:ring-blue-500 focus:ring-offset-0",
+          "hover:border-gray-600 hover:bg-black/80",
+          "rounded-xl transition-all duration-200"
+        )}
         aria-label={label}
       >
         <SelectValue />
       </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="ar">العربية</SelectItem>
-        <SelectItem value="en">English</SelectItem>
+      <SelectContent 
+        className="rounded-xl border-gray-700 bg-black text-white shadow-2xl backdrop-blur-2xl"
+      >
+        <SelectItem 
+          value="ar" 
+          className={cn(
+            "cursor-pointer focus:bg-white/10 focus:text-white",
+            "rounded-lg transition-all duration-200",
+            currentLang === 'ar' && "bg-white/10 text-blue-400"
+          )}
+        >
+          العربية
+        </SelectItem>
+        <SelectItem 
+          value="en"
+          className={cn(
+            "cursor-pointer focus:bg-white/10 focus:text-white",
+            "rounded-lg transition-all duration-200",
+            currentLang === 'en' && "bg-white/10 text-blue-400"
+          )}
+        >
+          English
+        </SelectItem>
       </SelectContent>
     </Select>
   );

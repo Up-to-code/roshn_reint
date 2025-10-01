@@ -47,7 +47,6 @@ export function WhyUsEditor() {
                 className="mb-2"
               />
               <CustomUploader
-                endpoint="imageUploader"
                 onUploadComplete={(url) => updateFeature(feature.id, { icon: url })}
                 buttonText="Upload Icon"
               />
@@ -80,7 +79,6 @@ export function WhyUsEditor() {
               className="mb-2"
             />
             <CustomUploader
-              endpoint="imageUploader"
               onUploadComplete={(url) => setNewFeature({ ...newFeature, icon: url })}
               buttonText="Upload Icon"
             />

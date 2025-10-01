@@ -33,7 +33,6 @@ export function PartnersEditor() {
                 className="mb-2"
               />
               <CustomUploader
-                endpoint="imageUploader"
                 onUploadComplete={(url) => updatePartner(partner.id, { src: url })}
                 buttonText="Upload Partner Logo"
               />
@@ -61,7 +60,6 @@ export function PartnersEditor() {
             className="mb-2"
           />
           <CustomUploader
-            endpoint="imageUploader"
             onUploadComplete={(url) => setNewPartner({ ...newPartner, src: url })}
             buttonText="Upload Partner Logo"
           />

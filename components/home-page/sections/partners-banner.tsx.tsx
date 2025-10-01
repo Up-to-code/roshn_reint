@@ -25,16 +25,16 @@ export function PartnersBanner({
   }
 
   return (
-    <section className="w-full py-8 px-4 bg-orange-500">
+    <section className="w-full bg-orange-500 px-4 py-8">
       {/* Logos container */}
       <div className="relative overflow-hidden">
         {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-orange-500 to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-orange-500 to-transparent z-10" />
+        <div className="absolute bottom-0 left-0 top-0 z-10 w-20 bg-gradient-to-r from-orange-500 to-transparent" />
+        <div className="absolute bottom-0 right-0 top-0 z-10 w-20 bg-gradient-to-l from-orange-500 to-transparent" />
         
         {/* Scrolling logos */}
         <div
-          className="flex items-center gap-20 md:gap-28 animate-scroll"
+          className="animate-scroll flex items-center gap-20 md:gap-28"
           style={{
             width: "max-content",
             animationDuration: `${speed}s`,
@@ -50,7 +50,7 @@ export function PartnersBanner({
               <img
                 src={logo.src}
                 alt={logo.alt}
-                className="h-16 md:h-24 w-auto object-contain opacity-60 hover:opacity-100 transition-opacity duration-300 mix-blend-multiply"
+                className="h-16 w-auto object-contain opacity-60 mix-blend-multiply transition-opacity duration-300 hover:opacity-100 md:h-24"
                 loading="lazy"
               />
             </div>

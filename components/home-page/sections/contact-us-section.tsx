@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { ContactUsSection as ContactUsSectionType } from "@/types/home-page";
@@ -33,77 +34,77 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
   };
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-white py-20">
+      <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-orange-500/10 border border-orange-200 text-orange-600 text-base font-medium mb-8">
-            <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+        <div className="mb-20 text-center">
+          <div className="mb-8 inline-flex items-center gap-3 border border-orange-200 bg-orange-500/10 px-6 py-3 text-base font-medium text-orange-600">
+            <div className="size-2 animate-pulse rounded-full bg-orange-500"></div>
             Ready to Connect
           </div>
-          <h2 className="text-6xl font-black text-black mb-6">
+          <h2 className="mb-6 text-6xl font-black text-black">
             {content.title}
           </h2>
-          <p className="text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
+          <p className="mx-auto max-w-3xl text-2xl font-light leading-relaxed text-gray-600">
             {content.subtitle}
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-20 items-start">
+        <div className="grid items-start gap-20 lg:grid-cols-2">
           {/* Contact Information */}
           <div>
             <div className="bg-black p-10 text-white">
               <div>
-                <h3 className="text-4xl font-bold mb-4 text-white">
-                  Let's Talk
+                <h3 className="mb-4 text-4xl font-bold text-white">
+                  Let&apos;s Talk
                 </h3>
-                <p className="text-orange-200 text-lg mb-12 font-light">
+                <p className="mb-12 text-lg font-light text-orange-200">
                   Choose your preferred method to reach us
                 </p>
                 
                 <div className="space-y-8">
-                  <div className="flex items-start gap-6 p-6 hover:bg-white/5 transition-all duration-300 group cursor-pointer">
-                    <div className="p-4 bg-orange-500">
-                      <MapPin className="w-6 h-6 text-white" />
+                  <div className="group flex cursor-pointer items-start gap-6 p-6 transition-all duration-300 hover:bg-white/5">
+                    <div className="bg-orange-500 p-4">
+                      <MapPin className="size-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-white text-lg mb-2">Our Location</h4>
-                      <p className="text-orange-100 leading-relaxed">{content.contactInfo.address}</p>
+                      <h4 className="mb-2 text-lg font-bold text-white">Our Location</h4>
+                      <p className="leading-relaxed text-orange-100">{content.contactInfo.address}</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-orange-300 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <ArrowRight className="size-5 text-orange-300 opacity-0 transition-all duration-300 group-hover:opacity-100" />
                   </div>
 
-                  <div className="flex items-start gap-6 p-6 hover:bg-white/5 transition-all duration-300 group cursor-pointer">
-                    <div className="p-4 bg-orange-500">
-                      <Phone className="w-6 h-6 text-white" />
+                  <div className="group flex cursor-pointer items-start gap-6 p-6 transition-all duration-300 hover:bg-white/5">
+                    <div className="bg-orange-500 p-4">
+                      <Phone className="size-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-white text-lg mb-2">Phone Number</h4>
+                      <h4 className="mb-2 text-lg font-bold text-white">Phone Number</h4>
                       <p className="text-orange-100">{content.contactInfo.phone}</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-orange-300 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <ArrowRight className="size-5 text-orange-300 opacity-0 transition-all duration-300 group-hover:opacity-100" />
                   </div>
 
-                  <div className="flex items-start gap-6 p-6 hover:bg-white/5 transition-all duration-300 group cursor-pointer">
-                    <div className="p-4 bg-orange-500">
-                      <Mail className="w-6 h-6 text-white" />
+                  <div className="group flex cursor-pointer items-start gap-6 p-6 transition-all duration-300 hover:bg-white/5">
+                    <div className="bg-orange-500 p-4">
+                      <Mail className="size-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-white text-lg mb-2">Email Address</h4>
+                      <h4 className="mb-2 text-lg font-bold text-white">Email Address</h4>
                       <p className="text-orange-100">{content.contactInfo.email}</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-orange-300 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <ArrowRight className="size-5 text-orange-300 opacity-0 transition-all duration-300 group-hover:opacity-100" />
                   </div>
 
-                  <div className="flex items-start gap-6 p-6 hover:bg-white/5 transition-all duration-300 group cursor-pointer">
-                    <div className="p-4 bg-orange-500">
-                      <Clock className="w-6 h-6 text-white" />
+                  <div className="group flex cursor-pointer items-start gap-6 p-6 transition-all duration-300 hover:bg-white/5">
+                    <div className="bg-orange-500 p-4">
+                      <Clock className="size-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-white text-lg mb-2">Working Hours</h4>
+                      <h4 className="mb-2 text-lg font-bold text-white">Working Hours</h4>
                       <p className="text-orange-100">{content.contactInfo.workingHours}</p>
                     </div>
-                    <ArrowRight className="w-5 h-5 text-orange-300 opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                    <ArrowRight className="size-5 text-orange-300 opacity-0 transition-all duration-300 group-hover:opacity-100" />
                   </div>
                 </div>
               </div>
@@ -112,23 +113,23 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
 
           {/* Contact Form */}
           {content.form?.enabled && (
-            <div className="bg-white p-10 border border-orange-100">
+            <div className="border border-orange-100 bg-white p-10">
               <div>
                 <div className="mb-12">
-                  <h3 className="text-4xl font-black text-black mb-4">
+                  <h3 className="mb-4 text-4xl font-black text-black">
                     Send Message
                   </h3>
-                  <p className="text-gray-500 text-lg font-light">
+                  <p className="text-lg font-light text-gray-500">
                     We'll get back to you within 24 hours
                   </p>
                 </div>
                 
                 <form onSubmit={handleSubmit} className="space-y-8">
-                  <div className="grid sm:grid-cols-2 gap-8">
+                  <div className="grid gap-8 sm:grid-cols-2">
                     {content.form.fields.map((field, index) => (
                       field.type !== 'textarea' ? (
                         <div key={index} className="group">
-                          <label className="block text-sm font-semibold text-black mb-4 tracking-wide">
+                          <label className="mb-4 block text-sm font-semibold tracking-wide text-black">
                             {field.label} {field.required && <span className="text-orange-500">*</span>}
                           </label>
                           <Input
@@ -137,7 +138,7 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
                             value={formData[field.name] || ''}
                             onChange={(e) => handleInputChange(field.name, e.target.value)}
                             placeholder={`Enter your ${field.label.toLowerCase()}`}
-                            className="h-14 transition-all duration-300 border-2 border-gray-200 focus:border-orange-500 text-black placeholder-gray-400 font-medium group-hover:border-orange-300"
+                            className="h-14 border-2 border-gray-200 font-medium text-black transition-all duration-300 placeholder:text-gray-400 focus:border-orange-500 group-hover:border-orange-300"
                           />
                         </div>
                       ) : null
@@ -148,7 +149,7 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
                   {content.form.fields.map((field, index) => (
                     field.type === 'textarea' && (
                       <div key={index} className="group">
-                        <label className="block text-sm font-semibold text-black mb-4 tracking-wide">
+                        <label className="mb-4 block text-sm font-semibold tracking-wide text-black">
                           {field.label} {field.required && <span className="text-orange-500">*</span>}
                         </label>
                         <Textarea
@@ -157,7 +158,7 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
                           onChange={(e) => handleInputChange(field.name, e.target.value)}
                           placeholder={`Tell us about your ${field.label.toLowerCase()}`}
                           rows={6}
-                          className="resize-none transition-all duration-300 border-2 border-gray-200 focus:border-orange-500 text-black placeholder-gray-400 font-medium group-hover:border-orange-300"
+                          className="resize-none border-2 border-gray-200 font-medium text-black transition-all duration-300 placeholder:text-gray-400 focus:border-orange-500 group-hover:border-orange-300"
                         />
                       </div>
                     )
@@ -166,16 +167,16 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
                   <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full h-14 bg-black hover:bg-orange-500 text-white font-bold text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
+                    className="group h-14 w-full bg-black text-lg font-bold text-white transition-all duration-300 hover:bg-orange-500 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isSubmitting ? (
                       <div className="flex items-center gap-3">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <div className="size-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                         Sending...
                       </div>
                     ) : (
                       <>
-                        <Send className="w-5 h-5 mr-3 group-hover:translate-x-1 transition-transform duration-300" />
+                        <Send className="mr-3 size-5 transition-transform duration-300 group-hover:translate-x-1" />
                         Send Message
                       </>
                     )}
@@ -184,7 +185,7 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
 
                 {/* Trust indicator */}
                 <div className="mt-8 text-center">
-                  <p className="text-gray-400 text-sm font-medium">
+                  <p className="text-sm font-medium text-gray-400">
                     🔒 Your information is secure and encrypted
                   </p>
                 </div>
@@ -195,18 +196,18 @@ export function ContactUsSection({ content }: ContactUsSectionProps) {
 
         {/* Additional CTA Section */}
         <div className="mt-20 text-center">
-          <div className="bg-orange-50 p-12 border border-orange-200">
-            <h3 className="text-3xl font-black text-black mb-4">
+          <div className="border border-orange-200 bg-orange-50 p-12">
+            <h3 className="mb-4 text-3xl font-black text-black">
               Still have questions?
             </h3>
-            <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-gray-600">
               Our team is here to help you get the answers you need.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Button className="bg-black text-white hover:bg-orange-500 px-8 py-6 text-lg font-bold transition-all duration-300">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button className="bg-black px-8 py-6 text-lg font-bold text-white transition-all duration-300 hover:bg-orange-500">
                 Schedule a Call
               </Button>
-              <Button variant="outline" className="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-6 text-lg font-bold transition-all duration-300">
+              <Button variant="outline" className="border-2 border-black px-8 py-6 text-lg font-bold text-black transition-all duration-300 hover:bg-black hover:text-white">
                 Live Chat
               </Button>
             </div>

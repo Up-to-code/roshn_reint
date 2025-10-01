@@ -273,7 +273,7 @@ export function CustomUploader({
       {/* Error Message */}
       {error && (
         <div className="flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-          <AlertCircle className="size-5 flex-shrink-0" />
+          <AlertCircle className="size-5 shrink-0" />
           <span className="text-sm">{error}</span>
         </div>
       )}
@@ -282,7 +282,7 @@ export function CustomUploader({
       {hasFiles && (
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-3">
+            <div className="mb-3 flex items-center justify-between">
               <h4 className="font-medium">
                 Files ({uploadFiles.filter(f => f.status === 'success').length}/{uploadFiles.length})
               </h4>
@@ -306,7 +306,7 @@ export function CustomUploader({
                   className="flex items-center gap-3 rounded-lg border p-3"
                 >
                   {/* File Icon */}
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     {uploadFile.file.type.startsWith('image/') ? (
                       <ImageIcon className="size-8 text-blue-500" />
                     ) : uploadFile.file.type.startsWith('video/') ? (
@@ -317,9 +317,9 @@ export function CustomUploader({
                   </div>
 
                   {/* File Info & Progress */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between mb-2">
-                      <p className="text-sm font-medium truncate">
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2 flex items-center justify-between">
+                      <p className="truncate text-sm font-medium">
                         {uploadFile.file.name}
                       </p>
                       <div className="flex items-center gap-2">
@@ -344,7 +344,7 @@ export function CustomUploader({
                     )}
                     
                     {uploadFile.error && (
-                      <p className="text-xs text-red-600 mt-1">{uploadFile.error}</p>
+                      <p className="mt-1 text-xs text-red-600">{uploadFile.error}</p>
                     )}
                   </div>
 
@@ -355,7 +355,7 @@ export function CustomUploader({
                     size="sm"
                     onClick={() => removeFile(uploadFile.file)}
                     disabled={uploadFile.status === 'uploading'}
-                    className="flex-shrink-0 text-muted-foreground hover:text-foreground"
+                    className="shrink-0 text-muted-foreground hover:text-foreground"
                   >
                     <X className="size-4" />
                   </Button>
@@ -370,20 +370,20 @@ export function CustomUploader({
       {uploadFiles.some(uf => uf.status === 'success' && uf.file.type.startsWith('image/')) && (
         <Card>
           <CardContent className="p-4">
-            <h4 className="font-medium mb-3">Previews</h4>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <h4 className="mb-3 font-medium">Previews</h4>
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
               {uploadFiles
                 .filter(uf => uf.status === 'success' && uf.url && uf.file.type.startsWith('image/'))
                 .map((uploadFile, index) => (
-                  <div key={index} className="relative group">
+                  <div key={index} className="group relative">
                     <Image
                       src={uploadFile.url!}
                       alt={`Uploaded ${uploadFile.file.name}`}
                       width={120}
                       height={120}
-                      className="w-full h-24 object-cover rounded-lg border"
+                      className="h-24 w-full rounded-lg border object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                       <Button
                         type="button"
                         variant="secondary"

@@ -23,39 +23,39 @@ export function WhyUsSection({ content }: WhyUsSectionProps) {
   if (!content.features || content.features.length === 0) return null;
 
   return (
-    <section className="py-20 bg-black">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="bg-black py-20">
+      <div className="mx-auto max-w-7xl px-6">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-white mb-6">
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 text-5xl font-bold text-white">
             {content.title}
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+          <p className="mx-auto max-w-3xl text-xl leading-relaxed text-gray-300">
             {content.subtitle}
           </p>
         </div>
 
         {/* Two Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left Column */}
           <div className="space-y-8">
             {content.features.slice(0, Math.ceil(content.features.length / 2)).map((feature) => (
               <div
                 key={feature.id}
-                className="group bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300"
+                className="group rounded-xl border border-gray-800 bg-gray-900 p-8 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/10"
               >
                 <div className="flex items-start gap-6">
                   {/* Icon */}
-                  <div className="flex-shrink-0 w-14 h-14 bg-orange-500 rounded-lg flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
+                  <div className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-orange-500 text-2xl text-white transition-transform group-hover:scale-110">
                     {feature.icon}
                   </div>
                   
                   {/* Content */}
                   <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-white mb-3">
+                    <h3 className="mb-3 text-2xl font-semibold text-white">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-300 leading-relaxed text-lg">
+                    <p className="text-lg leading-relaxed text-gray-300">
                       {feature.description}
                     </p>
                   </div>
@@ -69,20 +69,20 @@ export function WhyUsSection({ content }: WhyUsSectionProps) {
             {content.features.slice(Math.ceil(content.features.length / 2)).map((feature) => (
               <div
                 key={feature.id}
-                className="group bg-gray-900 rounded-xl p-8 border border-gray-800 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300"
+                className="group rounded-xl border border-gray-800 bg-gray-900 p-8 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:shadow-orange-500/10"
               >
                 <div className="flex items-start gap-6">
                   {/* Icon */}
-                  <div className="flex-shrink-0 w-14 h-14 bg-orange-500 rounded-lg flex items-center justify-center text-white text-2xl group-hover:scale-110 transition-transform">
+                  <div className="flex size-14 shrink-0 items-center justify-center rounded-lg bg-orange-500 text-2xl text-white transition-transform group-hover:scale-110">
                     {feature.icon}
                   </div>
                   
                   {/* Content */}
                   <div className="flex-1">
-                    <h3 className="text-2xl font-semibold text-white mb-3">
+                    <h3 className="mb-3 text-2xl font-semibold text-white">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-300 leading-relaxed text-lg">
+                    <p className="text-lg leading-relaxed text-gray-300">
                       {feature.description}
                     </p>
                   </div>

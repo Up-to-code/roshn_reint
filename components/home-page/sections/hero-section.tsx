@@ -42,7 +42,7 @@ export function HeroSection({ content }: HeroSectionProps) {
             muted
             loop
             playsInline
-            className="h-full w-full object-cover"
+            className="size-full object-cover"
           >
             <source src={content.backgroundVideo} type="video/mp4" />
             <source src={content.backgroundVideo} type="video/webm" />
@@ -51,7 +51,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           <img
             src={content.backgroundImage}
             alt={content.title || "Hero Background"}
-            className="h-full w-full object-cover"
+            className="size-full object-cover"
           />
         ) : null}
         <Overlay />
@@ -67,7 +67,7 @@ export function HeroSection({ content }: HeroSectionProps) {
         </h1>
 
         {content.subtitle && (
-          <p className="mb-10 text-lg text-gray-200 sm:text-xl lg:text-2xl leading-relaxed">
+          <p className="mb-10 text-lg leading-relaxed text-gray-200 sm:text-xl lg:text-2xl">
             {content.subtitle}
           </p>
         )}
@@ -109,7 +109,7 @@ export function HeroSection({ content }: HeroSectionProps) {
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 transform">
+      <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2">
         <div className="animate-bounce">
           <div className="flex h-12 w-6 justify-center rounded-full border-2 border-[#FF8C42]">
             <div className="mt-2 h-3 w-1 rounded-full bg-[#FF8C42]" />

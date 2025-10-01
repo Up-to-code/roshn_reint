@@ -51,8 +51,7 @@ export function AboutUsEditor() {
             className="mb-2"
           />
           <CustomUploader
-            endpoint="imageUploader"
-            onUploadComplete={(url) => updateAboutUs({ image: url })}
+             onUploadComplete={(url) => updateAboutUs({ image: url })}
             buttonText="Upload About Image"
           />
         </div>

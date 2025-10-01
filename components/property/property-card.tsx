@@ -62,7 +62,7 @@ export function PropertyCard({
   };
 
   return (
-    <div className="overflow-hidden rounded-lg border border-border bg-background-card transition-shadow hover:shadow-lg">
+    <div className="bg-background-card overflow-hidden rounded-lg border border-border transition-shadow hover:shadow-lg">
       <div className="relative">
         <Image
           src={property.images[0] || '/api/placeholder/400/250'}
@@ -78,7 +78,7 @@ export function PropertyCard({
       
       <div className="p-4">
         <div className={`mb-3 flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <span className="rounded bg-background-alt px-2 py-1 text-sm capitalize">
+          <span className="bg-background-alt rounded px-2 py-1 text-sm capitalize">
             {getTypeText(property.type)}
           </span>
           {showActions && (
@@ -88,7 +88,7 @@ export function PropertyCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => onEdit(property.id)}
-                  className="p-1 text-primary hover:text-primary-dark"
+                  className="hover:text-primary-dark p-1 text-primary"
                 >
                   ✏️
                 </Button>
@@ -98,7 +98,7 @@ export function PropertyCard({
                   variant="ghost"
                   size="sm"
                   onClick={() => onDelete(property.id)}
-                  className="p-1 text-error hover:text-red-700"
+                  className="text-error p-1 hover:text-red-700"
                 >
                   🗑️
                 </Button>
@@ -107,11 +107,11 @@ export function PropertyCard({
           )}
         </div>
 
-        <h3 className={`mb-2 text-lg font-semibold text-text-primary ${isRTL ? 'text-right' : ''}`}>
+        <h3 className={`text-text-primary mb-2 text-lg font-semibold ${isRTL ? 'text-right' : ''}`}>
           {getLocalizedTitle(property)}
         </h3>
         
-        <div className={`mb-3 flex items-center text-text-secondary ${
+        <div className={`text-text-secondary mb-3 flex items-center ${
           isRTL ? 'flex-row-reverse' : ''
         }`}>
           <MapPin className={`size-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
@@ -121,12 +121,12 @@ export function PropertyCard({
         <div className={`mb-4 flex items-center justify-between ${
           isRTL ? 'flex-row-reverse' : ''
         }`}>
-          <span className="text-xl font-bold text-text-primary">
+          <span className="text-text-primary text-xl font-bold">
             {formatPrice(property.price)}
           </span>
         </div>
 
-        <div className={`flex justify-between border-t border-border pt-3 text-sm text-text-secondary ${
+        <div className={`text-text-secondary flex justify-between border-t border-border pt-3 text-sm ${
           isRTL ? 'flex-row-reverse' : ''
         }`}>
           <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>

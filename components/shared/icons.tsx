@@ -30,11 +30,13 @@ import {
   File,
   Image,
   Globe,
+  Building,
 } from "lucide-react";
 import { LucideProps } from "lucide-react";
 
 export type IconName =
   | "add"
+  | "plus"
   | "arrowRight"
   | "arrowUpRight"
   | "chevronLeft"
@@ -67,7 +69,8 @@ export type IconName =
   | "trash"
   | "user"
   | "warning"
-  | "global";
+  | "global"
+  | "building";
 
 export const Icons: Record<IconName, React.FC<LucideProps>> = {
   add: Plus,
@@ -104,4 +107,6 @@ export const Icons: Record<IconName, React.FC<LucideProps>> = {
   user: User,
   warning: AlertTriangle,
   global: Globe,
+  building: Building,
+  plus: Plus,
 };

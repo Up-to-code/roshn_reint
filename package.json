@@ -15,7 +15,15 @@
     "postinstall": "prisma generate",
     "email": "email dev --dir emails --port 3333",
     "remove-content": "node ./setup.mjs",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "setup-storage": "bun run scripts/setup-supabase-storage.ts",
+    "debug-buckets": "bun run scripts/debug-supabase-buckets.ts",
+    "fix-rls": "bun run scripts/fix-supabase-rls.ts",
+    "quick-fix": "bun run scripts/quick-fix-rls.ts",
+    "fix-rls-now": "bun run scripts/execute-rls-fix.ts",
+    "disable-rls": "bun run scripts/disable-rls-completely.ts",
+    "fix-all": "bun run scripts/fix-everything.ts",
+    "force-fix": "bun run scripts/force-fix-now.ts"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
@@ -83,6 +91,7 @@
     "sharp": "^0.33.4",
     "shiki": "^1.11.0",
     "sonner": "^1.5.0",
+    "@supabase/supabase-js": "^2.39.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^7.7.4",

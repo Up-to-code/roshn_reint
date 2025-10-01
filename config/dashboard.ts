@@ -18,12 +18,11 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "sidebar.menu",
     items: [
-      { href: "/admin", icon: "briefcase", title: "sidebar.adminPanel", authorizeOnly: UserRole.ADMIN },
       { href: "/dashboard", icon: "dashboard", title: "sidebar.dashboard" },
-       {href: "/dashboard/home", icon: "home", title: "sidebar.home"},
       { href: "/dashboard/global", icon: "global", title: "sidebar.global" },
-      // { href: "/dashboard/charts", icon: "lineChart", title: "sidebar.charts" },
-      // { href: "/admin/orders", icon: "package", title: "sidebar.orders", badge: 2, authorizeOnly: UserRole.ADMIN },
+      { href: "/dashboard/p", icon: "building", title: "sidebar.properties" },
+      { href: "/dashboard/p/create", icon: "plus", title: "sidebar.addProperty" },
+      { href: "/admin", icon: "briefcase", title: "sidebar.adminPanel", authorizeOnly: UserRole.ADMIN },
       { href: "/admin/projects", icon: "briefcase", title: "sidebar.projects" },
       { href: "/admin/forms", icon: "post", title: "sidebar.forms" },
       { href: "/admin/blogs", icon: "blog", title: "sidebar.blogs" },

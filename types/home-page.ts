@@ -5,6 +5,8 @@ export interface HomePageData {
 }
 
 export interface Partner {
+  alt: string | number | readonly string[] | undefined;
+  src: string | number | readonly string[] | undefined;
   id: string;
   name: string;
   logo: string; // image url

@@ -24,7 +24,11 @@
     "settings": "الإعدادات",
     "homepage": "الصفحة الرئيسية",
     "documentation": "التوثيق",
-    "support": "الدعم"
+    "support": "الدعم",
+    "dashboard": "لوحة التحكم",
+    "home": "الرئيسية",
+    "properties": "العقارات",
+    "addProperty": "إضافة عقار"
   },
   "SaveModal": {
     "title": {
@@ -58,6 +62,7 @@
     "search": {
       "placeholder": "ابحث في العقارات..."
     },
+    "searchPlaceholder": "ابحث في العقارات...",
     "filters": {
       "all": "جميع الحالات"
     },
@@ -77,6 +82,7 @@
     },
     "actions": {
       "addProperty": "إضافة عقار",
+      "add": "إضافة عقار",
       "moreFilters": "المزيد من الفلاتر",
       "view": "عرض التفاصيل",
       "edit": "تعديل",
@@ -86,6 +92,8 @@
       "title": "لم يتم العثور على عقارات",
       "description": "حاول تعديل بحثك أو معايير الفلترة"
     },
+    "createFirst": "أنشئ عقارك الأول للبدء",
+    "noProperties": "لا توجد عقارات تطابق معايير البحث الخاصة بك",
     "currency": "ريال"
   },
   "property": {
@@ -157,5 +165,159 @@
       "images": "الصور"
     },
     "success": "تم حفظ العقار بنجاح!"
+  },
+  "navigation": {
+    "switchToArabic": "التبديل إلى العربية",
+    "switchToEnglish": "Switch to English"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "confirmDelete": "هل أنت متأكد من حذف هذا العنصر؟",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "update": "تحديث",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "submit": "إرسال",
+    "reset": "إعادة تعيين",
+    "search": "بحث",
+    "filter": "فلترة",
+    "clear": "مسح",
+    "yes": "نعم",
+    "no": "لا",
+    "ok": "موافق"
+  },
+  "propertyForm": {
+    "createTitle": "إنشاء عقار جديد",
+    "editTitle": "تعديل العقار",
+    "subtitle": "املأ التفاصيل أدناه لإنشاء عقار جديد",
+    "editSubtitle": "قم بتحديث تفاصيل العقار أدناه",
+    "images": "صور العقار",
+    "uploadImage": "رفع صورة",
+    "basicInfo": "المعلومات الأساسية",
+    "content": "المحتوى",
+    "types": {
+      "apartment": "شقة",
+      "villa": "فيلا",
+      "office": "مكتب",
+      "shop": "محل"
+    },
+    "labels": {
+      "price": "السعر",
+      "type": "نوع العقار",
+      "city": "المدينة",
+      "district": "الحي",
+      "bedrooms": "غرف النوم",
+      "bathrooms": "دورات المياه",
+      "area": "المساحة (م²)",
+      "parking": "مواقف السيارات",
+      "title": "عنوان العقار",
+      "description": "الوصف"
+    },
+    "actions": {
+      "back": "رجوع إلى العقارات",
+      "cancel": "إلغاء",
+      "create": "إنشاء العقار",
+      "update": "تحديث العقار"
+    }
+  },
+  "GlobalSettings": {
+    "title": "الإعدادات العامة",
+    "description": "قم بتكوين الإعدادات العامة لموقعك",
+    "loading": "جاري تحميل الإعدادات...",
+    "resetConfirmation": "هل أنت متأكد من إعادة تعيين جميع الإعدادات إلى الافتراضي؟",
+    "resetButton": "إعادة تعيين الإعدادات",
+    "saveButton": "حفظ الإعدادات",
+    "tabs": {
+      "navigation": "التنقل",
+      "footer": "التذييل",
+      "logo": "الشعار",
+      "meta": "البيانات الوصفية"
+    }
+  },
+  "propertyDetail": {
+    "actions": {
+      "backToProperties": "العودة إلى العقارات",
+      "save": "حفظ",
+      "share": "مشاركة",
+      "print": "طباعة",
+      "contactAgent": "اتصل بالوكيل",
+      "sendMessage": "إرسال رسالة",
+      "whatsapp": "واتساب",
+      "chat": "محادثة",
+      "call": "اتصال",
+      "viewAllSimilar": "عرض جميع العقارات المشابهة"
+    },
+    "badges": {
+      "featured": "مميز",
+      "available": "متاح",
+      "rented": "مؤجر",
+      "sold": "مباع"
+    },
+    "sections": {
+      "propertyOverview": "نظرة عامة على العقار",
+      "description": "الوصف",
+      "featuresAmenities": "المميزات والمرافق",
+      "propertyDetails": "تفاصيل العقار",
+      "locationMap": "الموقع والخريطة",
+      "agentInformation": "معلومات الوكيل",
+      "propertyStatistics": "إحصائيات العقار",
+      "similarProperties": "عقارات مشابهة"
+    },
+    "details": {
+      "bedrooms": "غرف النوم",
+      "bathrooms": "دورات المياه",
+      "area": "م²",
+      "parking": "مواقف السيارات",
+      "propertyType": "نوع العقار",
+      "status": "الحالة",
+      "location": "الموقع",
+      "listedDate": "تاريخ الإدراج",
+      "lastUpdated": "آخر تحديث",
+      "propertyId": "رقم العقار",
+      "views": "المشاهدات",
+      "favorites": "المفضلة",
+      "shares": "المشاركات",
+      "daysOnMarket": "أيام في السوق"
+    },
+    "amenities": {
+      "wifi": "واي فاي",
+      "security": "أمان",
+      "garden": "حديقة",
+      "gym": "صالة رياضية",
+      "pool": "مسبح",
+      "parking": "مواقف سيارات",
+      "kitchen": "مطبخ",
+      "cableTV": "تلفزيون كابل",
+      "internet": "إنترنت"
+    },
+    "location": {
+      "nearSchools": "قريب من المدارس",
+      "nearHospitals": "قريب من المستشفيات",
+      "nearShopping": "قريب من التسوق",
+      "publicTransport": "النقل العام",
+      "interactiveMap": "خريطة تفاعلية",
+      "clickToViewFullMap": "انقر لعرض الخريطة الكاملة"
+    },
+    "agent": {
+      "title": "وكيل عقاري أول",
+      "phone": "+1 (555) 123-4567",
+      "email": "john@realestate.com"
+    },
+    "similar": {
+      "description": "عقارات بمميزات مشابهة في نفس المنطقة",
+      "property": "عقار مشابه"
+    },
+    "stats": {
+      "views": "مشاهدات",
+      "listed": "مدرج",
+      "updated": "محدث"
+    }
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
@@ -9,20 +9,32 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import LocaleSwitcher from "../LocaleSwitcher";
+import { ModeToggle } from "./mode-toggle";
 import { Link } from "@/i18n/routing";
 import { Menu, X } from "lucide-react";
 
 export function NavBar() {
   const { data: session } = useSession();
   const t = useTranslations("nav");
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const allLinks = [
     { title: t("projects"), href: "/projects" },
     { title: t("about"), href: "/about" },
     { title: t("contact"), href: "/contact" }
   ];
-
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <>
@@ -34,7 +46,7 @@ export function NavBar() {
               href={session.user.role === "ADMIN" ? "/admin" : "/dashboard"}
               className="font-semibold text-white hover:underline"
             >
-              → Go to Dashboard
+              → {t("goToDashboard")}
             </Link>
           </MaxWidthWrapper>
         </div>
@@ -43,8 +55,11 @@ export function NavBar() {
       {/* Main Nav */}
       <header
         className={cn(
-          "sticky z-40 w-full border-b bg-black/80 backdrop-blur-md transition-all duration-300",
-          session ? "top-[40px]" : "top-0"
+          "sticky z-40 w-full border-b backdrop-blur-md transition-all duration-300",
+          session ? "top-[40px]" : "top-0",
+          isScrolled 
+            ? "border-border bg-background/95" 
+            : "border-transparent bg-transparent"
         )}
       >
         <MaxWidthWrapper className="flex h-16 items-center justify-between">
@@ -53,7 +68,12 @@ export function NavBar() {
             <div className="flex size-10 items-center justify-center rounded-lg bg-blue-600 text-white">
               VG
             </div>
-            <span className="text-white">{siteConfig.name}</span>
+            <span className={cn(
+              "transition-colors duration-300",
+              isScrolled ? "text-foreground" : "text-white"
+            )}>
+              {siteConfig.name}
+            </span>
           </Link>
 
           {/* Desktop links */}
@@ -62,7 +82,12 @@ export function NavBar() {
               <Link
                 key={index}
                 href={item.href as any}
-                className="font-medium text-gray-200 transition-colors hover:text-blue-300"
+                className={cn(
+                  "font-medium transition-colors duration-300",
+                  isScrolled 
+                    ? "text-foreground hover:text-blue-600" 
+                    : "text-white hover:text-blue-300"
+                )}
               >
                 {item.title}
               </Link>
@@ -71,9 +96,15 @@ export function NavBar() {
 
           {/* Right */}
           <div className="flex items-center gap-4">
+            <ModeToggle />
             <LocaleSwitcher />
             <button
-              className="rounded-lg p-2 text-white hover:bg-white/10 md:hidden"
+              className={cn(
+                "rounded-lg p-2 transition-colors duration-300",
+                isScrolled 
+                  ? "text-foreground hover:bg-accent" 
+                  : "text-white hover:bg-white/10"
+              )}
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               {mobileOpen ? <X className="size-6" /> : <Menu className="size-6" />}
@@ -84,8 +115,11 @@ export function NavBar() {
         {/* Mobile menu */}
         <div
           className={cn(
-            "absolute left-0 w-full overflow-hidden border-t bg-black/95 backdrop-blur-lg transition-all duration-300 md:hidden",
-            mobileOpen ? "top-16 opacity-100" : "pointer-events-none top-0 opacity-0"
+            "absolute left-0 w-full overflow-hidden border-t backdrop-blur-lg transition-all duration-300 md:hidden",
+            mobileOpen ? "top-16 opacity-100" : "pointer-events-none top-0 opacity-0",
+            isScrolled 
+              ? "border-border bg-background/95" 
+              : "border-transparent bg-black/95"
           )}
         >
           <div className="flex flex-col items-center gap-2 py-4">
@@ -93,7 +127,12 @@ export function NavBar() {
               <Link
                 key={index}
                 href={item.href as any}
-                className="w-full px-4 py-3 text-center font-medium text-white hover:bg-white/10"
+                className={cn(
+                  "w-full px-4 py-3 text-center font-medium transition-colors duration-300",
+                  isScrolled 
+                    ? "text-foreground hover:bg-accent" 
+                    : "text-white hover:bg-white/10"
+                )}
                 onClick={() => setMobileOpen(false)}
               >
                 {item.title}
@@ -107,10 +146,15 @@ export function NavBar() {
                 className="w-full px-4 py-3"
               >
                 <Button className="w-full bg-blue-600 text-white hover:bg-blue-700">
-                  Dashboard
+                  {t("dashboard")}
                 </Button>
               </Link>
             )}
+            
+            <div className="flex items-center gap-4 pt-4">
+              <ModeToggle />
+              <LocaleSwitcher />
+            </div>
           </div>
         </div>
       </header>

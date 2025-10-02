@@ -165,3 +165,52 @@ html {
 }
 
 
+/* TipTap Editor Styles */
+.ProseMirror {
+  @apply outline-none min-h-[500px];
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  @apply float-left h-0 pointer-events-none text-gray-400;
+}
+
+.ProseMirror h1 {
+  @apply text-3xl font-bold mt-6 mb-4;
+}
+
+.ProseMirror h2 {
+  @apply text-2xl font-bold mt-5 mb-3;
+}
+
+.ProseMirror h3 {
+  @apply text-xl font-bold mt-4 mb-2;
+}
+
+.ProseMirror ul, .ProseMirror ol {
+  @apply my-4 pl-6;
+}
+
+.ProseMirror ul {
+  @apply list-disc;
+}
+
+.ProseMirror ol {
+  @apply list-decimal;
+}
+
+.ProseMirror blockquote {
+  @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 italic;
+}
+
+.ProseMirror img {
+  @apply rounded-lg my-4;
+}
+
+.ProseMirror a {
+  @apply text-blue-500 hover:text-blue-600 underline;
+}
+
+.ProseMirror .ProseMirror-selectednode {
+  @apply outline-2 outline-blue-500 outline;
+}

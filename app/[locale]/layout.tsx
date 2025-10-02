@@ -13,7 +13,7 @@ import ModalProvider from "@/components/modals/providers";
 import { Analytics } from "@/components/analytics";
 import { Toaster } from "sonner";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-
+ 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   display: "swap",
@@ -51,8 +51,8 @@ export default async function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <ModalProvider>{children}</ModalProvider>
-              <Analytics />
+               <ModalProvider>{children}</ModalProvider>
+               <Analytics />
               <Toaster richColors closeButton />
               <TailwindIndicator />
             </ThemeProvider>

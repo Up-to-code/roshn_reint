@@ -22,7 +22,7 @@ export default function LocaleSwitcherSelect({ label }: Props) {
   const pathname = usePathname();
   const { currentLang, setCurrentLang } = useHomePageStore();
 
-  const onSelectChange = (nextLocale: Locale) => {
+  const handleLocaleChange = (nextLocale: Locale) => {
     // Remove current locale from pathname
     const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, '') || '/';
     
@@ -34,27 +34,27 @@ export default function LocaleSwitcherSelect({ label }: Props) {
   };
 
   return (
-    <Select value={currentLang} onValueChange={onSelectChange}>
+    <Select value={currentLang} onValueChange={handleLocaleChange}>
       <SelectTrigger
         className={cn(
-          "h-9 w-[120px] border border-gray-700 bg-black text-white",
-          "focus:ring-1 focus:ring-blue-500 focus:ring-offset-0",
-          "hover:border-gray-600 hover:bg-black/80",
-          "rounded-xl transition-all duration-200"
+          "h-9 w-[100px] border-zinc-700 bg-zinc-900 text-zinc-100",
+          "focus:ring-1 focus:ring-zinc-500 focus:ring-offset-0",
+          "hover:border-zinc-600 hover:bg-zinc-800",
+          "rounded-lg transition-colors"
         )}
         aria-label={label}
       >
         <SelectValue />
       </SelectTrigger>
       <SelectContent 
-        className="rounded-xl border-gray-700 bg-black text-white shadow-2xl backdrop-blur-2xl"
+        className="border-zinc-700 bg-zinc-900 text-zinc-100"
       >
         <SelectItem 
           value="ar" 
           className={cn(
-            "cursor-pointer focus:bg-white/10 focus:text-white",
-            "rounded-lg transition-all duration-200",
-            currentLang === 'ar' && "bg-white/10 text-blue-400"
+            "focus:bg-zinc-800 focus:text-zinc-100",
+            "rounded-md transition-colors",
+            currentLang === 'ar' && "bg-zinc-800 text-zinc-100"
           )}
         >
           العربية
@@ -62,9 +62,9 @@ export default function LocaleSwitcherSelect({ label }: Props) {
         <SelectItem 
           value="en"
           className={cn(
-            "cursor-pointer focus:bg-white/10 focus:text-white",
-            "rounded-lg transition-all duration-200",
-            currentLang === 'en' && "bg-white/10 text-blue-400"
+            "focus:bg-zinc-800 focus:text-zinc-100",
+            "rounded-md transition-colors",
+            currentLang === 'en' && "bg-zinc-800 text-zinc-100"
           )}
         >
           English

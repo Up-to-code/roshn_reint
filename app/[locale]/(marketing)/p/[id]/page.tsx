@@ -7,12 +7,12 @@ import { Property, PropertyStatus } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { 
+ import { 
   ArrowLeft, MapPin, Bed, Bath, Square, Car, Share2, Heart,
-  Phone, Mail, Users, Star, Home, Building, CheckCircle,
-  Calendar, Eye, Clock, Wifi, Shield, TreePine, Dumbbell,
-  Waves, Car as CarIcon, Utensils
+  Phone, Mail, Building, CheckCircle,
+  Calendar, Wifi, Shield, TreePine, Dumbbell,
+  Waves, Car as CarIcon, Utensils,
+  Clock
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -197,10 +197,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     <Building className="size-4" />
                     {property.type}
                   </Badge>
-                  <Badge variant="outline" className="flex items-center gap-2">
-                    <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                    Featured
-                  </Badge>
                 </div>
                 
                 <h1 className="mb-3 text-3xl font-bold text-foreground lg:text-4xl">
@@ -214,10 +210,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
 
                 {/* Stats */}
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <Eye className="size-4" />
-                    <span>1,234 views</span>
-                  </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="size-4" />
                     <span>Listed {new Date(property.createdAt).toLocaleDateString(locale)}</span>
@@ -257,7 +249,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center text-muted-foreground">
-                        <Home className="size-16" />
+                        <Building className="size-16" />
                       </div>
                     )}
                   </div>
@@ -312,7 +304,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-xl">
-                      <Star className="size-5" />
+                      <CheckCircle className="size-5" />
                       Amenities
                     </CardTitle>
                   </CardHeader>
@@ -408,100 +400,6 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Agent Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Users className="size-5" />
-                    Agent Information
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <div className="flex size-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/80 font-bold text-primary-foreground">
-                      JD
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground">John Doe</div>
-                      <div className="text-sm text-muted-foreground">Real Estate Agent</div>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Phone className="size-4" />
-                      <span>+1 (555) 123-4567</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Mail className="size-4" />
-                      <span>john.doe@example.com</span>
-                    </div>
-                  </div>
-                  
-                  <Button variant="outline" className="w-full">
-                    View Profile
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Property Stats */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Eye className="size-5" />
-                    Property Statistics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <div className="text-2xl font-bold text-primary">1,234</div>
-                      <div className="text-xs text-muted-foreground">Views</div>
-                    </div>
-                    <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <div className="text-2xl font-bold text-primary">89</div>
-                      <div className="text-xs text-muted-foreground">Favorites</div>
-                    </div>
-                    <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <div className="text-2xl font-bold text-primary">45</div>
-                      <div className="text-xs text-muted-foreground">Shares</div>
-                    </div>
-                    <div className="rounded-lg bg-muted/50 p-3 text-center">
-                      <div className="text-2xl font-bold text-primary">12</div>
-                      <div className="text-xs text-muted-foreground">Days Listed</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Similar Properties */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Home className="size-5" />
-                    Similar Properties
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {[1, 2, 3].map((i) => (
-                      <div key={i} className="flex cursor-pointer gap-3 rounded-lg border p-3 transition-colors hover:bg-accent">
-                        <div className="flex size-16 items-center justify-center rounded-lg bg-muted">
-                          <Home className="size-6 text-muted-foreground" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-foreground">Modern Apartment {i}</div>
-                          <div className="text-sm text-muted-foreground">2 bed • 1 bath • 85m²</div>
-                          <div className="text-sm font-semibold text-primary">$350,000</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
@@ -509,5 +407,3 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     </>
   );
 }
-
-// REMOVED: export { PropertyLoading as Loading };

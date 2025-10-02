@@ -288,7 +288,7 @@ export default function RealEstateListings({ properties, locale }: RealEstateLis
                         {/* Action Buttons */}
                         <div className="mt-auto flex gap-3">
                           <Button asChild className="flex-1">
-                            <Link href={`/${locale}/properties/${property.id}`}>
+                            <Link href={`/${locale}/p/${property.id}`}>
                               {locale === 'ar' ? 'عرض التفاصيل' : 'View Details'}
                             </Link>
                           </Button>

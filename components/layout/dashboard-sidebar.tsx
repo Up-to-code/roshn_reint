@@ -1,20 +1,18 @@
 "use client";
 
 import { Fragment, useEffect, useState } from "react";
- import { usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { SidebarNavItem } from "@/types";
-import { Menu, PanelLeftClose, PanelRightClose } from "lucide-react";
+import {   PanelLeftClose, PanelRightClose } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useLocale } from "next-intl"; // 🔹 to get current locale
+import { useLocale } from "next-intl";
 
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
+ import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
+ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -31,8 +29,8 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ links }: DashboardSidebarProps) {
   const t = useTranslations();
-  const locale = useLocale(); // 🔹 current locale
-  const isRTL = locale === "ar"; // 🔹 check if Arabic
+  const locale = useLocale();
+  const isRTL = locale === "ar";
   const path = usePathname();
   const { isTablet } = useMediaQuery();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(!isTablet);
@@ -49,8 +47,8 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
         <ScrollArea className="h-full overflow-y-auto border-r">
           <aside
             className={cn(
-              isSidebarExpanded ? "w-[220px] xl:w-[260px]" : "w-[68px]",
-              "hidden h-screen md:block"
+              "hidden h-screen md:block",
+              isSidebarExpanded ? "w-[220px] xl:w-[260px]" : "w-[68px]"
             )}
           >
             <div className="flex h-full max-h-screen flex-1 flex-col gap-2">
@@ -80,7 +78,13 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
 
               <nav className="flex flex-1 flex-col gap-8 px-4 pt-4">
                 {links.map((section) => (
-                  <section key={section.title} className={cn("flex flex-col gap-0.5 ") + isRTL && "text-right"}>
+                  <section
+                    key={section.title}
+                    className={cn(
+                      "flex flex-col gap-0.5",
+                      isRTL && "text-right"
+                    )}
+                  >
                     {isSidebarExpanded ? (
                       <p className="my-4 text-xs text-muted-foreground">
                         {t(section.title)}
@@ -99,7 +103,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                                 href={item.disabled ? "#" : item.href as any}
                                 className={cn(
                                   "flex items-center gap-3 rounded-md p-2 text-sm font-medium hover:bg-muted",
-                                  isRTL && "flex-row-reverse", // 🔹 reverse for RTL
+                                  isRTL && "flex-row-reverse",
                                   path === item.href
                                     ? "bg-muted"
                                     : "text-muted-foreground hover:text-accent-foreground",

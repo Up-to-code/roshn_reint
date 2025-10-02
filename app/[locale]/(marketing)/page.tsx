@@ -90,7 +90,7 @@ export default async function Home({ params }: { params: { locale: string } }) {
        <HeroSection content={content.hero}   />       <PartnersBanner logos={content.partners}  />
 
        <ApartmentsPage />
-      <BannersSection banners={content.banners}  />
+      {/* <BannersSection banners={content.banners}  /> */}
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs}  />
       <TestimonialsSection content={content.testimonials}    />

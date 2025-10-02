@@ -113,7 +113,7 @@ export function Sidebar({ isOpen, onToggle, currentPost, posts = [], onPostSelec
                     </span>
                     <div className="flex items-center text-xs text-muted-foreground">
                       <Calendar className="mr-1 size-3" />
-                      {formatDate(post.updatedAt.toISOString())}
+                      {formatDate(post.updatedAt, 'MMM d, yyyy')}
                     </div>
                   </div>
                 </button>

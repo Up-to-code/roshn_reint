@@ -69,7 +69,7 @@ export function constructMetadata({
   };
 }
 
-export function formatDate(input: string | number): string {
+export function formatDate(createdAt: Date, input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
     month: "long",
@@ -205,3 +205,54 @@ export const placeholderBlurhash =
 // export function cn(...inputs: ClassValue[]) {
 //   return twMerge(clsx(inputs));
 // }
+
+
+ 
+import { type Locale } from "./i18n"
+
+ 
+
+ 
+
+export function formatRelativeTime(date: Date, locale: Locale = 'ar') {
+  const now = new Date()
+  const diffInMs = now.getTime() - date.getTime()
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
+
+  if (locale === 'ar') {
+    if (diffInDays === 0) return 'اليوم'
+    if (diffInDays === 1) return 'أمس'
+    if (diffInDays < 7) return `قبل ${diffInDays} أيام`
+    if (diffInDays < 30) return `قبل ${Math.floor(diffInDays / 7)} أسابيع`
+    if (diffInDays < 365) return `قبل ${Math.floor(diffInDays / 30)} أشهر`
+    return `قبل ${Math.floor(diffInDays / 365)} سنوات`
+  }
+
+  if (diffInDays === 0) return 'Today'
+  if (diffInDays === 1) return 'Yesterday'
+  if (diffInDays < 7) return `${diffInDays} days ago`
+  if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
+  if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`
+  return `${Math.floor(diffInDays / 365)} years ago`
+}
+
+export function generateExcerpt(content: string, maxLength: number = 160) {
+  const text = content.replace(/<[^>]*>/g, '').trim()
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
+}
+
+export function calculateReadingTime(content: string, locale: Locale = 'ar') {
+  const wordsPerMinute = locale === 'ar' ? 150 : 200
+  const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length
+  return Math.ceil(words / wordsPerMinute)
+}
+
+export function stripHtml(html: string) {
+  return html.replace(/<[^>]*>/g, '')
+}
+
+export function truncateText(text: string, maxLength: number = 100) {
+  if (text.length <= maxLength) return text
+  return text.slice(0, maxLength) + '...'
+}

@@ -214,13 +214,15 @@ enum EnergyRating {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  excerpt   String?
-  status    PostStatus @default(DRAFT)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  excerpt     String?
+  headerImage String?
+  thumbnail   String?
+  status      PostStatus @default(DRAFT)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@map("posts")
 }

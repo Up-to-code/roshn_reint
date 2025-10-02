@@ -80,10 +80,10 @@ export function RichTextEditorClient({
   }
 
   return (
-    <div className="flex flex-col border rounded-lg bg-background overflow-hidden shadow-sm">
+    <div className="flex flex-col overflow-hidden rounded-lg border bg-background shadow-sm">
       <EditorToolbar editor={editor} />
       <EditorContent editor={editor} className="flex-1" />
-      <div className="flex justify-between items-center p-4 border-t bg-muted/50">
+      <div className="flex items-center justify-between border-t bg-muted/50 p-4">
         <div className="text-sm text-muted-foreground">
           {characterCount} characters • {editor?.getText().split(/\s+/).length || 0} words
         </div>
@@ -99,7 +99,7 @@ export function RichTextEditorClient({
             size="sm"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Save className="size-4" />}
             Save Draft
           </Button>
           <Button
@@ -112,7 +112,7 @@ export function RichTextEditorClient({
             size="sm"
             disabled={isLoading}
           >
-            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Eye className="h-4 w-4" />}
+            {isLoading ? <Loader2 className="size-4 animate-spin" /> : <Eye className="size-4" />}
             Publish
           </Button>
         </div>

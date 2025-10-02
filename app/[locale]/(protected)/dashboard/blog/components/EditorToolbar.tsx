@@ -198,7 +198,7 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
   ]
 
   return (
-    <div className="flex flex-wrap items-center gap-1 p-3 border-b bg-background">
+    <div className="flex flex-wrap items-center gap-1 border-b bg-background p-3">
       {toolbarGroups.map((group, groupIndex) => (
         <div key={group.name} className="flex items-center gap-1">
           {group.items.map((item, itemIndex) => (
@@ -207,18 +207,18 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
               variant="ghost"
               size="sm"
               onClick={item.onClick}
-              className={`h-8 w-8 p-0 ${
+              className={`size-8 p-0 ${
                 item.isActive
                   ? 'bg-accent text-accent-foreground'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
               title={item.title}
             >
-              <item.icon className="h-4 w-4" />
+              <item.icon className="size-4" />
             </Button>
           ))}
           {groupIndex < toolbarGroups.length - 1 && (
-            <div className="w-px h-6 bg-border mx-1" />
+            <div className="mx-1 h-6 w-px bg-border" />
           )}
         </div>
       ))}

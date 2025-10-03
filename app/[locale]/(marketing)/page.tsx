@@ -1,9 +1,9 @@
- import { HeroSection } from "@/components/home-page/sections/hero-section";
+import { HeroSection } from "@/components/home-page/sections/hero-section";
  import { WhyUsSection } from "@/components/home-page/sections/why-us-section";
 import { AboutUsSection } from "@/components/home-page/sections/about-us-section";
 import { TestimonialsSection } from "@/components/home-page/sections/testimonials-section";
 import { ContactUsSection } from "@/components/home-page/sections/contact-us-section";
-import {  PartnersBanner } from "@/components/home-page/sections/partners-banner.tsx";
+import { PartnersBanner } from "@/components/home-page/sections/partners-banner";
 import ApartmentsPage from "@/components/home-page/sections/ApartmentsPage";
 
 async function getHomePageData(locale: string) {
@@ -22,7 +22,8 @@ async function getHomePageData(locale: string) {
     }
     
     const result = await response.json();
-     console.log(result.data.partners);
+    console.log(result.data.partners);
+    
     if (result.success) {
       return result.data;
     }
@@ -30,7 +31,7 @@ async function getHomePageData(locale: string) {
     throw new Error('Failed to load home page data');
   } catch (error) {
     console.error('Error fetching home page data:', error);
-    // Return fallback data structure
+    // Return fallback data structure WITH partners array
     return {
       hero: {
         title: locale === 'ar' ? 'مرحباً بكم' : 'Welcome',
@@ -40,6 +41,12 @@ async function getHomePageData(locale: string) {
         backgroundVideo: "",
         overlayColor: "rgba(0,0,0,0.4)"
       },
+      // ADDED: partners array in fallback data
+      partners: [
+        { src: "/placeholder-logo1.png", alt: "Partner 1" },
+        { src: "/placeholder-logo2.png", alt: "Partner 2" },
+        { src: "/placeholder-logo3.png", alt: "Partner 3" },
+      ],
       banners: [],
       whyUs: { 
         title: locale === 'ar' ? 'لماذا نختارنا' : 'Why Choose Us', 
@@ -86,14 +93,17 @@ export default async function Home({ params }: { params: { locale: string } }) {
 
   return (
     <div className="min-h-screen bg-white">
-       <HeroSection content={content.hero}   />       <PartnersBanner logos={content.partners}  />
-
-       <ApartmentsPage />
-      {/* <BannersSection banners={content.banners}  /> */}
+      <HeroSection content={content.hero} />
+      
+      {/* Safe rendering with fallback */}
+      <PartnersBanner logos={content.partners || []} />
+      
+      <ApartmentsPage />
+      {/* <BannersSection banners={content.banners} /> */}
       <WhyUsSection content={content.whyUs} />
-      <AboutUsSection content={content.aboutUs}  />
-      <TestimonialsSection content={content.testimonials}    />
-      <ContactUsSection content={content.contactUs}  locale={locale}  />
+      <AboutUsSection content={content.aboutUs} />
+      <TestimonialsSection content={content.testimonials} />
+      <ContactUsSection content={content.contactUs} locale={locale} />
     </div>
   );
 }

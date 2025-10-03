@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 
 interface PartnersBannerProps {
-  logos: { src: string; alt: string }[];
+  logos?: { src: string; alt: string }[];
   speed?: number;
 }
 
 export function PartnersBanner({ 
-  logos, 
+  logos = [], 
   speed = 30
 }: PartnersBannerProps) {
   const [mounted, setMounted] = useState(false);
@@ -17,11 +17,22 @@ export function PartnersBanner({
     setMounted(true);
   }, []);
 
-  // Don't duplicate logos - use original array
-  const logosToShow = logos;
+  // Use default empty array if logos is undefined
+  const logosToShow = logos || [];
 
   if (!mounted) {
-    return <div className="h-48 bg-orange-500" />;
+    return <div className="h-20 bg-orange-500" />;
+  }
+
+  // If no logos provided, don't render anything or show a message
+  if (logosToShow.length === 0) {
+    return (
+      <section className="w-full bg-orange-500 px-4 py-8">
+        <div className="text-center text-white">
+          No partner logos available
+        </div>
+      </section>
+    );
   }
 
   return (
@@ -29,23 +40,21 @@ export function PartnersBanner({
       {/* Logos container */}
       <div className="relative overflow-hidden">
         {/* Fade edges */}
-        <div className="absolute bottom-0 left-0 top-0 z-10 w-20 bg-gradient-to-r from-orange-500 to-transparent" />
-        <div className="absolute bottom-0 right-0 top-0 z-10 w-20 bg-gradient-to-l from-orange-500 to-transparent" />
+        <div className="absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-orange-500 to-transparent" />
+        <div className="absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-orange-500 to-transparent" />
         
         {/* Scrolling logos */}
         <div
           className="animate-scroll flex items-center gap-20 md:gap-28"
           style={{
             width: "max-content",
-            animationDuration: `${speed}s`,
-            animationTimingFunction: "linear",
-            animationIterationCount: "infinite"
+            animationDuration: `${speed}s`
           }}
         >
           {logosToShow.map((logo, index) => (
             <div
               key={`${logo.alt}-${index}`}
-              className="flex-shrink-0 px-4"
+              className="shrink-0 px-4"
             >
               <img
                 src={logo.src}
@@ -57,21 +66,6 @@ export function PartnersBanner({
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        .animate-scroll {
-          animation: scroll linear infinite;
-        }
-      `}</style>
     </section>
   );
 }

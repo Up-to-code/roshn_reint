@@ -65,11 +65,14 @@ export function NavBar() {
         <MaxWidthWrapper className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div className="relative size-10 overflow-hidden rounded-lg">
+            <div className="r">
               <Image
-                src="/logo.jpg"
+                src="https://fhupmhxzhukzzqunrtur.supabase.co/storage/v1/object/public/images/New%20Project%203%20(1).png"
                 alt="Logo"
-                fill
+              
+                loading="eager"
+             width={100}
+             height={100}
                 className="object-cover"
                 priority
               />

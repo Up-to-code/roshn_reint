@@ -29,6 +29,7 @@ export function NavBar() {
 
   const navLinks = [
     { title: t("projects"), href: "/p" },
+    { title: t("blog"), href: "/blog" },
     { title: t("about"), href: "/about" },
     { title: t("contact"), href: "/contact" }
   ];

@@ -403,7 +403,7 @@ export default function RealEstateListings({ properties, locale }: RealEstateLis
                     {/* Action Buttons */}
                     <div className="flex gap-2">
                       <Button asChild className="flex-1">
-                        <Link href={`/${locale}/properties/${property.id}`}>
+                        <Link href={`/${locale}/p/${property.id}`}>
                           {locale === 'ar' ? 'عرض التفاصيل' : 'View Details'}
                         </Link>
                       </Button>
@@ -499,7 +499,7 @@ export default function RealEstateListings({ properties, locale }: RealEstateLis
                     {/* Action Buttons */}
                     <div className="space-y-2">
                       <Button asChild className="w-full">
-                        <Link href={`/${locale}/properties/${featuredProperty.id}`}>
+                        <Link href={`/${locale}/p/${featuredProperty.id}`}>
                           {locale === 'ar' ? 'عرض العقار المميز' : 'View Featured Property'}
                         </Link>
                       </Button>

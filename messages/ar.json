@@ -28,8 +28,10 @@
     "dashboard": "لوحة التحكم",
     "home": "الرئيسية",
     "properties": "العقارات",
-    "addProperty": "إضافة عقار"
-  },
+    "addProperty": "إضافة عقار",
+    "about": "عننا",
+    "blog": "المدونة"
+   },
   "SaveModal": {
     "title": {
       "idle": "حفظ التغييرات",
@@ -319,5 +321,93 @@
       "listed": "مدرج",
       "updated": "محدث"
     }
-  }
+  },
+   "about": {
+    "title": "عن نحن",
+    "emailUs"  : "البريد الإلكتروني",
+    "contactUs": "اتصل بنا",
+  "complitet": "تم الاكتمال",
+   "callUs": "اتصل بنا",
+    "visitUs": "زيارة نا",
+    "badge": "تم الاكتمال",
+    "viewProperties" : "عرض العقارات",
+    "teamTitle": "الفريق",
+     "teamSubtitle": "الفريق الذي يتم إدارة هذا المشروع",
+     "ourStory": "مقالنا",
+     "storyTitle": "مقالنا",
+     "valuesTitle": "قيم العمل",
+     "achievements": "النجاح",
+     "yearsInBusiness": "سنوات في العمل"
+  },
+
+    "aboutEditor": {
+      "editorTitle": "عنوان المحرر",
+      "preview": "معاينة",
+      "reset": "إعادة تعيين",
+      "save": "حفظ",
+      "tabs": {
+        "hero": "البطل",
+        "story": "القصة",
+        "stats": "الإحصائيات",
+        "values": "القيم",
+        "team": "الفريق",
+        "cta": "دعوة للعمل"
+      },
+      "sections": {
+        "hero": {
+          "title": "عنوان البطل",
+          "badge": "شارة",
+          "subtitle": "عنوان فرعي"
+        },
+        "story": {
+          "title": "عنوان القصة",
+          "storyTitle": "عنوان القصة الرئيسي",
+          "paragraph1": "الفقرة الأولى",
+          "paragraph2": "الفقرة الثانية",
+          "paragraph3": "الفقرة الثالثة",
+          "image": "صورة",
+          "uploadImage": "رفع صورة",
+          "yearsInBusiness": "سنوات في العمل"
+        },
+        "stats": {
+          "title": "عنوان الإحصائيات",
+          "addStat": "إضافة إحصائية",
+          "value": "القيمة",
+          "label": "التسمية"
+        },
+        "values": {
+          "title": "عنوان القيم",
+          "addValue": "إضافة قيمة",
+          "description": "الوصف"
+        },
+        "team": {
+          "title": "عنوان الفريق",
+          "addMember": "إضافة عضو",
+          "name": "الاسم",
+          "role": "الدور",
+          "avatar": "الصورة الرمزية",
+          "uploadAvatar": "رفع الصورة الرمزية",
+          "description": "الوصف"
+        },
+        "cta": {
+          "title": "عنوان دعوة العمل",
+          "ctaTitle": "عنوان الدعوة",
+          "subtitle": "عنوان فرعي"
+        },
+        "contact": {
+          "title": "عنوان الاتصال",
+          "address": "العنوان",
+          "phone": "الهاتف",
+          "email": "البريد الإلكتروني"
+        }
+      }
+    },
+
+    "dashboard": {
+      "title": "لوحة التحكم",
+      "users": "المستخدمين",
+      "properties": "المتاحة",
+      "posts": "المدونات",
+      "contacts": "الاتصالات"
+    }
 }

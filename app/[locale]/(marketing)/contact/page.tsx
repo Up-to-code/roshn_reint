@@ -1,19 +1,36 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { ContactUsSection as ContactUsSectionType } from "@/types/home-page";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock, Send, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 
-interface ContactUsSectionProps {
-  content: ContactUsSectionType;
-  locale: string;
+interface ContactPageProps {
+  params: {
+    locale: string;
+  };
 }
 
-export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
-  // All hooks must be called unconditionally at the top
+interface ContactContent {
+  enabled: boolean;
+  title: string;
+  subtitle: string;
+  contactInfo: {
+    address: string;
+    phone: string;
+    email: string;
+    workingHours: string;
+  };
+  form?: {
+    enabled: boolean;
+  };
+}
+
+export default function ContactPage({ params }: ContactPageProps) {
+  const { locale } = params;
+  const [content, setContent] = useState<ContactContent | null>(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: '',
     phoneNumber: '',
@@ -24,8 +41,73 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
 
   const isRTL = locale === "ar";
 
-  // Early return after all hooks have been called
-  if (!content.enabled) return null;
+  // Fetch contact page data from API
+  useEffect(() => {
+    const fetchContactData = async () => {
+      try {
+        // Use absolute URL for API call
+        const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+        const response = await fetch(`${baseUrl}/api/home-page?locale=${locale}`, {
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch contact data');
+        }
+
+        const data = await response.json();
+        
+        // Extract contactUs section from the home page data
+        if (data.contactUs) {
+          setContent(data.contactUs);
+        } else {
+          // Fallback content if no data from API
+          setContent({
+            enabled: true,
+            title: locale === "ar" ? "تواصل معنا" : "Contact Us",
+            subtitle: locale === "ar" 
+              ? "نحن هنا لمساعدتك. تواصل معنا لأي استفسارات أو أسئلة." 
+              : "We're here to help. Contact us for any inquiries or questions.",
+            contactInfo: {
+              address: "123 Business District, Downtown, City 10001",
+              phone: "+1 (555) 123-4567",
+              email: "hello@company.com",
+              workingHours: "Mon - Fri: 9:00 AM - 6:00 PM"
+            },
+            form: {
+              enabled: true
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching contact data:', error);
+        // Fallback content in case of error
+        setContent({
+          enabled: true,
+          title: locale === "ar" ? "تواصل معنا" : "Contact Us",
+          subtitle: locale === "ar" 
+            ? "نحن هنا لمساعدتك. تواصل معنا لأي استفسارات أو أسئلة." 
+            : "We're here to help. Contact us for any inquiries or questions.",
+          contactInfo: {
+            address: "123 Business District, Downtown, City 10001",
+            phone: "+1 (555) 123-4567",
+            email: "hello@company.com",
+            workingHours: "Mon - Fri: 9:00 AM - 6:00 PM"
+          },
+          form: {
+            enabled: true
+          }
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContactData();
+  }, [locale]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -100,6 +182,40 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
       setIsLoading(false);
     }
   };
+
+  // Show loading state
+  if (loading || !content) {
+    return (
+      <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
+              <div className="size-1.5 animate-pulse rounded-full bg-zinc-500"></div>
+              {locale === "ar" ? "جاري التحميل..." : "Loading..."}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Early return if content is not enabled
+  if (!content.enabled) {
+    return (
+      <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="mb-4 text-3xl font-bold text-zinc-900 dark:text-zinc-100 md:text-5xl">
+              {locale === "ar" ? "الصفحة غير متوفرة" : "Page Not Available"}
+            </h2>
+            <p className="mx-auto max-w-3xl text-lg font-light leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
+              {locale === "ar" ? "عذراً، صفحة الاتصال غير متاحة حالياً." : "Sorry, the contact page is currently unavailable."}
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">

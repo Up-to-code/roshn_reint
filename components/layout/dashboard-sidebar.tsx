@@ -3,23 +3,22 @@
 import { Fragment, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SidebarNavItem } from "@/types";
-import {   PanelLeftClose, PanelRightClose } from "lucide-react";
+import { PanelLeftClose, PanelRightClose } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useLocale } from "next-intl";
 
- import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
- import {
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import ProjectSwitcher from "@/components/dashboard/project-switcher";
-import { UpgradeCard } from "@/components/dashboard/upgrade-card";
+ import { UpgradeCard } from "@/components/dashboard/upgrade-card";
 import { Icons } from "@/components/shared/icons";
 import { Link } from "@/i18n/routing";
 
@@ -44,32 +43,32 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
   return (
     <TooltipProvider delayDuration={0}>
       <div className="sticky top-0 h-full">
-        <ScrollArea className="h-full overflow-y-auto border-r">
+        <ScrollArea className="h-full overflow-y-auto">
           <aside
             className={cn(
-              "hidden h-screen md:block",
+              "hidden h-screen transition-all duration-300 ease-in-out md:block",
               isSidebarExpanded ? "w-[220px] xl:w-[260px]" : "w-[68px]"
             )}
           >
-            <div className="flex h-full max-h-screen flex-1 flex-col gap-2">
-              <div className="flex h-14 items-center p-4 lg:h-[60px]">
-                {isSidebarExpanded && <ProjectSwitcher />}
+            <div className="flex h-full max-h-screen flex-1 flex-col gap-2 bg-slate-900 dark:bg-slate-950">
+              <div className="flex h-14 items-center border-b border-slate-800 p-4 dark:border-slate-900 lg:h-[60px]">
+                {/* {isSidebarExpanded && <ProjectSwitcher />} */}
 
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="ml-auto size-9 lg:size-8"
+                  className="ml-auto size-9 text-slate-400 transition-all duration-200 hover:bg-slate-800 hover:text-white lg:size-8"
                   onClick={toggleSidebar}
                 >
                   {isSidebarExpanded ? (
                     <PanelLeftClose
                       size={18}
-                      className="stroke-muted-foreground"
+                      className="stroke-current"
                     />
                   ) : (
                     <PanelRightClose
                       size={18}
-                      className="stroke-muted-foreground"
+                      className="stroke-current"
                     />
                   )}
                   <span className="sr-only">Toggle Sidebar</span>
@@ -86,7 +85,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                     )}
                   >
                     {isSidebarExpanded ? (
-                      <p className="my-4 text-xs text-muted-foreground">
+                      <p className="my-4 text-xs uppercase tracking-wider text-slate-500">
                         {t(section.title)}
                       </p>
                     ) : (
@@ -102,19 +101,22 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                               <Link
                                 href={item.disabled ? "#" : item.href as any}
                                 className={cn(
-                                  "flex items-center gap-3 rounded-md p-2 text-sm font-medium hover:bg-muted",
+                                  "flex items-center gap-3 rounded-md p-2 text-sm font-medium transition-all duration-200",
                                   isRTL && "flex-row-reverse",
                                   path === item.href
-                                    ? "bg-muted"
-                                    : "text-muted-foreground hover:text-accent-foreground",
+                                    ? "bg-slate-800 text-white shadow-sm"
+                                    : "text-slate-400 hover:bg-slate-800 hover:text-white",
                                   item.disabled &&
-                                    "cursor-not-allowed opacity-80 hover:bg-transparent hover:text-muted-foreground"
+                                    "cursor-not-allowed opacity-50 hover:bg-transparent hover:text-slate-500"
                                 )}
                               >
                                 <Icon className="size-5" />
-                                {t(item.title)}
+                                <span className="truncate">{t(item.title)}</span>
                                 {item.badge && (
-                                  <Badge className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full">
+                                  <Badge 
+                                    variant="secondary" 
+                                    className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-xs text-white"
+                                  >
                                     {item.badge}
                                   </Badge>
                                 )}
@@ -125,21 +127,22 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                                   <Link
                                     href={item.disabled ? "#" : item.href as any}
                                     className={cn(
-                                      "flex items-center gap-3 rounded-md py-2 text-sm font-medium hover:bg-muted",
+                                      "flex items-center justify-center gap-3 rounded-md py-2 text-sm font-medium transition-all duration-200",
                                       isRTL && "flex-row-reverse",
                                       path === item.href
-                                        ? "bg-muted"
-                                        : "text-muted-foreground hover:text-accent-foreground",
+                                        ? "bg-slate-800 text-white shadow-sm"
+                                        : "text-slate-400 hover:bg-slate-800 hover:text-white",
                                       item.disabled &&
-                                        "cursor-not-allowed opacity-80 hover:bg-transparent hover:text-muted-foreground"
+                                        "cursor-not-allowed opacity-50 hover:bg-transparent hover:text-slate-500"
                                     )}
                                   >
-                                    <span className="flex size-full items-center justify-center">
-                                      <Icon className="size-5" />
-                                    </span>
+                                    <Icon className="size-5" />
                                   </Link>
                                 </TooltipTrigger>
-                                <TooltipContent side={isRTL ? "left" : "right"}>
+                                <TooltipContent 
+                                  side={isRTL ? "left" : "right"}
+                                  className="border-slate-700 bg-slate-800 text-white"
+                                >
                                   {t(item.title)}
                                 </TooltipContent>
                               </Tooltip>
@@ -152,7 +155,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                 ))}
               </nav>
 
-              <div className="mt-auto xl:p-4">
+              <div className="mt-auto border-t border-slate-800 p-4">
                 {isSidebarExpanded && <UpgradeCard />}
               </div>
             </div>

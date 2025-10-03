@@ -319,5 +319,75 @@
       "listed": "Listed",
       "updated": "Updated"
     }
-  }
+  },
+  "aboutEditor": {
+    "editorTitle": "Editor Title",
+    "preview": "Preview",
+    "reset": "Reset",
+    "save": "Save",
+    "tabs": {
+      "hero": "Hero",
+      "story": "Story",
+      "stats": "Statistics",
+      "values": "Values",
+      "team": "Team",
+      "cta": "Call to Action"
+    },
+    "sections": {
+      "hero": {
+        "title": "Hero Title",
+        "badge": "Badge",
+        "subtitle": "Subtitle"
+      },
+      "story": {
+        "title": "Story Title",
+        "storyTitle": "Main Story Title",
+        "paragraph1": "Paragraph 1",
+        "paragraph2": "Paragraph 2",
+        "paragraph3": "Paragraph 3",
+        "image": "Image",
+        "uploadImage": "Upload Image",
+        "yearsInBusiness": "Years in Business"
+      },
+      "stats": {
+        "title": "Statistics Title",
+        "addStat": "Add Statistic",
+        "value": "Value",
+        "label": "Label"
+      },
+      "values": {
+        "title": "Values Title",
+        "addValue": "Add Value",
+        "description": "Description"
+      },
+      "team": {
+        "title": "Team Title",
+        "addMember": "Add Member",
+        "name": "Name",
+        "role": "Role",
+        "avatar": "Avatar",
+        "uploadAvatar": "Upload Avatar",
+        "description": "Description"
+      },
+      "cta": {
+        "title": "Call to Action Title",
+        "ctaTitle": "CTA Title",
+        "subtitle": "Subtitle"
+      },
+      "contact": {
+        "title": "Contact Title",
+        "address": "Address",
+        "phone": "Phone",
+        "email": "Email"
+      }
+    }
+  },
+  "dashboard": {
+      "title": "Dashboard",
+      "users": "Users",
+      "properties": "Properties",
+      "posts": "Posts",
+      "contacts": "Contacts"
+    }
+  
 }

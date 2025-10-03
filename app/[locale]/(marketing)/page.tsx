@@ -94,7 +94,7 @@ export default async function Home({ params }: { params: { locale: string } }) {
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs}  />
       <TestimonialsSection content={content.testimonials}    />
-      <ContactUsSection content={content.contactUs}   />
+      <ContactUsSection content={content.contactUs}  locale={locale}  />
     </div>
   );
 }

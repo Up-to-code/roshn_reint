@@ -24,19 +24,25 @@ export const sidebarLinks: SidebarNavItem[] = [
       { href: "/dashboard/p/create", icon: "plus", title: "sidebar.addProperty" },
       // { href: "/admin", icon: "briefcase", title: "sidebar.adminPanel", authorizeOnly: UserRole.ADMIN },
       { href: "/dashboard/blog", icon: "blog", title: "sidebar.blog" },
-      { href: "/admin/projects", icon: "briefcase", title: "sidebar.projects" },
-      { href: "/admin/forms", icon: "post", title: "sidebar.forms" },
-      { href: "/admin/blogs", icon: "blog", title: "sidebar.blogs" },
-      { href: "/admin/media", icon: "media", title: "sidebar.media" },
+      //  { href: "/admin/forms", icon: "post", title: "sidebar.forms" },
+      // { href: "/admin/blogs", icon: "blog", title: "sidebar.blogs" },
+      // { href: "/admin/media", icon: "media", title: "sidebar.media" },
     ],
   },
+   {
+     title: "sidebar.pages",
+     items: [
+       { href: "/dashboard/home", icon: "home", title: "sidebar.homepage" },
+       { href: "/dashboard/about", icon: "blog", title: "sidebar.about" },
+       { href: "/dashboard/forms", icon: "blog", title: "sidebar.forms" },
+     ],
+   },
   {
     title: "sidebar.options",
     items: [
       { href: "/dashboard/settings", icon: "settings", title: "sidebar.settings" },
       { href: "/", icon: "home", title: "sidebar.homepage" },
-      { href: "/docs", icon: "bookOpen", title: "sidebar.documentation" },
-      { href: "#", icon: "messages", title: "sidebar.support", authorizeOnly: UserRole.USER, disabled: true },
+ 
     ],
   },
 ];

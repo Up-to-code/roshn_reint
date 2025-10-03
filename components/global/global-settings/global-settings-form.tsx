@@ -74,47 +74,9 @@ export function GlobalSettingsForm() {
           </div>
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 rounded-md bg-muted p-1">
-            <TabsTrigger value="navigation">
-              {t('tabs.navigation')}
-            </TabsTrigger>
-            <TabsTrigger value="footer">
-              {t('tabs.footer')}
-            </TabsTrigger>
-            <TabsTrigger value="logo">
-              {t('tabs.logo')}
-            </TabsTrigger>
-            <TabsTrigger value="meta">
-              {t('tabs.meta')}
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="navigation" className="mt-4">
-            <div className="rounded-lg border bg-card p-6">
-              <NavigationEditor />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="footer" className="mt-4">
-            <div className="rounded-lg border bg-card p-6">
-              <FooterEditor />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="logo" className="mt-4">
-            <div className="rounded-lg border bg-card p-6">
-              <LogoEditor />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="meta" className="mt-4">
-            <div className="rounded-lg border bg-card p-6">
-              <MetaEditor />
-            </div>
-          </TabsContent>
-        </Tabs>
+ 
       </div>
+      <FooterEditor />
 
       {isSaveModalOpen && (
         <SaveModal

@@ -12,7 +12,6 @@ const SOCIAL_PLATFORMS = [
   { value: 'instagram', label: 'Instagram' },
   { value: 'linkedin', label: 'LinkedIn' },
   { value: 'youtube', label: 'YouTube' },
-  { value: 'github', label: 'GitHub' },
 ];
 
 export function FooterEditor() {
@@ -143,69 +142,6 @@ export function FooterEditor() {
             Add Section
           </Button>
         </div>
-      </div>
-
-      {/* Social Links */}
-      <div className="space-y-4 rounded-lg border bg-card p-4">
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={footer.showSocialLinks}
-            onChange={(e) => updateFooter({ showSocialLinks: e.target.checked })}
-            className="rounded border-gray-300 dark:border-gray-600"
-          />
-          <label className="text-sm font-medium text-foreground">Show Social Links</label>
-        </div>
-
-        <div className="space-y-3">
-          {footer.socialLinks.map((social) => (
-            <div key={social.platform} className="flex items-center gap-2">
-              <select
-                value={social.platform}
-                onChange={(e) => {
-                  removeSocialLink(social.platform);
-                  addSocialLink({
-                    ...social,
-                    platform: e.target.value,
-                  });
-                }}
-                className="flex-1 rounded border border-input bg-background px-3 py-2 text-sm"
-              >
-                {SOCIAL_PLATFORMS.map(platform => (
-                  <option key={platform.value} value={platform.value}>
-                    {platform.label}
-                  </option>
-                ))}
-              </select>
-              <Input
-                value={social.url}
-                onChange={(e) => updateSocialLink(social.platform, { url: e.target.value })}
-                placeholder="Profile URL"
-                className="flex-1"
-              />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => removeSocialLink(social.platform)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          ))}
-        </div>
-
-        <Button
-          onClick={() => addSocialLink({
-            platform: 'facebook',
-            url: '',
-            icon: 'facebook',
-          })}
-          variant="outline"
-          size="sm"
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Social Link
-        </Button>
       </div>
 
       {/* Footer Settings */}

@@ -33,6 +33,149 @@ const defaultHomePageData = {
       form: { enabled: true, fields: [] },
       map: { enabled: true, embedCode: "" },
     },
+    footer: {
+      copyrightText: "© 2024 RealeEast Properties. All rights reserved.",
+      sections: [
+        {
+          id: "1",
+          title: "Quick Links",
+          links: [
+            {
+              id: "1-1",
+              label: "Home",
+              href: "/",
+              external: false
+            },
+            {
+              id: "1-2",
+              label: "Properties",
+              href: "/properties",
+              external: false
+            },
+            {
+              id: "1-3",
+              label: "Services",
+              href: "/services",
+              external: false
+            },
+            {
+              id: "1-4",
+              label: "Agents",
+              href: "/agents",
+              external: false
+            },
+            {
+              id: "1-5",
+              label: "Contact",
+              href: "/contact",
+              external: false
+            }
+          ]
+        },
+        {
+          id: "2",
+          title: "Services",
+          links: [
+            {
+              id: "2-1",
+              label: "Buying",
+              href: "/services/buying",
+              external: false
+            },
+            {
+              id: "2-2",
+              label: "Selling",
+              href: "/services/selling",
+              external: false
+            },
+            {
+              id: "2-3",
+              label: "Renting",
+              href: "/services/renting",
+              external: false
+            },
+            {
+              id: "2-4",
+              label: "Property Management",
+              href: "/services/property-management",
+              external: false
+            },
+            {
+              id: "2-5",
+              label: "Valuation",
+              href: "/services/valuation",
+              external: false
+            }
+          ]
+        },
+        {
+          id: "3",
+          title: "Support",
+          links: [
+            {
+              id: "3-1",
+              label: "Contact",
+              href: "/contact",
+              external: false
+            },
+            {
+              id: "3-2",
+              label: "Help Center",
+              href: "/help",
+              external: false
+            },
+            {
+              id: "3-3",
+              label: "Privacy Policy",
+              href: "/privacy",
+              external: false
+            },
+            {
+              id: "3-4",
+              label: "Terms of Service",
+              href: "/terms",
+              external: false
+            },
+            {
+              id: "3-5",
+              label: "FAQ",
+              href: "/faq",
+              external: false
+            }
+          ]
+        }
+      ],
+      socialLinks: [
+        {
+          platform: "facebook",
+          url: "https://facebook.com/realeastproperties",
+          icon: "facebook"
+        },
+        {
+          platform: "twitter",
+          url: "https://twitter.com/realeastproperties",
+          icon: "twitter"
+        },
+        {
+          platform: "instagram",
+          url: "https://instagram.com/realeastproperties",
+          icon: "instagram"
+        },
+        {
+          platform: "linkedin",
+          url: "https://linkedin.com/company/realeastproperties",
+          icon: "linkedin"
+        },
+        {
+          platform: "youtube",
+          url: "https://youtube.com/realeastproperties",
+          icon: "youtube"
+        }
+      ],
+      backgroundColor: "#0f172a",
+      textColor: "#94a3b8",
+      showSocialLinks: true
+    }
   },
   ar: {
     hero: {
@@ -65,6 +208,149 @@ const defaultHomePageData = {
       form: { enabled: true, fields: [] },
       map: { enabled: true, embedCode: "" },
     },
+    footer: {
+      copyrightText: "© 2024 العقارية. جميع الحقوق محفوظة.",
+      sections: [
+        {
+          id: "1",
+          title: "روابط سريعة",
+          links: [
+            {
+              id: "1-1",
+              label: "الرئيسية",
+              href: "/",
+              external: false
+            },
+            {
+              id: "1-2",
+              label: "العقارات",
+              href: "/properties",
+              external: false
+            },
+            {
+              id: "1-3",
+              label: "الخدمات",
+              href: "/services",
+              external: false
+            },
+            {
+              id: "1-4",
+              label: "الوكلاء",
+              href: "/agents",
+              external: false
+            },
+            {
+              id: "1-5",
+              label: "اتصل بنا",
+              href: "/contact",
+              external: false
+            }
+          ]
+        },
+        {
+          id: "2",
+          title: "خدماتنا",
+          links: [
+            {
+              id: "2-1",
+              label: "الشراء",
+              href: "/services/buying",
+              external: false
+            },
+            {
+              id: "2-2",
+              label: "البيع",
+              href: "/services/selling",
+              external: false
+            },
+            {
+              id: "2-3",
+              label: "التأجير",
+              href: "/services/renting",
+              external: false
+            },
+            {
+              id: "2-4",
+              label: "إدارة العقارات",
+              href: "/services/property-management",
+              external: false
+            },
+            {
+              id: "2-5",
+              label: "التقييم",
+              href: "/services/valuation",
+              external: false
+            }
+          ]
+        },
+        {
+          id: "3",
+          title: "الدعم",
+          links: [
+            {
+              id: "3-1",
+              label: "اتصل بنا",
+              href: "/contact",
+              external: false
+            },
+            {
+              id: "3-2",
+              label: "مركز المساعدة",
+              href: "/help",
+              external: false
+            },
+            {
+              id: "3-3",
+              label: "سياسة الخصوصية",
+              href: "/privacy",
+              external: false
+            },
+            {
+              id: "3-4",
+              label: "شروط الخدمة",
+              href: "/terms",
+              external: false
+            },
+            {
+              id: "3-5",
+              label: "الأسئلة الشائعة",
+              href: "/faq",
+              external: false
+            }
+          ]
+        }
+      ],
+      socialLinks: [
+        {
+          platform: "facebook",
+          url: "https://facebook.com/realeastproperties",
+          icon: "facebook"
+        },
+        {
+          platform: "twitter",
+          url: "https://twitter.com/realeastproperties",
+          icon: "twitter"
+        },
+        {
+          platform: "instagram",
+          url: "https://instagram.com/realeastproperties",
+          icon: "instagram"
+        },
+        {
+          platform: "linkedin",
+          url: "https://linkedin.com/company/realeastproperties",
+          icon: "linkedin"
+        },
+        {
+          platform: "youtube",
+          url: "https://youtube.com/realeastproperties",
+          icon: "youtube"
+        }
+      ],
+      backgroundColor: "#0f172a",
+      textColor: "#94a3b8",
+      showSocialLinks: true
+    }
   },
 };
 

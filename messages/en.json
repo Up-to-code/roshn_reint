@@ -8,7 +8,8 @@
     "about": "About Us",
     "contact": "Contact Us",
     "signin": "Sign In",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard" ,
+    "blog": "Blog"
   },
   "sidebar": {
     "menu": "Menu",

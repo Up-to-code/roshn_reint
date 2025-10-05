@@ -5,11 +5,17 @@ import { TestimonialsSection } from "@/components/home-page/sections/testimonial
 import { ContactUsSection } from "@/components/home-page/sections/contact-us-section";
 import { PartnersBanner } from "@/components/home-page/sections/partners-banner";
 import ApartmentsPage from "@/components/home-page/sections/ApartmentsPage";
+import { headers } from "next/headers";
+
+export const dynamic = "force-dynamic";
 
 async function getHomePageData(locale: string) {
   try {
-    // Use absolute URL for API call
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const hdrs = headers();
+    const host = hdrs.get('x-forwarded-host') || hdrs.get('host') || '';
+    const proto = hdrs.get('x-forwarded-proto') || 'https';
+    const envBase = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || '';
+    const baseUrl = envBase || (host ? `${proto}://${host}` : '');
     const response = await fetch(`${baseUrl}/api/home-page?locale=${locale}`, {
       cache: 'no-store', // Ensure fresh data on each request
       headers: {

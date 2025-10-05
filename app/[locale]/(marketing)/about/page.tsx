@@ -1,4 +1,5 @@
 import { getTranslations, getLocale } from "next-intl/server";
+import { headers } from "next/headers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -38,10 +39,16 @@ const getLocalizedText = (obj: any, locale: string, fallback: string = '') => {
   return fallback;
 };
 
+export const dynamic = "force-dynamic";
+
 // Fetch about data from API
 async function getAboutData() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
+    const hdrs = headers();
+    const host = hdrs.get('x-forwarded-host') || hdrs.get('host') || '';
+    const proto = hdrs.get('x-forwarded-proto') || 'https';
+    const envBase = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXTAUTH_URL || '';
+    const baseUrl = envBase || (host ? `${proto}://${host}` : '');
     const response = await fetch(`${baseUrl}/api/about`, {
       cache: 'no-store',
       headers: {

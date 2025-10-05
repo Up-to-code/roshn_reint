@@ -189,11 +189,10 @@ export async function POST(request: NextRequest) {
       create: { id: 'default', data: about },
       update: { data: about },
     });
-    {
-      return NextResponse.json({ 
-        success: true, 
-        message: 'About data saved successfully' 
-      });
+    return NextResponse.json({ 
+      success: true, 
+      message: 'About data saved successfully' 
+    });
   } catch (error) {
     console.error('Error saving about data:', error);
     return NextResponse.json(

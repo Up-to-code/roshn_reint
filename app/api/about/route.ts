@@ -1,87 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { readFile, writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { existsSync } from 'fs';
-
-// Path to the about data file
-const ABOUT_DATA_PATH = join(process.cwd(), 'data', 'about.json');
-
-// Ensure data directory exists
-async function ensureDataDir() {
-  const dataDir = join(process.cwd(), 'data');
-  if (!existsSync(dataDir)) {
-    await mkdir(dataDir, { recursive: true });
-  }
-}
-
-// Read about data from file
-async function readAboutData() {
-  try {
-    await ensureDataDir();
-    const data = await readFile(ABOUT_DATA_PATH, 'utf-8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error('Error reading about data:', error);
-    // Return empty structure if file doesn't exist
-    return {
-      hero: {
-        badge: { en: "", ar: "" },
-        title: { en: "", ar: "" },
-        subtitle: { en: "", ar: "" }
-      },
-      story: {
-        title: { en: "", ar: "" },
-        paragraph1: { en: "", ar: "" },
-        paragraph2: { en: "", ar: "" },
-        paragraph3: { en: "", ar: "" },
-        image: "",
-        yearsInBusiness: { en: "", ar: "" }
-      },
-      stats: [],
-      values: [],
-      team: [],
-      cta: {
-        title: { en: "", ar: "" },
-        subtitle: { en: "", ar: "" }
-      },
-      contact: {
-        address: { en: "", ar: "" },
-        phone: { en: "", ar: "" },
-        email: { en: "", ar: "" }
-      }
-    };
-  }
-}
-
-// Write about data to file with validation
-async function writeAboutData(data: any) {
-  try {
-    await ensureDataDir();
-    
-    // Validate data structure
-    if (!data || typeof data !== 'object') {
-      throw new Error('Invalid about data structure');
-    }
-    
-    // Ensure required fields exist
-    const validatedData = {
-      hero: data.hero || { badge: {}, title: {}, subtitle: {} },
-      story: data.story || { title: {}, paragraph1: {}, paragraph2: {}, paragraph3: {}, image: "", yearsInBusiness: {} },
-      stats: data.stats || [],
-      values: data.values || [],
-      team: data.team || [],
-      cta: data.cta || { title: {}, subtitle: {} },
-      contact: data.contact || { address: {}, phone: {}, email: {} },
-      ...data // Include any additional fields
-    };
-    
-    await writeFile(ABOUT_DATA_PATH, JSON.stringify(validatedData, null, 2), 'utf-8');
-    return true;
-  } catch (error) {
-    console.error('Error writing about data:', error);
-    return false;
-  }
-}
+import { prisma } from '@/lib/db';
 
 // Reset about data to default
 async function resetAboutData() {
@@ -223,13 +141,24 @@ async function resetAboutData() {
     }
   };
   
-  return await writeAboutData(defaultData);
+  try {
+    await prisma.aboutPage.upsert({
+      where: { id: 'default' },
+      create: { id: 'default', data: defaultData },
+      update: { data: defaultData },
+    });
+    return true;
+  } catch (error) {
+    console.error('Error resetting about data:', error);
+    return false;
+  }
 }
 
 // GET /api/about - Read about data
 export async function GET() {
   try {
-    const aboutData = await readAboutData();
+    const existing = await prisma.aboutPage.findUnique({ where: { id: 'default' } });
+    const aboutData = existing?.data ?? {};
     return NextResponse.json({ 
       success: true, 
       data: aboutData 
@@ -255,19 +184,16 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const success = await writeAboutData(about);
-    
-    if (success) {
+    await prisma.aboutPage.upsert({
+      where: { id: 'default' },
+      create: { id: 'default', data: about },
+      update: { data: about },
+    });
+    {
       return NextResponse.json({ 
         success: true, 
         message: 'About data saved successfully' 
       });
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Failed to save about data' },
-        { status: 500 }
-      );
-    }
   } catch (error) {
     console.error('Error saving about data:', error);
     return NextResponse.json(
@@ -285,21 +211,18 @@ export async function PUT(request: NextRequest) {
     
     if (action === 'reset') {
       const success = await resetAboutData();
-      
       if (success) {
-        // Read the fresh data after reset
-        const freshData = await readAboutData();
+        const existing = await prisma.aboutPage.findUnique({ where: { id: 'default' } });
         return NextResponse.json({ 
           success: true, 
           message: 'About data reset to default',
-          data: freshData
+          data: existing?.data ?? {}
         });
-      } else {
-        return NextResponse.json(
-          { success: false, error: 'Failed to reset about data' },
-          { status: 500 }
-        );
       }
+      return NextResponse.json(
+        { success: false, error: 'Failed to reset about data' },
+        { status: 500 }
+      );
     }
     
     return NextResponse.json(
@@ -318,27 +241,15 @@ export async function PUT(request: NextRequest) {
 // DELETE /api/about - Clear all about data
 export async function DELETE() {
   try {
-    const success = await writeAboutData({
-      hero: { badge: {}, title: {}, subtitle: {} },
-      story: { title: {}, paragraph1: {}, paragraph2: {}, paragraph3: {}, image: "", yearsInBusiness: {} },
-      stats: [],
-      values: [],
-      team: [],
-      cta: { title: {}, subtitle: {} },
-      contact: { address: {}, phone: {}, email: {} }
+    await prisma.aboutPage.upsert({
+      where: { id: 'default' },
+      create: { id: 'default', data: { hero: { badge: {}, title: {}, subtitle: {} }, story: { title: {}, paragraph1: {}, paragraph2: {}, paragraph3: {}, image: "", yearsInBusiness: {} }, stats: [], values: [], team: [], cta: { title: {}, subtitle: {} }, contact: { address: {}, phone: {}, email: {} } } },
+      update: { data: { hero: { badge: {}, title: {}, subtitle: {} }, story: { title: {}, paragraph1: {}, paragraph2: {}, paragraph3: {}, image: "", yearsInBusiness: {} }, stats: [], values: [], team: [], cta: { title: {}, subtitle: {} }, contact: { address: {}, phone: {}, email: {} } } },
     });
-    
-    if (success) {
-      return NextResponse.json({ 
-        success: true, 
-        message: 'About data cleared successfully' 
-      });
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Failed to clear about data' },
-        { status: 500 }
-      );
-    }
+    return NextResponse.json({ 
+      success: true, 
+      message: 'About data cleared successfully' 
+    });
   } catch (error) {
     console.error('Error clearing about data:', error);
     return NextResponse.json(

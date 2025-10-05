@@ -244,3 +244,33 @@ model Contact {
 
   @@map("contacts")
 }
+
+// Single-row JSON-backed site settings
+model SiteSettings {
+  id        String   @id // use a stable id like "default"
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+// About page content stored as JSON
+model AboutPage {
+  id        String   @id // use a stable id like "default"
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("about_page")
+}
+
+// About settings content stored as JSON
+model AboutSettings {
+  id        String   @id // use a stable id like "default"
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("about_settings")
+}

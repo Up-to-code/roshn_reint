@@ -1,15 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-
-const DATA_DIR = path.join(process.cwd(), 'data');
-const SETTINGS_FILE = path.join(DATA_DIR, 'global-settings.json');
-
-// Ensure data directory exists
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-}
+import { prisma } from './db';
 
 // Default settings structure
 const defaultSettings = {
@@ -76,30 +65,29 @@ const defaultSettings = {
   },
 };
 
-// Read settings from JSON file
+// Read settings from DB (single-row by id "default")
 export async function readSettings(): Promise<any> {
   try {
-    ensureDataDir();
-    
-    if (!fs.existsSync(SETTINGS_FILE)) {
-      // Create file with default settings if it doesn't exist
+    const existing = await prisma.siteSettings.findUnique({ where: { id: 'default' } });
+    if (!existing) {
       await writeSettings(defaultSettings);
       return defaultSettings;
     }
-    
-    const data = fs.readFileSync(SETTINGS_FILE, 'utf8');
-    return JSON.parse(data);
+    return existing.data as any;
   } catch (error) {
     console.error('Error reading settings:', error);
     return defaultSettings;
   }
 }
 
-// Write settings to JSON file
+// Write settings to DB
 export async function writeSettings(settings: any): Promise<boolean> {
   try {
-    ensureDataDir();
-    fs.writeFileSync(SETTINGS_FILE, JSON.stringify(settings, null, 2), 'utf8');
+    await prisma.siteSettings.upsert({
+      where: { id: 'default' },
+      create: { id: 'default', data: settings },
+      update: { data: settings },
+    });
     return true;
   } catch (error) {
     console.error('Error writing settings:', error);

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function deepMerge<T>(base: T, override: any): T {
   if (Array.isArray(base)) {
     return (override && Array.isArray(override) ? override : base) as unknown as T;

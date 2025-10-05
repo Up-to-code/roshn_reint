@@ -29,7 +29,8 @@
     "dashboard": "Dashboard",
     "home": "Home",
     "properties": "Properties",
-    "addProperty": "Add Property"
+    "addProperty": "Add Property",
+    "users": "Users"
   },
   "SaveModal": {
     "title": {

@@ -11,6 +11,7 @@ import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import { MobileSheetSidebar } from "@/components/layout/MobileSheetSidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import DashboardWrapper from "@/components/layout/DashboardWrapper";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -29,6 +30,8 @@ export default async function DashboardLayout({ children }: ProtectedLayoutProps
   }));
 
   return (
+    <DashboardWrapper>
+
     <div className="relative flex min-h-screen w-full bg-background transition-colors duration-300">
       {/* Sidebar */}
       <DashboardSidebar links={filteredLinks} />
@@ -83,6 +86,7 @@ export default async function DashboardLayout({ children }: ProtectedLayoutProps
           </div>
         </main>
       </div>
-    </div>
+    </div>      </DashboardWrapper>
+
   );
 }

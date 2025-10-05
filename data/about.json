@@ -2,33 +2,33 @@
   "hero": {
     "badge": {
       "en": "About Our Company",
-      "ar": "عن شركتنا"
+      "ar": "نبذة عن شركتنا"
     },
     "title": {
-      "en": "Leading Real Estate Excellence",
-      "ar": "الريادة في التميز العقاري"
+      "en": "Building Dreams, Creating Homes",
+      "ar": "نبني الأحلام، نخلق المنازل"
     },
     "subtitle": {
-      "en": "With over 15 years of experience, we've helped thousands of clients find their dream properties and achieve their real estate goals.",
-      "ar": "بخبرة تزيد عن 15 عامًا، ساعدنا الآلاف من العملاء في العثور على عقارات أحلامهم وتحقيق أهدافهم العقارية."
+      "en": "We are a team of passionate real estate professionals dedicated to helping you find your perfect property",
+      "ar": "نحن فريق من محترفي العقارات الشغوفين المكرسين لمساعدتك في العثور على عقارك المثالي"
     }
   },
   "story": {
     "title": {
-      "en": "Our Journey in Real Estate",
-      "ar": "رحلتنا في مجال العقارات"
+      "en": "15 Years of Excellence in Real Estate",
+      "ar": "15 عاماً من التميز في العقارات"
     },
     "paragraph1": {
-      "en": "Founded in 2008, our company began as a small local real estate agency with a big vision. We believed that buying or selling a property should be a seamless, transparent, and rewarding experience for everyone involved.",
-      "ar": "تأسست شركتنا في عام 2008 كشركة عقارية محلية صغيرة برؤية كبيرة. كنا نؤمن بأن شراء أو بيع العقارات يجب أن يكون تجربة سلسة وشفافة ومجزية لجميع المعنيين."
+      "en": "Founded in 2009, our company has grown from a small team of passionate real estate enthusiasts to one of the most trusted names in the industry.",
+      "ar": "تأسست شركتنا في عام 2009، ونمت من فريق صغير من عشاق العقارات الشغوفين إلى أحد الأسماء الموثوقة في الصناعة."
     },
     "paragraph2": {
-      "en": "Over the years, we've grown into one of the region's most trusted real estate partners, expanding our services to include property management, investment consulting, and market analysis while maintaining our commitment to personalized service.",
-      "ar": "على مر السنين، نمينا لنصبح أحد أكثر الشركاء العقاريين الموثوق بهم في المنطقة، حيث وسعنا خدماتنا لتشمل إدارة الممتلكات، والاستشارات الاستثمارية، وتحليل السوق مع الحفاظ على التزامنا بالخدمة الشخصية."
+      "en": "Over the years, we've helped thousands of families find their dream homes and assisted investors in making sound property decisions.",
+      "ar": "على مر السنين، ساعدنا آلاف العائلات في العثور على منازل أحلامهم وساعدنا المستثمرين في اتخاذ قرارات عقارية سليمة."
     },
     "paragraph3": {
-      "en": "Today, we continue to innovate and adapt to the ever-changing real estate landscape, leveraging technology and data-driven insights to provide our clients with the best possible outcomes in their property transactions.",
-      "ar": "اليوم، نواصل الابتكار والتكيف مع المشهد العقاري المتغير باستمرار، مستفيدين من التكنولوجيا والرؤى القائمة على البيانات لتزويد عملائنا بأفضل النتائج الممكنة في معاملاتهم العقارية."
+      "en": "Today, we continue to innovate and adapt to the changing real estate landscape, always keeping our clients' best interests at heart.",
+      "ar": "اليوم، نواصل الابتكار والتكيف مع مشهد العقارات المتغير، مع الحفاظ دائماً على المصالح الفضلى لعملائنا."
     },
     "image": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
     "yearsInBusiness": {
@@ -200,18 +200,18 @@
       "ar": "هل أنت مستعد للعثور على عقار أحلامك؟"
     },
     "subtitle": {
-      "en": "Let our expert team guide you through every step of your real estate journey. Contact us today for a personalized consultation.",
-      "ar": "دع فريقنا الخبير يرشدك خلال كل خطوة من رحلتك العقارية. اتصل بنا اليوم للحصول على استشارة شخصية."
+      "en": "Let's work together to turn your real estate dreams into reality",
+      "ar": "دعنا نعمل معاً لتحويل أحلامك العقارية إلى حقيقة"
     }
   },
   "contact": {
     "address": {
-      "en": "123 Business Street\nDowntown, City 12345",
-      "ar": "شارع الأعمال 123\nوسط المدينة، المدينة 12345"
+      "en": "123 Business Street\nCity, State 12345",
+      "ar": "123 شارع الأعمال\nالمدينة، الولاية 12345"
     },
     "phone": {
       "en": "+1 (555) 123-4567\nMon-Fri 9AM-6PM",
-      "ar": "+1 (555) 123-4567\nالإثنين-الجمعة 9 صباحاً-6 مساءً"
+      "ar": "+1 (555) 123-4567\nالإثنين-الجمعة 9 ص-6 م"
     },
     "email": {
       "en": "info@realestate.com\n24/7 Support",

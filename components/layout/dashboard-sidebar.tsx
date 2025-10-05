@@ -155,9 +155,7 @@ export function DashboardSidebar({ links }: DashboardSidebarProps) {
                 ))}
               </nav>
 
-              <div className="mt-auto border-t border-slate-800 p-4">
-                {isSidebarExpanded && <UpgradeCard />}
-              </div>
+              
             </div>
           </aside>
         </ScrollArea>

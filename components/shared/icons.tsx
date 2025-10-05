@@ -31,6 +31,7 @@ import {
   Image,
   Globe,
   Building,
+  Users,
 } from "lucide-react";
 import { LucideProps } from "lucide-react";
 
@@ -70,7 +71,8 @@ export type IconName =
   | "user"
   | "warning"
   | "global"
-  | "building";
+  | "building"
+   | "users"
 
 export const Icons: Record<IconName, React.FC<LucideProps>> = {
   add: Plus,
@@ -109,4 +111,5 @@ export const Icons: Record<IconName, React.FC<LucideProps>> = {
   global: Globe,
   building: Building,
   plus: Plus,
+  users: Users,
 };

@@ -7,14 +7,15 @@ import { Property, PropertyStatus } from '@prisma/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
- import { 
+import { 
   ArrowLeft, MapPin, Bed, Bath, Square, Car, Share2, Heart,
   Phone, Mail, Building, CheckCircle,
   Calendar, Wifi, Shield, TreePine, Dumbbell,
   Waves, Car as CarIcon, Utensils,
-  Clock
+  Clock, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import Link from 'next/link';
+import PropertyImageGallery from './PropertyImageGallery';
 
 interface PropertyDetailPageProps {
   params: {
@@ -38,7 +39,7 @@ const FALLBACK_HTML_DESCRIPTION = `
   <p>Contact us today to schedule a viewing and experience this exceptional property for yourself.</p>
 `;
 
-// Generate SEO Metadata
+// Generate SEO Metadata - This must remain a server component
 export async function generateMetadata({ params }: PropertyDetailPageProps): Promise<Metadata> {
   const { id, locale } = params;
   
@@ -110,7 +111,7 @@ function PropertyDescription({ content, isRTL }: { content: string | null; isRTL
   );
 }
 
-// Main Component
+// Main Component - Server Component
 export default async function PropertyDetailPage({ params }: PropertyDetailPageProps) {
   const { id, locale } = params;
   const isRTL = locale === 'ar';
@@ -132,21 +133,29 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
   };
 
   const formatPrice = (price: number) => {
+    if (locale === 'ar') {
+      return new Intl.NumberFormat('ar-SA', {
+        style: 'currency',
+        currency: 'SAR',
+        minimumFractionDigits: 0,
+      }).format(price);
+    }
+    
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'SAR',
       minimumFractionDigits: 0,
     }).format(price);
   };
 
   const amenities = [
-    { key: 'wifi', label: 'WiFi', icon: Wifi },
-    { key: 'security', label: 'Security', icon: Shield },
-    { key: 'garden', label: 'Garden', icon: TreePine },
-    { key: 'gym', label: 'Gym', icon: Dumbbell },
-    { key: 'pool', label: 'Pool', icon: Waves },
-    { key: 'parking', label: 'Parking', icon: CarIcon },
-    { key: 'kitchen', label: 'Kitchen', icon: Utensils },
+    { key: 'wifi', label: 'WiFi', icon: Wifi, arLabel: 'واي فاي' },
+    { key: 'security', label: 'Security', icon: Shield, arLabel: 'أمن' },
+    { key: 'garden', label: 'Garden', icon: TreePine, arLabel: 'حديقة' },
+    { key: 'gym', label: 'Gym', icon: Dumbbell, arLabel: 'نادي رياضي' },
+    { key: 'pool', label: 'Pool', icon: Waves, arLabel: 'مسبح' },
+    { key: 'parking', label: 'Parking', icon: CarIcon, arLabel: 'موقف سيارات' },
+    { key: 'kitchen', label: 'Kitchen', icon: Utensils, arLabel: 'مطبخ' },
   ];
 
   const propertyFeatures = property.features || [];
@@ -169,6 +178,62 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
     }
   };
 
+  // Translation mappings
+  const translations = {
+    en: {
+      back: "Back to Properties",
+      description: "Description",
+      features: "Property Features",
+      bedrooms: "Bedrooms",
+      bathrooms: "Bathrooms",
+      area: "Area (m²)",
+      parking: "Parking",
+      amenities: "Amenities",
+      details: "Property Details",
+      type: "Property Type",
+      status: "Status",
+      location: "Location",
+      listed: "Listed Date",
+      updated: "Last Updated",
+      propertyId: "Property ID",
+      ready: "Ready to move in",
+      contact: "Contact Agent",
+      message: "Send Message",
+      save: "Save",
+      share: "Share",
+      viewAllPhotos: "View All Photos",
+      photo: "Photo",
+      of: "of"
+    },
+    ar: {
+      back: "العودة إلى العقارات",
+      description: "الوصف",
+      features: "مميزات العقار",
+      bedrooms: "غرف نوم",
+      bathrooms: "حمامات",
+      area: "المساحة (م²)",
+      parking: "مواقف سيارات",
+      amenities: "المرافق",
+      details: "تفاصيل العقار",
+      type: "نوع العقار",
+      status: "الحالة",
+      location: "الموقع",
+      listed: "تاريخ الإدراج",
+      updated: "آخر تحديث",
+      propertyId: "معرف العقار",
+      ready: "جاهز للسكن",
+      contact: "الاتصال بالوسيط",
+      message: "إرسال رسالة",
+      save: "حفظ",
+      share: "مشاركة",
+      viewAllPhotos: "عرض كل الصور",
+      photo: "صورة",
+      of: "من"
+    }
+  };
+
+  const t = translations[locale as keyof typeof translations] || translations.en;
+
   return (
     <>
       <script
@@ -183,7 +248,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
             <Button variant="ghost" asChild className="mb-6 hover:bg-accent">
               <Link href={`/${locale}/p`} className="flex items-center gap-2">
                 <ArrowLeft className="size-4" />
-                Back to Properties
+                {t.back}
               </Link>
             </Button>
             
@@ -212,11 +277,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 <div className="flex items-center gap-6 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Calendar className="size-4" />
-                    <span>Listed {new Date(property.createdAt).toLocaleDateString(locale)}</span>
+                    <span>{t.listed} {new Date(property.createdAt).toLocaleDateString(locale)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="size-4" />
-                    <span>Updated {new Date(property.updatedAt).toLocaleDateString(locale)}</span>
+                    <span>{t.updated} {new Date(property.updatedAt).toLocaleDateString(locale)}</span>
                   </div>
                 </div>
               </div>
@@ -224,11 +289,11 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="flex items-center gap-2">
                   <Heart className="size-4" />
-                  Save
+                  {t.save}
                 </Button>
                 <Button variant="outline" size="sm" className="flex items-center gap-2">
                   <Share2 className="size-4" />
-                  Share
+                  {t.share}
                 </Button>
               </div>
             </div>
@@ -237,22 +302,14 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Main Content */}
             <div className="space-y-6 lg:col-span-2">
-              {/* Gallery */}
+              {/* Gallery with Thumbnails */}
               <Card className="overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="relative aspect-video overflow-hidden rounded-lg bg-muted">
-                    {property.images && property.images[0] ? (
-                      <img 
-                        src={property.images[0]} 
-                        alt={PropertyUtils.getLocalizedTitle(property, locale)}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-muted-foreground">
-                        <Building className="size-16" />
-                      </div>
-                    )}
-                  </div>
+                <CardContent className="p-6">
+                  <PropertyImageGallery 
+                    images={property.images || []}
+                    title={PropertyUtils.getLocalizedTitle(property, locale)}
+                    isRTL={isRTL}
+                  />
                 </CardContent>
               </Card>
 
@@ -261,7 +318,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Building className="size-5" />
-                    Property Features
+                    {t.features}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -269,25 +326,25 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     <div className="rounded-lg border bg-primary/5 p-4 text-center">
                       <Bed className="mx-auto mb-2 size-8 text-primary" />
                       <div className="text-2xl font-bold text-foreground">{property.bedrooms}</div>
-                      <div className="text-sm text-muted-foreground">Bedrooms</div>
+                      <div className="text-sm text-muted-foreground">{t.bedrooms}</div>
                     </div>
                     
                     <div className="rounded-lg border bg-primary/5 p-4 text-center">
                       <Bath className="mx-auto mb-2 size-8 text-primary" />
                       <div className="text-2xl font-bold text-foreground">{property.bathrooms}</div>
-                      <div className="text-sm text-muted-foreground">Bathrooms</div>
+                      <div className="text-sm text-muted-foreground">{t.bathrooms}</div>
                     </div>
                     
                     <div className="rounded-lg border bg-primary/5 p-4 text-center">
                       <Square className="mx-auto mb-2 size-8 text-primary" />
                       <div className="text-2xl font-bold text-foreground">{property.area}</div>
-                      <div className="text-sm text-muted-foreground">Area (m²)</div>
+                      <div className="text-sm text-muted-foreground">{t.area}</div>
                     </div>
                     
                     <div className="rounded-lg border bg-primary/5 p-4 text-center">
                       <Car className="mx-auto mb-2 size-8 text-primary" />
                       <div className="text-2xl font-bold text-foreground">{property.parking || 0}</div>
-                      <div className="text-sm text-muted-foreground">Parking</div>
+                      <div className="text-sm text-muted-foreground">{t.parking}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -305,7 +362,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-xl">
                       <CheckCircle className="size-5" />
-                      Amenities
+                      {t.amenities}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -315,10 +372,12 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                         if (!amenity) return null;
                         
                         const Icon = amenity.icon;
+                        const label = locale === 'ar' ? amenity.arLabel : amenity.label;
+                        
                         return (
                           <div key={index} className="flex items-center gap-3 rounded-lg border bg-muted/50 p-3">
                             <Icon className="size-5 text-primary" />
-                            <span className="font-medium text-foreground">{amenity.label}</span>
+                            <span className="font-medium text-foreground">{label}</span>
                           </div>
                         );
                       })}
@@ -330,23 +389,23 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
               {/* Property Details */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-xl">Property Details</CardTitle>
+                  <CardTitle className="text-xl">{t.details}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-4">
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Property Type</span>
+                        <span className="text-muted-foreground">{t.type}</span>
                         <span className="font-medium">{property.type}</span>
                       </div>
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Status</span>
+                        <span className="text-muted-foreground">{t.status}</span>
                         <Badge className={getStatusColor(property.status)}>
                           {property.status}
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Location</span>
+                        <span className="text-muted-foreground">{t.location}</span>
                         <span className="text-right font-medium">
                           {property.city}, {property.district}
                         </span>
@@ -355,19 +414,19 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     
                     <div className="space-y-4">
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Listed Date</span>
+                        <span className="text-muted-foreground">{t.listed}</span>
                         <span className="font-medium">
                           {new Date(property.createdAt).toLocaleDateString(locale)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Last Updated</span>
+                        <span className="text-muted-foreground">{t.updated}</span>
                         <span className="font-medium">
                           {new Date(property.updatedAt).toLocaleDateString(locale)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between border-b py-2">
-                        <span className="text-muted-foreground">Property ID</span>
+                        <span className="text-muted-foreground">{t.propertyId}</span>
                         <span className="font-mono text-sm">{property.id.slice(-8)}</span>
                       </div>
                     </div>
@@ -385,16 +444,16 @@ export default async function PropertyDetailPage({ params }: PropertyDetailPageP
                     <div className="mb-2 text-4xl font-bold">
                       {formatPrice(property.price)}
                     </div>
-                    <div className="mb-6 text-primary-foreground/80">Ready to move in</div>
+                    <div className="mb-6 text-primary-foreground/80">{t.ready}</div>
                     
                     <div className="space-y-3">
                       <Button className="w-full bg-background text-foreground hover:bg-background/90" size="lg">
                         <Phone className={`${isRTL ? 'ml-2' : 'mr-2'} size-4`} />
-                        Contact Agent
+                        {t.contact}
                       </Button>
                       <Button variant="outline" className="w-full border-background text-background hover:bg-background/20" size="sm">
                         <Mail className={`${isRTL ? 'ml-2' : 'mr-2'} size-4`} />
-                        Send Message
+                        {t.message}
                       </Button>
                     </div>
                   </div>

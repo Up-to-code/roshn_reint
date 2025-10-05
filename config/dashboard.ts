@@ -40,6 +40,7 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "sidebar.options",
     items: [
+      { href: "/dashboard/users", icon: "users", title: "sidebar.users" },
       { href: "/dashboard/settings", icon: "settings", title: "sidebar.settings" },
       { href: "/", icon: "home", title: "sidebar.homepage" },
  

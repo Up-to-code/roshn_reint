@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readSettings, writeSettings } from '@/lib/db-utils';
-
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 const defaultHomePageData = {
   en: {
     hero: {

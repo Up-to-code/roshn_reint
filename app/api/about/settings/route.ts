@@ -1,6 +1,81 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
+function deepMerge<T>(base: T, override: any): T {
+  if (Array.isArray(base)) {
+    return (override && Array.isArray(override) ? override : base) as unknown as T;
+  }
+  if (base && typeof base === 'object') {
+    const result: any = { ...base };
+    if (override && typeof override === 'object') {
+      for (const key of Object.keys(override)) {
+        const baseVal = (base as any)[key];
+        const overVal = override[key];
+        result[key] = deepMerge(baseVal, overVal);
+      }
+    }
+    return result;
+  }
+  return (override === undefined ? base : override) as T;
+}
+
+function getDefaultAboutSettings() {
+  return {
+    hero: {
+      badge: { en: "About Our Company", ar: "نبذة عن شركتنا" },
+      title: { en: "Building Dreams, Creating Homes", ar: "نبني الأحلام، نخلق المنازل" },
+      subtitle: {
+        en: "We are a team of passionate real estate professionals dedicated to helping you find your perfect property",
+        ar: "نحن فريق من محترفي العقارات الشغوفين المكرسين لمساعدتك في العثور على عقارك المثالي"
+      }
+    },
+    story: {
+      title: { en: "15 Years of Excellence in Real Estate", ar: "15 عاماً من التميز في العقارات" },
+      paragraph1: {
+        en: "Founded in 2009, our company has grown from a small team of passionate real estate enthusiasts to one of the most trusted names in the industry.",
+        ar: "تأسست شركتنا في عام 2009، ونمت من فريق صغير من عشاق العقارات الشغوفين إلى أحد الأسماء الموثوقة في الصناعة."
+      },
+      paragraph2: {
+        en: "Over the years, we've helped thousands of families find their dream homes and assisted investors in making sound property decisions.",
+        ar: "على مر السنين، ساعدنا آلاف العائلات في العثور على منازل أحلامهم وساعدنا المستثمرين في اتخاذ قرارات عقارية سليمة."
+      },
+      paragraph3: {
+        en: "Today, we continue to innovate and adapt to the changing real estate landscape, always keeping our clients' best interests at heart.",
+        ar: "اليوم، نواصل الابتكار والتكيف مع مشهد العقارات المتغير، مع الحفاظ دائماً على المصالح الفضلى لعملائنا."
+      },
+      image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      yearsInBusiness: { en: "15+", ar: "15+" }
+    },
+    stats: [],
+    values: [],
+    team: [],
+    cta: {
+      title: {
+        en: "Ready to Find Your Dream Property?",
+        ar: "هل أنت مستعد للعثور على عقار أحلامك؟"
+      },
+      subtitle: {
+        en: "Let's work together to turn your real estate dreams into reality",
+        ar: "دعنا نعمل معاً لتحويل أحلامك العقارية إلى حقيقة"
+      }
+    },
+    contact: {
+      address: {
+        en: "123 Business Street\nCity, State 12345",
+        ar: "123 شارع الأعمال\nالمدينة، الولاية 12345"
+      },
+      phone: {
+        en: "+1 (555) 123-4567\nMon-Fri 9AM-6PM",
+        ar: "+1 (555) 123-4567\nالإثنين-الجمعة 9 ص-6 م"
+      },
+      email: {
+        en: "info@realestate.com\n24/7 Support",
+        ar: "info@realestate.com\nدعم على مدار الساعة"
+      }
+    }
+  };
+}
+
 // Reset about data to default
 async function resetAboutData() {
   const defaultData = {
@@ -158,7 +233,7 @@ async function resetAboutData() {
 export async function GET() {
   try {
     const existing = await prisma.aboutSettings.findUnique({ where: { id: 'default' } });
-    const aboutData = existing?.data ?? {};
+    const aboutData = deepMerge(getDefaultAboutSettings(), existing?.data ?? {});
     return NextResponse.json({ 
       success: true, 
       data: aboutData 
@@ -175,7 +250,8 @@ export async function GET() {
 // POST /api/about/settings - Update about settings
 export async function POST(request: NextRequest) {
   try {
-    const { about } = await request.json();
+    const body: any = await request.json();
+    const about = body?.about ?? body; // accept both wrapped and raw payloads
     
     if (!about) {
       return NextResponse.json(
@@ -184,14 +260,16 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    const mergedToStore = deepMerge(getDefaultAboutSettings(), about);
     await prisma.aboutSettings.upsert({
       where: { id: 'default' },
-      create: { id: 'default', data: about },
-      update: { data: about },
+      create: { id: 'default', data: mergedToStore },
+      update: { data: mergedToStore },
     });
     return NextResponse.json({ 
       success: true, 
-      message: 'About settings saved successfully' 
+      message: 'About settings saved successfully',
+      data: mergedToStore
     });
   } catch (error) {
     console.error('Error saving about data:', error);

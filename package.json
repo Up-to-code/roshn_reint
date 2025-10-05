@@ -23,7 +23,9 @@
     "fix-rls-now": "bun run scripts/execute-rls-fix.ts",
     "disable-rls": "bun run scripts/disable-rls-completely.ts",
     "fix-all": "bun run scripts/fix-everything.ts",
-    "force-fix": "bun run scripts/force-fix-now.ts"
+    "force-fix": "bun run scripts/force-fix-now.ts",
+    "import-content": "node scripts/import-content.cjs",
+    "fix-logo": "node scripts/fix-logo.cjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",

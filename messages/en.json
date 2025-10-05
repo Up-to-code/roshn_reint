@@ -384,6 +384,31 @@
       }
     }
   },
+  "about": {
+    "title": "About Us",
+    "subtitle": "A brief introduction",
+    "emailUs": "Email Us",
+    "contactUs": "Contact Us",
+    "complitet": "Completed",
+    "callUs": "Call Us",
+    "visitUs": "Visit Us",
+    "badge": "Completed",
+    "viewProperties": "View Properties",
+    "teamTitle": "Team",
+    "teamSubtitle": "The team managing this project",
+    "ourStory": "Our Story",
+    "storyTitle": "Our Story",
+    "storyParagraph1": "Story paragraph one",
+    "storyParagraph2": "Story paragraph two",
+    "storyParagraph3": "Story paragraph three",
+    "valuesTitle": "Work Values",
+    "ourValues": "Our Values",
+    "ourTeam": "Our Team",
+    "achievements": "Achievements",
+    "yearsInBusiness": "Years in Business",
+    "ctaTitle": "Ready to take the next step?",
+    "ctaSubtitle": "Let's work together to achieve your real estate goals"
+  },
   "dashboard": {
       "title": "Dashboard",
       "users": "Users",

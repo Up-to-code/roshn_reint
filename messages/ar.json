@@ -326,6 +326,7 @@
   },
    "about": {
     "title": "عن نحن",
+    "subtitle": "نبذة مختصرة عنا",
     "emailUs"  : "البريد الإلكتروني",
     "contactUs": "اتصل بنا",
   "complitet": "تم الاكتمال",
@@ -337,9 +338,16 @@
      "teamSubtitle": "الفريق الذي يتم إدارة هذا المشروع",
      "ourStory": "مقالنا",
      "storyTitle": "مقالنا",
+     "storyParagraph1": "الفقرة الأولى من القصة",
+     "storyParagraph2": "الفقرة الثانية من القصة",
+     "storyParagraph3": "الفقرة الثالثة من القصة",
      "valuesTitle": "قيم العمل",
+     "ourValues": "قيمنا",
+     "ourTeam": "فريقنا",
      "achievements": "النجاح",
-     "yearsInBusiness": "سنوات في العمل"
+     "yearsInBusiness": "سنوات في العمل",
+     "ctaTitle": "هل أنت مستعد لاتخاذ الخطوة التالية؟",
+     "ctaSubtitle": "دعنا نعمل معًا لتحقيق أحلامك العقارية"
   },
 
     "aboutEditor": {
@@ -347,6 +355,7 @@
       "preview": "معاينة",
       "reset": "إعادة تعيين",
       "save": "حفظ",
+      "saveError": "فشل حفظ بيانات من نحن",
       "tabs": {
         "hero": "البطل",
         "story": "القصة",
@@ -359,7 +368,10 @@
         "hero": {
           "title": "عنوان البطل",
           "badge": "شارة",
-          "subtitle": "عنوان فرعي"
+          "subtitle": "عنوان فرعي",
+          "badgePlaceholder": "أدخل الشارة",
+          "titlePlaceholder": "أدخل العنوان",
+          "subtitlePlaceholder": "أدخل العنوان الفرعي"
         },
         "story": {
           "title": "عنوان القصة",

@@ -104,11 +104,11 @@ export default async function Home({ params }: { params: { locale: string } }) {
       {/* Safe rendering with fallback */}
       <PartnersBanner logos={content.partners || []} />
       
-      <ApartmentsPage />
+      <ApartmentsPage  locale={locale} />
       {/* <BannersSection banners={content.banners} /> */}
       <WhyUsSection content={content.whyUs} />
       <AboutUsSection content={content.aboutUs} />
-      <TestimonialsSection content={content.testimonials} />
+      {/* <TestimonialsSection content={content.testimonials} /> */}
       <ContactUsSection content={content.contactUs} locale={locale} />
     </div>
   );

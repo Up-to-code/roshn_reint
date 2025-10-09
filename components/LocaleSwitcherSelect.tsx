@@ -10,6 +10,7 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import { useHomePageStore } from "@/store/home-page-store";
 import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 type Props = {
   label: string;
@@ -37,37 +38,48 @@ export default function LocaleSwitcherSelect({ label }: Props) {
     <Select value={currentLang} onValueChange={handleLocaleChange}>
       <SelectTrigger
         className={cn(
-          "h-9 w-[100px] border-zinc-700 bg-zinc-900 text-zinc-100",
-          "focus:ring-1 focus:ring-zinc-500 focus:ring-offset-0",
-          "hover:border-zinc-600 hover:bg-zinc-800",
-          "rounded-lg transition-colors"
+          "h-9 w-[100px] border-white/20 bg-white/10 text-white/90 backdrop-blur-xl",
+          "focus:ring-1 focus:ring-white/30 focus:ring-offset-0",
+          "hover:border-white/30 hover:bg-white/15",
+          "rounded-xl transition-all duration-300",
+          "flex items-center justify-between"
         )}
         aria-label={label}
       >
         <SelectValue />
+        <ChevronDown className="size-3 opacity-70" />
       </SelectTrigger>
       <SelectContent 
-        className="border-zinc-700 bg-zinc-900 text-zinc-100"
+        className={cn(
+          "border-white/20 bg-white/10 text-white/90 backdrop-blur-3xl",
+          "rounded-xl shadow-2xl"
+        )}
       >
         <SelectItem 
           value="ar" 
           className={cn(
-            "focus:bg-zinc-800 focus:text-zinc-100",
-            "rounded-md transition-colors",
-            currentLang === 'ar' && "bg-zinc-800 text-zinc-100"
+            "focus:bg-white/15 focus:text-white",
+            "rounded-lg transition-colors",
+            currentLang === 'ar' && "bg-white/15 text-white"
           )}
         >
-          العربية
+          <div className="flex items-center gap-2">
+            <span className="text-xs">🇸🇦</span>
+            <span>العربية</span>
+          </div>
         </SelectItem>
         <SelectItem 
           value="en"
           className={cn(
-            "focus:bg-zinc-800 focus:text-zinc-100",
-            "rounded-md transition-colors",
-            currentLang === 'en' && "bg-zinc-800 text-zinc-100"
+            "focus:bg-white/15 focus:text-white",
+            "rounded-lg transition-colors",
+            currentLang === 'en' && "bg-white/15 text-white"
           )}
         >
-          English
+          <div className="flex items-center gap-2">
+            <span className="text-xs">🇺🇸</span>
+            <span>English</span>
+          </div>
         </SelectItem>
       </SelectContent>
     </Select>

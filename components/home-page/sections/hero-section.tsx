@@ -1,9 +1,8 @@
-// components/home-page/sections/hero-section.tsx
 "use client";
 
 import { HeroSection as HeroSectionType } from "@/types/home-page";
 import { Button } from "@/components/ui/button";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 interface HeroSectionProps {
@@ -12,8 +11,11 @@ interface HeroSectionProps {
 
 export function HeroSection({ content }: HeroSectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+    
     if (videoRef.current) {
       videoRef.current.play().catch((error) => {
         console.log("Video autoplay failed:", error);
@@ -23,10 +25,44 @@ export function HeroSection({ content }: HeroSectionProps) {
 
   const Overlay = () => (
     <div
-      className="absolute inset-0 bg-black/60"
+      className="absolute inset-0 bg-black/10"
       aria-hidden="true"
     />
   );
+
+  // Don't render video on server to prevent hydration mismatch
+  const renderBackground = () => {
+    if (!isClient) {
+      // Server-side render fallback
+      return content.backgroundImage ? (
+        <img
+          src={content.backgroundImage}
+          alt={content.title || "Hero Background"}
+          className="h-full w-full object-cover"
+        />
+      ) : null;
+    }
+
+    return content.backgroundVideo ? (
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="h-full w-full object-cover"
+      >
+        <source src={content.backgroundVideo} type="video/mp4" />
+        <source src={content.backgroundVideo} type="video/webm" />
+      </video>
+    ) : content.backgroundImage ? (
+      <img
+        src={content.backgroundImage}
+        alt={content.title || "Hero Background"}
+        className="h-full w-full object-cover"
+      />
+    ) : null;
+  };
 
   return (
     <section
@@ -35,25 +71,7 @@ export function HeroSection({ content }: HeroSectionProps) {
     >
       {/* Background (Video or Image) */}
       <div className="absolute inset-0 z-0">
-        {content.backgroundVideo ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="size-full object-cover"
-          >
-            <source src={content.backgroundVideo} type="video/mp4" />
-            <source src={content.backgroundVideo} type="video/webm" />
-          </video>
-        ) : content.backgroundImage ? (
-          <img
-            src={content.backgroundImage}
-            alt={content.title || "Hero Background"}
-            className="size-full object-cover"
-          />
-        ) : null}
+        {renderBackground()}
         <Overlay />
       </div>
 
@@ -72,40 +90,7 @@ export function HeroSection({ content }: HeroSectionProps) {
           </p>
         )}
 
-        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-          {content.primaryButton?.text && (
-            <Button
-              asChild
-              size="lg"
-              className="rounded-xl bg-[#FF8C42] px-8 py-3 text-base font-semibold text-white shadow-lg transition hover:bg-[#FF8C42]/90 focus:outline-none focus:ring-2 focus:ring-[#FF8C42]/70 focus:ring-offset-2 focus:ring-offset-black"
-            >
-              {content.primaryButton.link ? (
-                <Link href={content.primaryButton.link}>
-                  {content.primaryButton.text}
-                </Link>
-              ) : (
-                <span>{content.primaryButton.text}</span>
-              )}
-            </Button>
-          )}
-
-          {content.secondaryButton?.text && (
-            <Button
-              asChild
-              size="lg"
-              variant="outline"
-              className="rounded-xl border border-white/80 bg-white/10 px-8 py-3 text-base font-medium text-white backdrop-blur-sm transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-black"
-            >
-              {content.secondaryButton.link ? (
-                <Link href={content.secondaryButton.link}>
-                  {content.secondaryButton.text}
-                </Link>
-              ) : (
-                <span>{content.secondaryButton.text}</span>
-              )}
-            </Button>
-          )}
-        </div>
+   
       </div>
 
       {/* Scroll indicator */}

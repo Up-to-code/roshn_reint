@@ -1,160 +1,114 @@
+"use client";
+import React, { useState, useEffect } from 'react';
 import { Property, PropertyStatus } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
 import { 
   Heart, 
-  MapPin, 
-  Bed, 
-  Bath, 
-  Maximize,
   Building
 } from 'lucide-react';
 import Link from 'next/link';
-import { getTranslations } from 'next-intl/server';
-import { getLocale } from 'next-intl/server';
 
-// Simple translation helper
-const t = (ar: string, en: string, locale: string) => locale === 'ar' ? ar : en;
+interface HomePropertiesGridProps {
+  locale: string;
+}
 
-// Format price
-const formatPrice = (price: number) => new Intl.NumberFormat('en-US').format(price);
+export default function HomePropertiesGrid({ locale }: HomePropertiesGridProps) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  const [imageErrors, setImageErrors] = useState<{[key: string]: boolean}>({});
+  const isRTL = locale === 'ar';
 
-// Get localized content
-const getLocalizedTitle = (property: Property, locale: string) => 
-  locale === 'ar' ? property.titleAr : property.titleEn;
+  // Fetch properties on client side
+  useEffect(() => {
+    async function fetchProperties() {
+      try {
+        const response = await fetch('/api/properties');
+        if (response.ok) {
+          const data = await response.json();
+          setProperties(data);
+        }
+      } catch (error) {
+        console.error('Error fetching properties:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
 
-const getStatusText = (status: PropertyStatus, locale: string) => {
-  const statusMap = {
-    [PropertyStatus.AVAILABLE]: t('متاح', 'Available', locale),
-    [PropertyStatus.RENTED]: t('مؤجر', 'Rented', locale),
-    [PropertyStatus.SOLD]: t('مباع', 'Sold', locale)
+    fetchProperties();
+  }, []);
+
+  const toggleFavorite = (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(fav => fav !== id) : [...prev, id]
+    );
   };
-  return statusMap[status] || status;
-};
 
-// Fetch properties server-side
-async function getProperties() {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/properties`, {
-      cache: 'no-store'
-    });
-    if (!response.ok) throw new Error('Failed to fetch');
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching properties:', error);
-    return [];
-  }
-}
+  const handleImageError = (propertyId: string) => {
+    setImageErrors(prev => ({ ...prev, [propertyId]: true }));
+  };
 
-// Property Card Component
-function PropertyCard({ property, locale }: { property: Property; locale: string }) {
-  const isRTL = locale === 'ar';
-  
-  return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
-        {property.images?.[0] ? (
-          <img 
-            src={property.images[0]} 
-            alt={getLocalizedTitle(property, locale)}
-            className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        ) : (
-          <div className="flex size-full items-center justify-center bg-zinc-100 dark:bg-zinc-800">
-            <Building className="size-12 text-zinc-400 dark:text-zinc-600" />
-          </div>
-        )}
-        
-        {/* Status Badge */}
-        <div className={`absolute ${isRTL ? 'right-4' : 'left-4'} top-4`}>
-          <Badge 
-            variant="secondary"
-            className="bg-white/90 text-xs font-medium dark:bg-zinc-900/90"
-          >
-            {getStatusText(property.status, locale)}
-          </Badge>
-        </div>
-        
-        {/* Favorite Button */}
-        <button
-          className={`absolute ${isRTL ? 'left-4' : 'right-4'} top-4 flex size-8 items-center justify-center rounded-full bg-white/90 shadow-sm transition-all hover:scale-110 dark:bg-zinc-900/90`}
-        >
-          <Heart className="size-4 text-zinc-600 transition-colors hover:text-red-500 dark:text-zinc-400" />
-        </button>
+  // Format price
+  const formatPrice = (price: number) => new Intl.NumberFormat('en-US').format(price);
 
-        {/* Price */}
-        <div className={`absolute ${isRTL ? 'right-4' : 'left-4'} bottom-4`}>
-          <div className="rounded bg-black/70 px-3 py-1 text-white">
-            <span className="text-lg font-bold">
-              {formatPrice(property.price)}
-            </span>
-            <span className="ml-1 text-xs">
-              {t('ريال', 'SAR', locale)}
-            </span>
-          </div>
-        </div>
-      </div>
+  // Get localized content
+  const getLocalizedTitle = (property: Property) => 
+    locale === 'ar' ? property.titleAr : property.titleEn;
 
-      {/* Content */}
-      <CardContent className="p-5 dark:bg-zinc-900">
-        {/* Title */}
-        <h3 className="mb-2 line-clamp-1 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          {getLocalizedTitle(property, locale)}
-        </h3>
+  const getStatusText = (status: PropertyStatus) => {
+    const statusMap = {
+      [PropertyStatus.AVAILABLE]: locale === 'ar' ? 'متاح' : 'Available',
+      [PropertyStatus.RENTED]: locale === 'ar' ? 'مؤجر' : 'Rented',
+      [PropertyStatus.SOLD]: locale === 'ar' ? 'مباع' : 'Sold'
+    };
+    return statusMap[status] || status;
+  };
 
-        {/* Location */}
-        <div className="mb-3 flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
-          <MapPin className="size-4" />
-          <span>{property.city}</span>
-        </div>
-
-        {/* Features */}
-        <div className="mb-4 flex items-center gap-4 text-sm text-zinc-700 dark:text-zinc-300">
-          <div className="flex items-center gap-1">
-            <Bed className="size-4" />
-            <span>{property.bedrooms}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Bath className="size-4" />
-            <span>{property.bathrooms}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Maximize className="size-4" />
-            <span>{property.area}m²</span>
-          </div>
-        </div>
-
-        {/* View Button */}
-        <Button asChild className="w-full">
-          <Link href={`/${locale}/properties/${property.id}`}>
-            {t('عرض التفاصيل', 'View Details', locale)}
-          </Link>
-        </Button>
-      </CardContent>
-    </Card>
-  );
-}
-
-// Main Component
-export default async function HomePropertiesGrid() {
-  // Get current locale from server
-  const locale = await getLocale();
-  const properties = await getProperties();
   const displayProperties = properties.slice(0, 3);
-  const isRTL = locale === 'ar';
-  
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <section className="bg-gradient-to-br from-slate-50 to-slate-100 py-16">
+        <div className="container mx-auto px-4">
+          {/* Header Skeleton */}
+          <div className="mb-10 text-center">
+            <Skeleton className="mx-auto mb-3 h-10 w-96" />
+            <Skeleton className="mx-auto h-6 w-64" />
+          </div>
+
+          {/* Grid Skeleton */}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(3)].map((_, index) => (
+              <Card key={index} className="overflow-hidden border-0 shadow-md">
+                <Skeleton className="h-96 w-full" />
+                <CardContent className="p-4">
+                  <Skeleton className="mb-2 h-6 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="bg-zinc-50 py-16 dark:bg-zinc-950">
+    <section className="bg-gradient-to-br from-slate-50 to-slate-100 py-16">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h2 className="mb-3 text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-            {t('عقارات مميزة', 'Featured Properties', locale)}
+          <h2 className="mb-3 text-3xl font-bold text-slate-900">
+            {locale === 'ar' ? 'عقارات مميزة' : 'Featured Properties'}
           </h2>
-          <p className="mx-auto max-w-2xl text-lg text-zinc-600 dark:text-zinc-400">
-            {t('اكتشف أفضل العقارات', 'Discover the best properties', locale)}
+          <p className="mx-auto max-w-2xl text-lg text-slate-600">
+            {locale === 'ar' ? 'اكتشف أفضل العقارات' : 'Discover the best properties'}
           </p>
         </div>
 
@@ -163,20 +117,85 @@ export default async function HomePropertiesGrid() {
           <>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {displayProperties.map((property) => (
-                <PropertyCard 
-                  key={property.id} 
-                  property={property} 
-                  locale={locale} 
-                />
+                <Link 
+                  href={`/${locale}/p/${property.id}`}
+                  key={property.id}
+                  className="group block overflow-hidden rounded-2xl border-0 shadow-md transition-all hover:shadow-2xl"
+                >
+                  {/* Image Section - Very tall 2:1 aspect ratio (like 720x360) */}
+                  <div className="relative h-96 w-full overflow-hidden">
+                    {property.images && property.images.length > 0 && !imageErrors[property.id] ? (
+                      <img 
+                        src={property.images[0]} 
+                        alt={getLocalizedTitle(property)}
+                        className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={() => handleImageError(property.id)}
+                      />
+                    ) : (
+                      <div className="flex size-full items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300">
+                        <Building className="size-20 text-slate-400" />
+                      </div>
+                    )}
+                    
+                    {/* Dark Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+                    
+                    {/* Content Overlay */}
+                    <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                      {/* Status Badge */}
+                      <div className="mb-3">
+                        <Badge className="rounded-full border-0 bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                          {getStatusText(property.status)}
+                        </Badge>
+                      </div>
+                      
+                      {/* Title */}
+                      <h3 className="mb-2 line-clamp-2 text-xl font-bold">
+                        {getLocalizedTitle(property)}
+                      </h3>
+                      
+                      {/* Price */}
+                      <div className="flex items-center justify-between">
+                        <p className="text-2xl font-bold">
+                          {formatPrice(property.price)}
+                          <span className="ml-2 text-lg font-normal">
+                            {locale === 'ar' ? 'ريال' : 'SAR'}
+                          </span>
+                        </p>
+                        
+                        {/* Favorite Button */}
+                        <Button 
+                          variant="secondary" 
+                          size="icon"
+                          className="size-10 rounded-full bg-white/20 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white/30"
+                          onClick={(e) => toggleFavorite(property.id, e)}
+                        >
+                          <Heart 
+                            className={`size-5 transition-all ${
+                              favorites.includes(property.id) 
+                                ? 'scale-110 fill-red-500 text-red-500' 
+                                : 'text-white'
+                            }`} 
+                          />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
               ))}
             </div>
 
             {/* View All Button */}
-            <div className="mt-10 text-center">
-              <Button asChild variant="outline" size="lg" className="px-8 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:hover:bg-zinc-800">
+            <div className="mt-12 text-center">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="rounded-xl border-2 px-8 py-6 text-base font-semibold hover:border-blue-600 hover:bg-blue-50 hover:text-blue-600"
+                asChild
+              >
                 <Link href={`/${locale}/p`} className={isRTL ? 'flex-row-reverse' : ''}>
-                  {t('عرض كل العقارات', 'View All Properties', locale)}
-                  <span className={`ml-2 rounded bg-zinc-100 px-2 py-1 text-sm dark:bg-zinc-800 ${isRTL ? 'ml-0 mr-2' : ''}`}>
+                  {locale === 'ar' ? 'عرض كل العقارات' : 'View All Properties'}
+                  <span className={`ml-2 rounded bg-slate-100 px-2 py-1 text-sm ${isRTL ? 'ml-0 mr-2' : ''}`}>
                     {properties.length}
                   </span>
                 </Link>
@@ -186,13 +205,16 @@ export default async function HomePropertiesGrid() {
         ) : (
           // Empty State
           <div className="mx-auto max-w-md text-center">
-            <Building className="mx-auto mb-4 size-16 text-zinc-400 dark:text-zinc-600" />
-            <h3 className="mb-2 text-xl font-semibold text-zinc-900 dark:text-zinc-100">
-              {t('لا توجد عقارات', 'No Properties', locale)}
+            <Building className="mx-auto mb-4 size-16 text-slate-400" />
+            <h3 className="mb-2 text-xl font-semibold text-slate-900">
+              {locale === 'ar' ? 'لا توجد عقارات' : 'No Properties'}
             </h3>
-            <p className="mb-6 text-zinc-600 dark:text-zinc-400">
-              {t('تفقد لاحقاً', 'Check back later', locale)}
+            <p className="mb-6 text-slate-600">
+              {locale === 'ar' ? 'تفقد لاحقاً' : 'Check back later'}
             </p>
+            <Button className="rounded-xl px-8 py-6">
+              {locale === 'ar' ? 'استكشاف العقارات' : 'Explore Properties'}
+            </Button>
           </div>
         )}
       </div>

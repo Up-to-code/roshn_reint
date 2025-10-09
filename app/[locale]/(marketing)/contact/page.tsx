@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Phone, Mail, Clock, Send, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Send, CheckCircle, AlertCircle } from "lucide-react";
 
 interface ContactPageProps {
   params: {
@@ -45,7 +46,6 @@ export default function ContactPage({ params }: ContactPageProps) {
   useEffect(() => {
     const fetchContactData = async () => {
       try {
-        // Use absolute URL for API call
         const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
         const response = await fetch(`${baseUrl}/api/home-page?locale=${locale}`, {
           cache: 'no-store',
@@ -60,11 +60,9 @@ export default function ContactPage({ params }: ContactPageProps) {
 
         const data = await response.json();
         
-        // Extract contactUs section from the home page data
         if (data.contactUs) {
           setContent(data.contactUs);
         } else {
-          // Fallback content if no data from API
           setContent({
             enabled: true,
             title: locale === "ar" ? "تواصل معنا" : "Contact Us",
@@ -84,7 +82,6 @@ export default function ContactPage({ params }: ContactPageProps) {
         }
       } catch (error) {
         console.error('Error fetching contact data:', error);
-        // Fallback content in case of error
         setContent({
           enabled: true,
           title: locale === "ar" ? "تواصل معنا" : "Contact Us",
@@ -123,8 +120,6 @@ export default function ContactPage({ params }: ContactPageProps) {
     setStatus(null);
     
     try {
-      console.log('Submitting form data:', formData);
-
       const response = await fetch('/api/contacts', {
         method: 'POST',
         headers: {
@@ -133,7 +128,6 @@ export default function ContactPage({ params }: ContactPageProps) {
         body: JSON.stringify(formData),
       });
 
-      // Check if response is JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         const text = await response.text();
@@ -150,7 +144,6 @@ export default function ContactPage({ params }: ContactPageProps) {
         });
         setFormData({ name: '', phoneNumber: '', message: '' });
       } else {
-        // Handle API validation errors
         const errorMessage = result.errors?.[0]?.message || 
                             result.message || 
                             `Error: ${response.status} ${response.statusText}`;
@@ -186,11 +179,11 @@ export default function ContactPage({ params }: ContactPageProps) {
   // Show loading state
   if (loading || !content) {
     return (
-      <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">
+      <section className="py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
-              <div className="size-1.5 animate-pulse rounded-full bg-zinc-500"></div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border bg-muted px-4 py-2 text-sm font-medium text-muted-foreground">
+              <div className="size-1.5 animate-pulse rounded-full bg-primary"></div>
               {locale === "ar" ? "جاري التحميل..." : "Loading..."}
             </div>
           </div>
@@ -202,13 +195,13 @@ export default function ContactPage({ params }: ContactPageProps) {
   // Early return if content is not enabled
   if (!content.enabled) {
     return (
-      <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">
+      <section className="py-16 md:py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="mb-4 text-3xl font-bold text-zinc-900 dark:text-zinc-100 md:text-5xl">
+            <h2 className="mb-4 text-3xl font-bold md:text-5xl">
               {locale === "ar" ? "الصفحة غير متوفرة" : "Page Not Available"}
             </h2>
-            <p className="mx-auto max-w-3xl text-lg font-light leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
+            <p className="mx-auto max-w-3xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
               {locale === "ar" ? "عذراً، صفحة الاتصال غير متاحة حالياً." : "Sorry, the contact page is currently unavailable."}
             </p>
           </div>
@@ -218,159 +211,84 @@ export default function ContactPage({ params }: ContactPageProps) {
   }
 
   return (
-    <section className="bg-zinc-50 py-16 dark:bg-zinc-900 md:py-20">
+    <section className="my-40 py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-12 text-center md:mb-16">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100 px-4 py-2 text-sm font-medium text-zinc-600 dark:border-zinc-800 dark:bg-zinc-800 dark:text-zinc-400">
-            <div className="size-1.5 animate-pulse rounded-full bg-zinc-500"></div>
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border bg-muted px-4 py-2 text-sm font-medium text-muted-foreground">
+            <div className="size-1.5 animate-pulse rounded-full bg-primary"></div>
             {locale === "ar" ? "جاهز للتواصل" : "Ready to Connect"}
           </div>
-          <h2 className="mb-4 text-3xl font-bold text-zinc-900 dark:text-zinc-100 md:text-5xl">
+          <h2 className="mb-4 text-3xl font-bold md:text-5xl">
             {content.title}
           </h2>
-          <p className="mx-auto max-w-3xl text-lg font-light leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-xl">
+          <p className="mx-auto max-w-3xl text-lg font-light leading-relaxed text-muted-foreground md:text-xl">
             {content.subtitle}
           </p>
         </div>
 
-        <div className={`grid items-start gap-12 lg:grid-cols-2 lg:gap-16 ${isRTL ? "lg:grid-flow-col-dense" : ""}`}>
-          {/* Contact Information */}
-          <div className={isRTL ? "lg:order-2" : "lg:order-1"}>
-            <div className="bg-zinc-900 p-8 text-zinc-100 dark:bg-zinc-950 md:p-10">
-              <div>
-                <h3 className="mb-4 text-2xl font-bold text-zinc-100 md:text-4xl">
-                  {locale === "ar" ? "لنتحدث" : "Let's Talk"}
-                </h3>
-                <p className="mb-8 text-base font-light text-zinc-400 md:text-lg">
-                  {locale === "ar" ? "اختر طريقتك المفضلة للتواصل معنا" : "Choose your preferred method to reach us"}
-                </p>
-                
-                <div className="space-y-6">
-                  <div className={`group flex cursor-pointer items-start gap-4 p-4 transition-all duration-300 hover:bg-zinc-800 ${isRTL ? "flex-row-reverse" : ""}`}>
-                    <div className="bg-zinc-700 p-3">
-                      <MapPin className="size-5 text-zinc-100" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="mb-2 text-base font-bold text-zinc-100 md:text-lg">
-                        {locale === "ar" ? "موقعنا" : "Our Location"}
-                      </h4>
-                      <p className="text-sm leading-relaxed text-zinc-400 md:text-base">
-                        {content.contactInfo.address}
-                      </p>
-                    </div>
-                    <ArrowRight className={`size-4 text-zinc-500 opacity-0 transition-all duration-300 group-hover:opacity-100 ${isRTL ? "rotate-180" : ""}`} />
-                  </div>
-
-                  <div className={`group flex cursor-pointer items-start gap-4 p-4 transition-all duration-300 hover:bg-zinc-800 ${isRTL ? "flex-row-reverse" : ""}`}>
-                    <div className="bg-zinc-700 p-3">
-                      <Phone className="size-5 text-zinc-100" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="mb-2 text-base font-bold text-zinc-100 md:text-lg">
-                        {locale === "ar" ? "رقم الهاتف" : "Phone Number"}
-                      </h4>
-                      <p className="text-sm text-zinc-400 md:text-base">
-                        {content.contactInfo.phone}
-                      </p>
-                    </div>
-                    <ArrowRight className={`size-4 text-zinc-500 opacity-0 transition-all duration-300 group-hover:opacity-100 ${isRTL ? "rotate-180" : ""}`} />
-                  </div>
-
-                  <div className={`group flex cursor-pointer items-start gap-4 p-4 transition-all duration-300 hover:bg-zinc-800 ${isRTL ? "flex-row-reverse" : ""}`}>
-                    <div className="bg-zinc-700 p-3">
-                      <Mail className="size-5 text-zinc-100" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="mb-2 text-base font-bold text-zinc-100 md:text-lg">
-                        {locale === "ar" ? "البريد الإلكتروني" : "Email Address"}
-                      </h4>
-                      <p className="text-sm text-zinc-400 md:text-base">
-                        {content.contactInfo.email}
-                      </p>
-                    </div>
-                    <ArrowRight className={`size-4 text-zinc-500 opacity-0 transition-all duration-300 group-hover:opacity-100 ${isRTL ? "rotate-180" : ""}`} />
-                  </div>
-
-                  <div className={`group flex cursor-pointer items-start gap-4 p-4 transition-all duration-300 hover:bg-zinc-800 ${isRTL ? "flex-row-reverse" : ""}`}>
-                    <div className="bg-zinc-700 p-3">
-                      <Clock className="size-5 text-zinc-100" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="mb-2 text-base font-bold text-zinc-100 md:text-lg">
-                        {locale === "ar" ? "ساعات العمل" : "Working Hours"}
-                      </h4>
-                      <p className="text-sm text-zinc-400 md:text-base">
-                        {content.contactInfo.workingHours}
-                      </p>
-                    </div>
-                    <ArrowRight className={`size-4 text-zinc-500 opacity-0 transition-all duration-300 group-hover:opacity-100 ${isRTL ? "rotate-180" : ""}`} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          {content.form?.enabled && (
-            <div className={`border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900 md:p-10 ${isRTL ? "lg:order-1" : "lg:order-2"}`}>
-              <div>
-                <div className="mb-8">
-                  <h3 className="mb-4 text-2xl font-bold text-zinc-900 dark:text-zinc-100 md:text-4xl">
-                    {locale === "ar" ? "إرسال رسالة" : "Send Message"}
-                  </h3>
-                  <p className="text-base font-light text-zinc-500 dark:text-zinc-400 md:text-lg">
-                    {locale === "ar" ? "سنتواصل معك خلال 24 ساعة" : "We'll get back to you within 24 hours"}
-                  </p>
-                </div>
-                
+        {/* Contact Form Card */}
+        {content.form?.enabled && (
+          <div className="mx-auto max-w-2xl">
+            <Card className="border-2">
+              <CardHeader className="text-center">
+                <CardTitle className="text-2xl md:text-3xl">
+                  {locale === "ar" ? "إرسال رسالة" : "Send Message"}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {locale === "ar" ? "سنتواصل معك خلال 24 ساعة" : "We'll get back to you within 24 hours"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                  {/* Name Field */}
-                  <div className="group">
-                    <label className={`mb-2 block text-sm font-semibold tracking-wide text-zinc-900 dark:text-zinc-100 ${isRTL ? "text-right" : ""}`}>
-                      {locale === "ar" ? "الاسم الكامل" : "Full Name"} <span className="text-zinc-500">*</span>
-                    </label>
-                    <Input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      required
-                      minLength={2}
-                      placeholder={locale === "ar" ? "أدخل اسمك الكامل" : "Enter your full name"}
-                      className={`h-12 border-2 border-zinc-200 font-medium text-zinc-900 transition-all duration-300 placeholder:text-zinc-400 focus:border-zinc-500 group-hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-600 dark:group-hover:border-zinc-600 ${isRTL ? "text-right" : ""}`}
-                      dir={isRTL ? "rtl" : "ltr"}
-                    />
-                    <p className="mt-1 text-xs text-zinc-500">
-                      {locale === "ar" ? "يجب أن يكون الاسم على الأقل حرفين" : "Name must be at least 2 characters"}
-                    </p>
-                  </div>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    {/* Name Field */}
+                    <div className="space-y-2">
+                      <label className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${isRTL ? "text-right" : ""}`}>
+                        {locale === "ar" ? "الاسم الكامل" : "Full Name"} <span className="text-destructive">*</span>
+                      </label>
+                      <Input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        minLength={2}
+                        placeholder={locale === "ar" ? "أدخل اسمك الكامل" : "Enter your full name"}
+                        className={isRTL ? "text-right" : ""}
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {locale === "ar" ? "يجب أن يكون الاسم على الأقل حرفين" : "Name must be at least 2 characters"}
+                      </p>
+                    </div>
 
-                  {/* Phone Field */}
-                  <div className="group">
-                    <label className={`mb-2 block text-sm font-semibold tracking-wide text-zinc-900 dark:text-zinc-100 ${isRTL ? "text-right" : ""}`}>
-                      {locale === "ar" ? "رقم الهاتف" : "Phone Number"} <span className="text-zinc-500">*</span>
-                    </label>
-                    <Input
-                      type="tel"
-                      name="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={handleChange}
-                      required
-                      minLength={5}
-                      placeholder={locale === "ar" ? "أدخل رقم هاتفك" : "Enter your phone number"}
-                      className={`h-12 border-2 border-zinc-200 font-medium text-zinc-900 transition-all duration-300 placeholder:text-zinc-400 focus:border-zinc-500 group-hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-600 dark:group-hover:border-zinc-600 ${isRTL ? "text-right" : ""}`}
-                      dir={isRTL ? "rtl" : "ltr"}
-                    />
-                    <p className="mt-1 text-xs text-zinc-500">
-                      {locale === "ar" ? "يجب أن يكون رقم الهاتف على الأقل 5 أرقام" : "Phone number must be at least 5 characters"}
-                    </p>
+                    {/* Phone Field */}
+                    <div className="space-y-2">
+                      <label className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${isRTL ? "text-right" : ""}`}>
+                        {locale === "ar" ? "رقم الهاتف" : "Phone Number"} <span className="text-destructive">*</span>
+                      </label>
+                      <Input
+                        type="tel"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                        required
+                        minLength={5}
+                        placeholder={locale === "ar" ? "أدخل رقم هاتفك" : "Enter your phone number"}
+                        className={isRTL ? "text-right" : ""}
+                        dir={isRTL ? "rtl" : "ltr"}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {locale === "ar" ? "يجب أن يكون رقم الهاتف على الأقل 5 أرقام" : "Phone number must be at least 5 characters"}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Message Field */}
-                  <div className="group">
-                    <label className={`mb-2 block text-sm font-semibold tracking-wide text-zinc-900 dark:text-zinc-100 ${isRTL ? "text-right" : ""}`}>
-                      {locale === "ar" ? "رسالتك" : "Your Message"} <span className="text-zinc-500">*</span>
+                  <div className="space-y-2">
+                    <label className={`text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ${isRTL ? "text-right" : ""}`}>
+                      {locale === "ar" ? "رسالتك" : "Your Message"} <span className="text-destructive">*</span>
                     </label>
                     <Textarea
                       name="message"
@@ -380,10 +298,10 @@ export default function ContactPage({ params }: ContactPageProps) {
                       minLength={10}
                       rows={6}
                       placeholder={locale === "ar" ? "اكتب رسالتك هنا..." : "Write your message here..."}
-                      className={`resize-none border-2 border-zinc-200 font-medium text-zinc-900 transition-all duration-300 placeholder:text-zinc-400 focus:border-zinc-500 group-hover:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-100 dark:placeholder:text-zinc-500 dark:focus:border-zinc-600 dark:group-hover:border-zinc-600 ${isRTL ? "text-right" : ""}`}
+                      className={isRTL ? "text-right" : ""}
                       dir={isRTL ? "rtl" : "ltr"}
                     />
-                    <p className="mt-1 text-xs text-zinc-500">
+                    <p className="text-xs text-muted-foreground">
                       {locale === "ar" ? "يجب أن تكون الرسالة على الأقل 10 أحرف" : "Message must be at least 10 characters"}
                     </p>
                   </div>
@@ -396,9 +314,9 @@ export default function ContactPage({ params }: ContactPageProps) {
                         : 'bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-400'
                     } ${isRTL ? "flex-row-reverse" : ""}`}>
                       {status.type === 'success' ? (
-                        <CheckCircle className="size-5 flex-shrink-0" />
+                        <CheckCircle className="size-5 shrink-0" />
                       ) : (
-                        <AlertCircle className="size-5 flex-shrink-0" />
+                        <AlertCircle className="size-5 shrink-0" />
                       )}
                       <p className="text-sm font-medium">{status.message}</p>
                     </div>
@@ -407,16 +325,17 @@ export default function ContactPage({ params }: ContactPageProps) {
                   <Button 
                     type="submit" 
                     disabled={isLoading}
-                    className={`h-12 w-full bg-zinc-900 text-base font-bold text-zinc-100 transition-all duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 ${isRTL ? "flex-row-reverse" : ""}`}
+                    className="w-full"
+                    size="lg"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
-                        <div className="size-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-zinc-900 dark:border-t-transparent"></div>
+                        <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
                         {locale === "ar" ? "جاري الإرسال..." : "Sending..."}
                       </span>
                     ) : (
                       <span className={`flex items-center justify-center gap-2 ${isRTL ? "flex-row-reverse" : ""}`}>
-                        <Send className={`size-4 transition-transform duration-300 ${isRTL ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
+                        <Send className="size-4" />
                         {locale === "ar" ? "إرسال الرسالة" : "Send Message"}
                       </span>
                     )}
@@ -424,34 +343,36 @@ export default function ContactPage({ params }: ContactPageProps) {
 
                   {/* Trust indicator */}
                   <div className="text-center">
-                    <p className="text-sm font-medium text-zinc-400 dark:text-zinc-500">
+                    <p className="text-sm text-muted-foreground">
                       🔒 {locale === "ar" ? "معلوماتك آمنة ومشفرة" : "Your information is secure and encrypted"}
                     </p>
                   </div>
                 </form>
-              </div>
-            </div>
-          )}
-        </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Additional CTA Section */}
-        <div className="mt-12 text-center md:mt-16">
-          <div className="border border-zinc-200 bg-zinc-100 p-8 dark:border-zinc-800 dark:bg-zinc-800 md:p-12">
-            <h3 className="mb-4 text-2xl font-bold text-zinc-900 dark:text-zinc-100 md:text-3xl">
-              {locale === "ar" ? "هل لديك أسئلة أخرى؟" : "Still have questions?"}
-            </h3>
-            <p className="mx-auto mb-6 max-w-2xl text-base text-zinc-600 dark:text-zinc-400 md:mb-8 md:text-lg">
-              {locale === "ar" ? "فريقنا هنا لمساعدتك في الحصول على الإجابات التي تحتاجها." : "Our team is here to help you get the answers you need."}
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Button className="bg-zinc-900 px-6 py-3 text-base font-bold text-zinc-100 transition-all duration-300 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200">
-                {locale === "ar" ? "جدولة مكالمة" : "Schedule a Call"}
-              </Button>
-              <Button variant="outline" className="border-2 border-zinc-900 px-6 py-3 text-base font-bold text-zinc-900 transition-all duration-300 hover:bg-zinc-900 hover:text-zinc-100 dark:border-zinc-100 dark:text-zinc-100 dark:hover:bg-zinc-100 dark:hover:text-zinc-900">
-                {locale === "ar" ? "محادثة مباشرة" : "Live Chat"}
-              </Button>
-            </div>
-          </div>
+        <div className="mt-16 text-center">
+          <Card className="border-2">
+            <CardContent className="p-8 md:p-12">
+              <CardTitle className="mb-4 text-2xl md:text-3xl">
+                {locale === "ar" ? "هل لديك أسئلة أخرى؟" : "Still have questions?"}
+              </CardTitle>
+              <CardDescription className="mx-auto mb-6 max-w-2xl text-base md:mb-8 md:text-lg">
+                {locale === "ar" ? "فريقنا هنا لمساعدتك في الحصول على الإجابات التي تحتاجها." : "Our team is here to help you get the answers you need."}
+              </CardDescription>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Button size="lg">
+                  {locale === "ar" ? "جدولة مكالمة" : "Schedule a Call"}
+                </Button>
+                <Button variant="outline" size="lg">
+                  {locale === "ar" ? "محادثة مباشرة" : "Live Chat"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

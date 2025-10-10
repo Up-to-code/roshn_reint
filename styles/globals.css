@@ -52,53 +52,6 @@
     --tracking-normal: 0em;
     --spacing: 0.25rem;
   }
-  
-  .dark {
-    --background: 223.8136 0.0000% 3.9388%;
-    --foreground: 223.8136 0.0004% 98.0256%;
-    --card: 223.8136 0.0000% 9.0527%;
-    --card-foreground: 223.8136 0.0004% 98.0256%;
-    --popover: 223.8136 0.0000% 14.9382%;
-    --popover-foreground: 223.8136 0.0004% 98.0256%;
-    --primary: 29.6154 100% 69.4118%;
-    --primary-foreground: 223.8136 0.0000% 9.0527%;
-    --secondary: 223.8136 0.0000% 14.9382%;
-    --secondary-foreground: 223.8136 0.0004% 98.0256%;
-    --muted: 223.8136 0.0000% 14.9382%;
-    --muted-foreground: 223.8136 0.0000% 63.0163%;
-    --accent: 223.8136 0.0000% 25.0471%;
-    --accent-foreground: 223.8136 0.0004% 98.0256%;
-    --destructive: 358.7594 101.8439% 69.8357%;
-    --destructive-foreground: 223.8136 0.0004% 98.0256%;
-    --border: 223.8136 0.0000% 15.5096%;
-    --input: 223.8136 0.0000% 20.3885%;
-    --ring: 223.8136 0.0000% 45.1519%;
-    --chart-1: 211.7880 101.9718% 78.6759%;
-    --chart-2: 217.4076 91.3672% 59.5787%;
-    --chart-3: 221.4336 86.3731% 54.0624%;
-    --chart-4: 223.6587 78.7180% 47.8635%;
-    --chart-5: 226.5426 70.0108% 39.9224%;
-    --sidebar: 223.8136 0.0000% 9.0527%;
-    --sidebar-foreground: 223.8136 0.0004% 98.0256%;
-    --sidebar-primary: 225.3451 84.0953% 48.9841%;
-    --sidebar-primary-foreground: 223.8136 0.0004% 98.0256%;
-    --sidebar-accent: 223.8136 0.0000% 14.9382%;
-    --sidebar-accent-foreground: 223.8136 0.0004% 98.0256%;
-    --sidebar-border: 223.8136 0.0000% 15.5096%;
-    --sidebar-ring: 223.8136 0.0000% 32.1993%;
-    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --radius: 0.625rem;
-    --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
-    --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-    --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 1px 2px -1px hsl(0 0% 0% / 0.10);
-    --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 2px 4px -1px hsl(0 0% 0% / 0.10);
-    --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 4px 6px -1px hsl(0 0% 0% / 0.10);
-    --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.10), 0 8px 10px -1px hsl(0 0% 0% / 0.10);
-    --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
-  }
 
 }
 
@@ -200,7 +153,7 @@ html {
 }
 
 .ProseMirror blockquote {
-  @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 my-4 italic;
+  @apply border-l-4 border-gray-300 pl-4 my-4 italic;
 }
 
 .ProseMirror img {
@@ -213,4 +166,39 @@ html {
 
 .ProseMirror .ProseMirror-selectednode {
   @apply outline-2 outline-blue-500 outline;
+}
+
+/* RTL Support for Arabic */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .ProseMirror ul, 
+[dir="rtl"] .ProseMirror ol {
+  @apply pr-6 pl-0;
+}
+
+[dir="rtl"] .ProseMirror blockquote {
+  @apply border-r-4 border-l-0 border-gray-300 pr-4 pl-0;
+}
+
+/* Ensure proper RTL layout */
+.rtl-support {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl-support .step:before {
+  @apply mr-[-50px] ml-0;
+}
+
+/* Remove any dark mode related styles */
+.light-mode-only {
+  color-scheme: light only;
+}
+
+/* Ensure all elements use light theme */
+* {
+  color-scheme: light;
 }

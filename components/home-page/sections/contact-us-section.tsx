@@ -70,7 +70,7 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
   };
 
   return (
-    <section className="mx-4 rounded-3xl bg-zinc-900 py-16 md:mx-10 md:py-20">
+    <section className="mx-auto my-40 max-w-7xl rounded-3xl bg-zinc-900 py-16 md:mx-10 md:py-20">
       <div className="container mx-auto px-4">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           
@@ -152,9 +152,9 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
                       : 'bg-red-500/20 text-red-300'
                   }`}>
                     {status.type === 'success' ? (
-                      <CheckCircle className="mt-0.5 size-5 flex-shrink-0" />
+                      <CheckCircle className="mt-0.5 size-5 shrink-0" />
                     ) : (
-                      <AlertCircle className="mt-0.5 size-5 flex-shrink-0" />
+                      <AlertCircle className="mt-0.5 size-5 shrink-0" />
                     )}
                     <p className="text-sm leading-relaxed">{status.message}</p>
                   </div>

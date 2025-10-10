@@ -117,7 +117,7 @@ export default function ServicesPage() {
         {/* النص في المنتصف */}
         <div className="relative z-10 mx-auto max-w-4xl px-6 text-center text-white">
           <h1 className="mb-6 text-5xl font-black tracking-tight md:text-6xl">
-            { "خدماتنا"}
+            { pageData.title || "خدماتنا" }
           </h1>
           <p className="text-xl font-light leading-relaxed md:text-2xl">
             {pageData.subtitle || "حلول شاملة لتحويل وجودك الرقمي ودفع نمو أعمالك"}

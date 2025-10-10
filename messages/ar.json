@@ -11,7 +11,8 @@
     "signin": "تسجيل الدخول",
     "dashboard": "لوحة التحكم",
     "blog": "المدونة",
-    "goToDashboard": "انتقل إلى لوحة التحكم"
+    "goToDashboard": "انتقل إلى لوحة التحكم",
+    "services": "خدماتنا"
   },
   "sidebar": {
     "menu": "القائمة",
@@ -34,7 +35,8 @@
     "addProperty": "إضافة عقار",
     "about": "عننا",
     "blog": "المدونة",
-    "users": "المستخدمين"
+    "users": "المستخدمين",
+    "services": "خدماتنا"
    },
   "SaveModal": {
     "title": {

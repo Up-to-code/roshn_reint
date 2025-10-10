@@ -5,8 +5,13 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['images.unsplash.com', "fhupmhxzhukzzqunrtur.supabase.co" , "17mm2glo1t.ufs.sh"] ,
-    },
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: '**', // Allow all domains, or specify your domains
+            }
+        ]
+    }
 };
  
 module.exports = withNextIntl(nextConfig);

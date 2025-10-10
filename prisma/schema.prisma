@@ -265,6 +265,32 @@ model AboutPage {
   @@map("about_page")
 }
 
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String
+  features    String[] // Array of features
+  order       Int      @default(0)
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model ServicesPage {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String
+  heroImage String
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("services_page")
+}
+
 // About settings content stored as JSON
 model AboutSettings {
   id        String   @id // use a stable id like "default"

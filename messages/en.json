@@ -8,8 +8,10 @@
     "about": "About Us",
     "contact": "Contact Us",
     "signin": "Sign In",
-    "dashboard": "Dashboard" ,
-    "blog": "Blog"
+    "dashboard": "Dashboard",
+    "blog": "Blog",
+    "services": "Services"
+
   },
   "sidebar": {
     "menu": "Menu",
@@ -30,7 +32,8 @@
     "home": "Home",
     "properties": "Properties",
     "addProperty": "Add Property",
-    "users": "Users"
+    "users": "Users",
+    "services": "Services"
   },
   "SaveModal": {
     "title": {
@@ -410,11 +413,10 @@
     "ctaSubtitle": "Let's work together to achieve your real estate goals"
   },
   "dashboard": {
-      "title": "Dashboard",
-      "users": "Users",
-      "properties": "Properties",
-      "posts": "Posts",
-      "contacts": "Contacts"
-    }
-  
+    "title": "Dashboard",
+    "users": "Users",
+    "properties": "Properties",
+    "posts": "Posts",
+    "contacts": "Contacts"
+  }
 }

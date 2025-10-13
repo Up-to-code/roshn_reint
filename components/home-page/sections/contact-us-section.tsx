@@ -43,14 +43,14 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
       const result = await response.json();
 
       if (response.ok) {
         setStatus({
           type: 'success',
-          message: isRTL ? "تم إرسال رسالتك بنجاح! سوف نعود إليك في أقرب وقت ممكن." : "Your message has been sent successfully! We'll get back to you as soon as possible."
+          message: isRTL 
+            ? "تم إرسال رسالتك بنجاح! سوف نعود إليك في أقرب وقت ممكن." 
+            : "Your message has been sent successfully! We'll get back to you as soon as possible."
         });
         setFormData({ name: '', phoneNumber: '', message: '' });
       } else {
@@ -60,8 +60,8 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
       setStatus({
         type: 'error',
         message: isRTL 
-          ? "عذرًا، حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى أو الاتصال بنا مباشرة."
-          : "Sorry, there was an error sending your message. Please try again or contact us directly."
+          ? "عذرًا، حدث خطأ أثناء إرسال رسالتك. يرجى المحاولة مرة أخرى."
+          : "Sorry, there was an error sending your message. Please try again."
       });
     } finally {
       setIsLoading(false);
@@ -69,82 +69,74 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
   };
 
   return (
-    <section className="w-full  py-12 lg:py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Rounded Container - 90% width */}
-        <div className="mx-auto w-[90%] max-w-6xl overflow-hidden rounded-3xl border border-zinc-700 bg-gradient-to-br from-zinc-800 to-zinc-900 shadow-2xl">
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12">
+    <section className="w-full py-16 lg:py-24">
+      <div className="container mx-auto px-4">
+        <div className="mx-auto max-w-5xl overflow-hidden rounded-2xl border bg-card shadow-lg">
+          <div className="grid lg:grid-cols-2">
             
-            {/* Left Side - Simple Text Content */}
-            <div className="p-8 lg:p-12">
-              <div className={`flex h-full flex-col justify-center gap-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {/* Info Side */}
+            <div className="border-r bg-muted/30 p-8 lg:p-12">
+              <div className={`flex h-full flex-col justify-center space-y-6 ${isRTL ? 'text-right' : ''}`}>
                 
-                {/* Badge */}
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-pink-500/30 bg-pink-500/20 px-4 py-2">
-                  <MessageCircle className="size-4 text-pink-400" />
-                  <span className="text-sm font-medium text-pink-300">
+                <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5">
+                  <MessageCircle className="size-4 text-primary" />
+                  <span className="text-sm font-medium text-primary">
                     {isRTL ? "تواصل معنا" : "Contact Us"}
                   </span>
                 </div>
                 
-                {/* Title */}
-                <h2 className="text-3xl font-bold text-white lg:text-4xl">
+                <h2 className="text-3xl font-bold lg:text-4xl">
                   {content.title}
                 </h2>
                 
-                {/* Subtitle */}
                 {content.subtitle && (
-                  <p className="text-lg leading-relaxed text-zinc-300">
+                  <p className="text-lg text-muted-foreground">
                     {content.subtitle}
                   </p>
                 )}
 
-                {/* Simple Info Cards */}
-                <div className="mt-4 space-y-4">
-                  <div className="flex items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-800/50 p-4">
-                    <div className="size-3 animate-pulse rounded-full bg-green-400"></div>
-                    <span className="text-sm text-zinc-200">
+                <div className="space-y-3 pt-4">
+                  <div className="flex items-center gap-3 rounded-lg border bg-background p-3">
+                    <div className="size-2 rounded-full bg-green-500"></div>
+                    <span className="text-sm">
                       {isRTL ? "رد سريع خلال 24 ساعة" : "Quick response within 24 hours"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 rounded-2xl border border-zinc-700 bg-zinc-800/50 p-4">
-                    <div className="size-3 animate-pulse rounded-full bg-blue-400"></div>
-                    <span className="text-sm text-zinc-200">
-                      {isRTL ? "دعم متخصص واحترافي" : "Professional & expert support"}
+                  <div className="flex items-center gap-3 rounded-lg border bg-background p-3">
+                    <div className="size-2 rounded-full bg-blue-500"></div>
+                    <span className="text-sm">
+                      {isRTL ? "دعم متخصص واحترافي" : "Professional support"}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Right Side - Clean Contact Form */}
+            {/* Form Side */}
             {content.form?.enabled && (
               <div className="p-8 lg:p-12">
-                <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+                <form onSubmit={handleSubmit} className="space-y-5">
                   
-                  {/* Name Field */}
-                  <div className="space-y-3">
-                    <label htmlFor="name" className="block text-sm font-medium text-zinc-200">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="text-sm font-medium">
                       {isRTL ? "الاسم" : "Name"} *
                     </label>
                     <Input
                       id="name"
-                      type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       required
                       minLength={2}
                       disabled={isLoading}
-                      placeholder={isRTL ? "أدخل اسمك الكامل" : "Enter your full name"}
-                      className="h-12 rounded-xl border-zinc-600 bg-zinc-800/50 text-white transition-all duration-300 placeholder:text-zinc-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20"
+                      placeholder={isRTL ? "أدخل اسمك" : "Enter your name"}
+                      className="h-11"
                     />
                   </div>
 
-                  {/* Phone Field */}
-                  <div className="space-y-3">
-                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-zinc-200">
-                      {isRTL ? "رقم الجوال" : "Phone Number"} *
+                  <div className="space-y-2">
+                    <label htmlFor="phoneNumber" className="text-sm font-medium">
+                      {isRTL ? "رقم الجوال" : "Phone"} *
                     </label>
                     <Input
                       id="phoneNumber"
@@ -155,14 +147,13 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
                       required
                       minLength={5}
                       disabled={isLoading}
-                      placeholder={isRTL ? "أدخل رقم الجوال" : "Enter your phone number"}
-                      className="h-12 rounded-xl border-zinc-600 bg-zinc-800/50 text-white transition-all duration-300 placeholder:text-zinc-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
+                      placeholder={isRTL ? "أدخل رقم الجوال" : "Enter phone number"}
+                      className="h-11"
                     />
                   </div>
 
-                  {/* Message Field */}
-                  <div className="space-y-3">
-                    <label htmlFor="message" className="block text-sm font-medium text-zinc-200">
+                  <div className="space-y-2">
+                    <label htmlFor="message" className="text-sm font-medium">
                       {isRTL ? "الرسالة" : "Message"} *
                     </label>
                     <Textarea
@@ -174,46 +165,43 @@ export function ContactUsSection({ content, locale }: ContactUsSectionProps) {
                       minLength={10}
                       rows={4}
                       disabled={isLoading}
-                      placeholder={isRTL ? "أخبرنا كيف يمكننا مساعدتك..." : "Tell us how we can help you..."}
-                      className="min-h-[120px] resize-none rounded-xl border-zinc-600 bg-zinc-800/50 text-white transition-all duration-300 placeholder:text-zinc-400 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20"
+                      placeholder={isRTL ? "أخبرنا كيف يمكننا مساعدتك" : "Tell us how we can help"}
+                      className="resize-none"
                     />
                   </div>
 
-                  {/* Status Message */}
                   {status && (
-                    <div className={`flex items-start gap-3 rounded-xl border p-4 ${
+                    <div className={`flex items-start gap-2 rounded-lg border p-3 text-sm ${
                       status.type === 'success' 
-                        ? 'border-green-500/30 bg-green-500/10 text-green-300' 
-                        : 'border-red-500/30 bg-red-500/10 text-red-300'
+                        ? 'border-green-200 bg-green-50 text-green-800 dark:border-green-800 dark:bg-green-950 dark:text-green-200' 
+                        : 'border-red-200 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200'
                     }`}>
                       {status.type === 'success' ? (
-                        <CheckCircle className="mt-0.5 size-5 shrink-0" />
+                        <CheckCircle className="size-4 shrink-0" />
                       ) : (
-                        <AlertCircle className="mt-0.5 size-5 shrink-0" />
+                        <AlertCircle className="size-4 shrink-0" />
                       )}
-                      <p className="text-sm leading-relaxed">{status.message}</p>
+                      <p>{status.message}</p>
                     </div>
                   )}
 
-                  {/* Submit Button */}
                   <Button 
                     type="submit" 
                     disabled={isLoading}
-                    className="h-12 w-full rounded-xl bg-gradient-to-r from-pink-500 to-orange-500 font-semibold text-white transition-all duration-300 hover:from-pink-600 hover:to-orange-600 hover:shadow-xl disabled:opacity-70"
+                    className="h-11 w-full"
                   >
                     {isLoading ? (
-                      <span className="flex items-center gap-3">
-                        <Loader2 className="size-5 animate-spin" />
+                      <>
+                        <Loader2 className="mr-2 size-4 animate-spin" />
                         {isRTL ? "جاري الإرسال..." : "Sending..."}
-                      </span>
+                      </>
                     ) : (
                       isRTL ? "إرسال الرسالة" : "Send Message"
                     )}
                   </Button>
 
-                  {/* Form Note */}
-                  <p className="text-center text-xs text-zinc-500">
-                    {isRTL ? "جميع الحقول مطلوبة *" : "All fields are required *"}
+                  <p className="text-center text-xs text-muted-foreground">
+                    {isRTL ? "جميع الحقوق محفوظة *" : "All fields are required *"}
                   </p>
                 </form>
               </div>

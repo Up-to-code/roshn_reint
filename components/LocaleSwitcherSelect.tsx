@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/select";
 import { useRouter, usePathname } from "next/navigation";
 import { useHomePageStore } from "@/store/home-page-store";
-import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
 type Props = {
@@ -24,60 +23,30 @@ export default function LocaleSwitcherSelect({ label }: Props) {
   const { currentLang, setCurrentLang } = useHomePageStore();
 
   const handleLocaleChange = (nextLocale: Locale) => {
-    // Remove current locale from pathname
     const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, '') || '/';
-    
-    // Update store
     setCurrentLang(nextLocale);
-    
-    // Navigate to new locale
     router.push(`/${nextLocale}${pathWithoutLocale}`);
   };
 
   return (
     <Select value={currentLang} onValueChange={handleLocaleChange}>
       <SelectTrigger
-        className={cn(
-          "h-9 w-[100px] border-white/20 bg-white/10 text-white/90 backdrop-blur-xl",
-          "focus:ring-1 focus:ring-white/30 focus:ring-offset-0",
-          "hover:border-white/30 hover:bg-white/15",
-          "rounded-xl transition-all duration-300",
-          "flex items-center justify-between"
-        )}
+        className="h-11 w-[120px] gap-2 rounded-xl bg-background/90 font-medium backdrop-blur-xl"
         aria-label={label}
       >
         <SelectValue />
-        <ChevronDown className="size-3 opacity-70" />
+        <ChevronDown className="size-4" />
       </SelectTrigger>
-      <SelectContent 
-        className={cn(
-          "border-white/20 bg-white/10 text-white/90 backdrop-blur-3xl",
-          "rounded-xl shadow-2xl"
-        )}
-      >
-        <SelectItem 
-          value="ar" 
-          className={cn(
-            "focus:bg-white/15 focus:text-white",
-            "rounded-lg transition-colors",
-            currentLang === 'ar' && "bg-white/15 text-white"
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-xs">🇸🇦</span>
+      <SelectContent className="rounded-xl bg-background/95 backdrop-blur-xl">
+        <SelectItem value="ar" className="rounded-lg font-medium">
+          <div className="flex items-center gap-2.5">
+            <span>🇸🇦</span>
             <span>العربية</span>
           </div>
         </SelectItem>
-        <SelectItem 
-          value="en"
-          className={cn(
-            "focus:bg-white/15 focus:text-white",
-            "rounded-lg transition-colors",
-            currentLang === 'en' && "bg-white/15 text-white"
-          )}
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-xs">🇺🇸</span>
+        <SelectItem value="en" className="rounded-lg font-medium">
+          <div className="flex items-center gap-2.5">
+            <span>🇺🇸</span>
             <span>English</span>
           </div>
         </SelectItem>

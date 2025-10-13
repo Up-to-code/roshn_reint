@@ -2,7 +2,7 @@
 /* eslint-disable tailwindcss/classnames-order */
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { PropertiesService, type CreatePropertyData } from '@/lib/api/properties-service';
@@ -13,10 +13,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -32,17 +30,13 @@ import {
   Car,
   Home,
   Building,
-  Star,
-  Phone,
   Plus,
   Minus,
   Upload,
   CheckCircle2,
   Building2,
-  Heart,
   Calendar,
   DollarSign,
-  Users,
   Eye,
   AlertCircle,
   CheckCircle,
@@ -50,21 +44,7 @@ import {
 } from 'lucide-react';
 
 // Define the form data interface
-interface CreatePropertyFormData extends CreatePropertyData {
-  yearBuilt?: number;
-  floors?: number;
-  furnished?: boolean;
-  petFriendly?: boolean;
-  balcony?: boolean;
-  garden?: boolean;
-  pool?: boolean;
-  gym?: boolean;
-  security?: boolean;
-  elevator?: boolean;
-  contactName?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-}
+interface CreatePropertyFormData extends CreatePropertyData {}
 
 // Translations object
 const translations = {
@@ -73,9 +53,7 @@ const translations = {
     steps: {
       basicInfo: "Basic Information",
       details: "Property Details", 
-      features: "Amenities",
       media: "Photos & Media",
-      contact: "Contact Info",
       current: (current: number, total: number) => `Step ${current} of ${total}`
     },
     actions: {
@@ -101,14 +79,7 @@ const translations = {
       bathrooms: "Bathrooms",
       area: "Area (m²)",
       parking: "Parking",
-      yearBuilt: "Year Built",
-      floors: "Number of Floors",
-      features: "Property Features",
-      amenities: "Amenities & Facilities",
       uploadedImages: (count: number) => `Uploaded Images (${count})`,
-      contactName: "Contact Person Name",
-      contactPhone: "Phone Number",
-      contactEmail: "Email Address",
       location: "Location Details",
       images: "images",
       language: "Language"
@@ -118,9 +89,6 @@ const translations = {
       district: "Enter district or area",
       titleEn: "Beautiful apartment in city center",
       titleAr: "شقة رائعة في وسط المدينة",
-      contactName: "John Doe",
-      contactPhone: "+1 (555) 123-4567",
-      contactEmail: "john.doe@example.com",
       descriptionEn: "Describe your property in English...",
       descriptionAr: "صف عقارك باللغة العربية..."
     },
@@ -134,30 +102,6 @@ const translations = {
       available: "Available",
       rented: "Rented",
       sold: "Sold"
-    },
-    amenities: {
-      wifi: "WiFi",
-      security: "Security",
-      garden: "Garden",
-      gym: "Gym",
-      pool: "Pool",
-      parking: "Parking",
-      kitchen: "Kitchen",
-      tv: "Cable TV",
-      ac: "Air Conditioning",
-      heating: "Heating",
-      laundry: "Laundry",
-      balcony: "Balcony"
-    },
-    features: {
-      furnished: "Furnished",
-      petFriendly: "Pet Friendly",
-      balcony: "Balcony",
-      garden: "Garden",
-      pool: "Pool",
-      gym: "Gym",
-      security: "Security",
-      elevator: "Elevator"
     },
     validation: {
       requiredFields: "Please fill in all required fields",
@@ -188,9 +132,7 @@ const translations = {
     steps: {
       basicInfo: "المعلومات الأساسية",
       details: "تفاصيل العقار", 
-      features: "المرافق",
       media: "الصور والوسائط",
-      contact: "معلومات الاتصال",
       current: (current: number, total: number) => `الخطوة ${current} من ${total}`
     },
     actions: {
@@ -216,14 +158,7 @@ const translations = {
       bathrooms: "الحمامات",
       area: "المساحة (م²)",
       parking: "مواقف السيارات",
-      yearBuilt: "سنة البناء",
-      floors: "عدد الطوابق",
-      features: "ميزات العقار",
-      amenities: "المرافق والخدمات",
       uploadedImages: (count: number) => `الصور المرفوعة (${count})`,
-      contactName: "اسم جهة الاتصال",
-      contactPhone: "رقم الهاتف",
-      contactEmail: "البريد الإلكتروني",
       location: "تفاصيل الموقع",
       images: "الصور",
       language: "اللغة"
@@ -233,9 +168,6 @@ const translations = {
       district: "أدخل المنطقة أو الحي",
       titleEn: "شقة جميلة في وسط المدينة",
       titleAr: "شقة رائعة في وسط المدينة",
-      contactName: "جون دو",
-      contactPhone: "+1 (555) 123-4567",
-      contactEmail: "john.doe@example.com",
       descriptionEn: "صف عقارك باللغة الإنجليزية...",
       descriptionAr: "صف عقارك باللغة العربية..."
     },
@@ -249,30 +181,6 @@ const translations = {
       available: "متاح",
       rented: "مؤجر",
       sold: "مباع"
-    },
-    amenities: {
-      wifi: "واي فاي",
-      security: "أمن",
-      garden: "حديقة",
-      gym: "نادي رياضي",
-      pool: "مسبح",
-      parking: "مواقف سيارات",
-      kitchen: "مطبخ",
-      tv: "تلفزيون كبلي",
-      ac: "تكييف",
-      heating: "تدفئة",
-      laundry: "غسيل ملابس",
-      balcony: "شرفة"
-    },
-    features: {
-      furnished: "مؤثثة",
-      petFriendly: "مسموح بالحيوانات الأليفة",
-      balcony: "شرفة",
-      garden: "حديقة",
-      pool: "مسبح",
-      gym: "نادي رياضي",
-      security: "أمن",
-      elevator: "مصعد"
     },
     validation: {
       requiredFields: "يرجى ملء جميع الحقول المطلوبة",
@@ -317,19 +225,6 @@ const defaultFormData: CreatePropertyFormData = {
   parking: 0,
   features: [],
   images: [],
-  yearBuilt: new Date().getFullYear(),
-  floors: 1,
-  furnished: false,
-  petFriendly: false,
-  balcony: false,
-  garden: false,
-  pool: false,
-  gym: false,
-  security: false,
-  elevator: false,
-  contactName: '',
-  contactPhone: '',
-  contactEmail: '',
 };
 
 // Required fields configuration
@@ -371,13 +266,13 @@ function CreatePropertyForm({ locale }: { locale: string }) {
   const [currentStep, setCurrentStep] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [formData, setFormData] = useState<CreatePropertyFormData>(defaultFormData);
-  const [currentLang, setCurrentLang] = useState<'en' | 'ar'>(locale as 'en' | 'ar' || 'ar'); // Default to Arabic
+  const [currentLang, setCurrentLang] = useState<'en' | 'ar'>(locale as 'en' | 'ar' || 'ar');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const t = translations[currentLang];
 
   // Progress calculation
-  const progress = (currentStep / 5) * 100;
+  const progress = (currentStep / 3) * 100;
 
   const updateFormData = (field: keyof CreatePropertyFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -410,15 +305,6 @@ function CreatePropertyForm({ locale }: { locale: string }) {
     toast.success(t.success.imageRemoved, {
       description: currentLang === 'en' ? "Image removed from your property" : "تم إزالة الصورة من عقارك"
     });
-  };
-
-  const toggleFeature = (feature: string) => {
-    setFormData(prev => ({
-      ...prev,
-      features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
-    }));
   };
 
   const validateForm = (): { isValid: boolean; errors: Record<string, string> } => {
@@ -455,9 +341,7 @@ function CreatePropertyForm({ locale }: { locale: string }) {
     const stepValidations: Record<number, (keyof CreatePropertyFormData)[]> = {
       1: ['titleEn', 'titleAr', 'price', 'type', 'status', 'city'],
       2: ['bedrooms', 'bathrooms', 'area'],
-      3: [], // Features are optional
-      4: [], // Images are optional
-      5: [], // Contact info is optional
+      3: [], // Images are optional
     };
 
     const currentStepFields = stepValidations[currentStep] || [];
@@ -559,9 +443,7 @@ function CreatePropertyForm({ locale }: { locale: string }) {
   const steps = [
     { number: 1, title: t.steps.basicInfo, icon: Building2, description: currentLang === 'en' ? 'Property type and basic details' : 'نوع العقار والتفاصيل الأساسية' },
     { number: 2, title: t.steps.details, icon: Home, description: currentLang === 'en' ? 'Specifications and features' : 'المواصفات والميزات' },
-    { number: 3, title: t.steps.features, icon: Star, description: currentLang === 'en' ? 'Facilities and services' : 'المرافق والخدمات' },
-    { number: 4, title: t.steps.media, icon: ImageIcon, description: currentLang === 'en' ? 'Photos and visual content' : 'الصور والمحتوى المرئي' },
-    { number: 5, title: t.steps.contact, icon: Phone, description: currentLang === 'en' ? 'Contact information' : 'معلومات الاتصال' }
+    { number: 3, title: t.steps.media, icon: ImageIcon, description: currentLang === 'en' ? 'Photos and visual content' : 'الصور والمحتوى المرئي' }
   ];
 
   const nextStep = () => {
@@ -590,7 +472,7 @@ function CreatePropertyForm({ locale }: { locale: string }) {
     { value: 'APARTMENT', label: t.types.apartment, icon: Building, color: 'bg-blue-500' },
     { value: 'VILLA', label: t.types.villa, icon: Home, color: 'bg-green-500' },
     { value: 'OFFICE', label: t.types.office, icon: Building2, color: 'bg-purple-500' },
-    { value: 'SHOP', label: t.types.shop, icon: Heart, color: 'bg-pink-500' }
+    { value: 'SHOP', label: t.types.shop, icon: Building2, color: 'bg-pink-500' }
   ];
 
   // Status options
@@ -598,34 +480,6 @@ function CreatePropertyForm({ locale }: { locale: string }) {
     { value: 'AVAILABLE', label: t.status.available },
     { value: 'RENTED', label: t.status.rented },
     { value: 'SOLD', label: t.status.sold }
-  ];
-
-  // Modern amenities with icons
-  const amenities = [
-    { key: 'wifi', label: t.amenities.wifi, icon: '📶' },
-    { key: 'security', label: t.amenities.security, icon: '🔒' },
-    { key: 'garden', label: t.amenities.garden, icon: '🌿' },
-    { key: 'gym', label: t.amenities.gym, icon: '💪' },
-    { key: 'pool', label: t.amenities.pool, icon: '🏊' },
-    { key: 'parking', label: t.amenities.parking, icon: '🅿️' },
-    { key: 'kitchen', label: t.amenities.kitchen, icon: '👨‍🍳' },
-    { key: 'tv', label: t.amenities.tv, icon: '📺' },
-    { key: 'ac', label: t.amenities.ac, icon: '❄️' },
-    { key: 'heating', label: t.amenities.heating, icon: '🔥' },
-    { key: 'laundry', label: t.amenities.laundry, icon: '🧺' },
-    { key: 'balcony', label: t.amenities.balcony, icon: '🏙️' }
-  ];
-
-  // Property features
-  const propertyFeatures = [
-    { key: 'furnished', label: t.features.furnished },
-    { key: 'petFriendly', label: t.features.petFriendly },
-    { key: 'balcony', label: t.features.balcony },
-    { key: 'garden', label: t.features.garden },
-    { key: 'pool', label: t.features.pool },
-    { key: 'gym', label: t.features.gym },
-    { key: 'security', label: t.features.security },
-    { key: 'elevator', label: t.features.elevator },
   ];
 
   const toggleLanguage = () => {
@@ -1183,118 +1037,12 @@ function CreatePropertyForm({ locale }: { locale: string }) {
                     );
                   })}
                 </div>
-
-                <Separator />
-
-                {/* Additional Details */}
-                <div className={`grid gap-6 ${viewMode === 'list' ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
-                  <div className="space-y-3">
-                    <Label htmlFor="yearBuilt" className="text-sm font-semibold">{t.labels.yearBuilt}</Label>
-                    <Input
-                      id="yearBuilt"
-                      type="number"
-                      value={formData.yearBuilt}
-                      onChange={(e) => updateFormData('yearBuilt', parseInt(e.target.value) || new Date().getFullYear())}
-                      placeholder="2024"
-                      className="h-11"
-                      min="1900"
-                      max={new Date().getFullYear()}
-                      dir="ltr"
-                    />
-                  </div>
-                  <div className="space-y-3">
-                    <Label htmlFor="floors" className="text-sm font-semibold">{t.labels.floors}</Label>
-                    <Input
-                      id="floors"
-                      type="number"
-                      value={formData.floors}
-                      onChange={(e) => updateFormData('floors', parseInt(e.target.value) || 1)}
-                      placeholder="1"
-                      className="h-11"
-                      min="1"
-                      dir="ltr"
-                    />
-                  </div>
-                </div>
-
-                {/* Features Grid */}
-                <div>
-                  <Label className="text-sm font-semibold mb-4 block">{t.labels.features}</Label>
-                  <div className={`grid gap-4 ${
-                    viewMode === 'list' ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-                  }`}>
-                    {propertyFeatures.map((feature) => (
-                      <div key={feature.key} className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-accent/50 transition-colors">
-                        <Switch
-                          checked={formData[feature.key as keyof CreatePropertyFormData] as boolean}
-                          onCheckedChange={(checked) => {
-                            updateFormData(feature.key as keyof CreatePropertyFormData, checked);
-                            toast.info(`${feature.label} ${checked 
-                              ? (currentLang === 'en' ? 'enabled' : 'تم التفعيل')
-                              : (currentLang === 'en' ? 'disabled' : 'تم التعطيل')
-                            }`);
-                          }}
-                        />
-                        <Label htmlFor={feature.key} className="text-sm font-medium cursor-pointer flex-1">
-                          {feature.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Step 3: Amenities */}
+          {/* Step 3: Media */}
           {currentStep === 3 && (
-            <Card className="border-l-4 border-l-primary">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Star className="h-5 w-5 text-primary" />
-                  {t.labels.amenities}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className={`grid gap-4 ${
-                  viewMode === 'list' ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
-                }`}>
-                  {amenities.map((amenity) => {
-                    const isSelected = formData.features.includes(amenity.key);
-                    return (
-                      <button
-                        key={amenity.key}
-                        type="button"
-                        onClick={() => {
-                          toggleFeature(amenity.key);
-                          toast.info(`${amenity.label} ${isSelected 
-                            ? (currentLang === 'en' ? 'removed' : 'تم الإزالة')
-                            : (currentLang === 'en' ? 'added' : 'تم الإضافة')
-                          }`);
-                        }}
-                        className={`p-4 rounded-xl border-2 transition-all text-center group hover:shadow-lg ${
-                          isSelected
-                            ? 'border-primary bg-primary/5 shadow-md scale-[1.02]'
-                            : 'border-border hover:border-primary/50 hover:bg-accent/50'
-                        }`}
-                      >
-                        <div className="text-2xl mb-3 transform group-hover:scale-110 transition-transform">
-                          {amenity.icon}
-                        </div>
-                        <div className="text-sm font-medium">{amenity.label}</div>
-                        <div className={`h-2 w-2 rounded-full mt-2 mx-auto transition-colors ${
-                          isSelected ? 'bg-primary' : 'bg-transparent'
-                        }`} />
-                      </button>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 4: Media */}
-          {currentStep === 4 && (
             <Card className="border-l-4 border-l-primary">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-xl">
@@ -1316,8 +1064,6 @@ function CreatePropertyForm({ locale }: { locale: string }) {
                   <CustomUploader
                     bucket="IMAGES"
                     onMultipleUploadComplete={handleImageUpload}
-                  
-                    
                     buttonText={currentLang === 'en' ? "Select Images" : "اختر الصور"}
                     multiple={true}
                     maxFiles={12}
@@ -1370,56 +1116,6 @@ function CreatePropertyForm({ locale }: { locale: string }) {
                     </div>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 5: Contact */}
-          {currentStep === 5 && (
-            <Card className="border-l-4 border-l-primary">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Users className="h-5 w-5 text-primary" />
-                  {t.steps.contact}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className={`grid gap-6 ${viewMode === 'list' ? 'grid-cols-1' : 'md:grid-cols-2'}`}>
-                  <div className="space-y-3">
-                    <Label htmlFor="contactName" className="text-sm font-semibold">{t.labels.contactName}</Label>
-                    <Input
-                      id="contactName"
-                      value={formData.contactName}
-                      onChange={(e) => updateFormData('contactName', e.target.value)}
-                      placeholder={t.placeholders.contactName}
-                      className="h-11"
-                      dir={currentLang === 'ar' ? 'rtl' : 'ltr'}
-                    />
-                  </div>
-                  <div className="space-y-3">
-                    <Label htmlFor="contactPhone" className="text-sm font-semibold">{t.labels.contactPhone}</Label>
-                    <Input
-                      id="contactPhone"
-                      value={formData.contactPhone}
-                      onChange={(e) => updateFormData('contactPhone', e.target.value)}
-                      placeholder={t.placeholders.contactPhone}
-                      className="h-11"
-                      dir="ltr"
-                    />
-                  </div>
-                  <div className={viewMode === 'list' ? '' : 'md:col-span-2'}>
-                    <Label htmlFor="contactEmail" className="text-sm font-semibold">{t.labels.contactEmail}</Label>
-                    <Input
-                      id="contactEmail"
-                      type="email"
-                      value={formData.contactEmail}
-                      onChange={(e) => updateFormData('contactEmail', e.target.value)}
-                      placeholder={t.placeholders.contactEmail}
-                      className="h-11"
-                      dir="ltr"
-                    />
-                  </div>
-                </div>
               </CardContent>
             </Card>
           )}

@@ -1,3 +1,4 @@
+/* eslint-disable tailwindcss/enforces-shorthand */
 import { Globe } from "lucide-react";
 import LocaleSwitcherSelect from "./LocaleSwitcherSelect";
 

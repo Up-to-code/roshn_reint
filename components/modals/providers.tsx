@@ -1,26 +1,24 @@
 "use client";
 
-import { createContext, Dispatch, ReactNode, SetStateAction } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useState } from "react";
 
-import { useSignInModal } from "@/components/modals//sign-in-modal";
-
+// Create the context for modal state
 export const ModalContext = createContext<{
   setShowSignInModal: Dispatch<SetStateAction<boolean>>;
 }>({
   setShowSignInModal: () => {},
 });
 
-export default function ModalProvider({ children }: { children: ReactNode }) {
-  const { SignInModal, setShowSignInModal } = useSignInModal();
+// A simple provider that manages showSignInModal state and provides it
+export function ModalProvider({ children }: { children: ReactNode }) {
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
   return (
-    <ModalContext.Provider
-      value={{
-        setShowSignInModal,
-      }}
-    >
-      <SignInModal />
+    <ModalContext.Provider value={{ setShowSignInModal }}>
       {children}
+      {/* Optionally render SignInModal here if you have it, e.g.: */}
+      {/* {showSignInModal && <SignInModal onClose={() => setShowSignInModal(false)} />} */}
     </ModalContext.Provider>
   );
 }
+

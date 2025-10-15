@@ -7,7 +7,6 @@ import { Cairo } from "next/font/google";
 import "@uploadthing/react/styles.css";
 
 import "@/styles/globals.css";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import ModalProvider from "@/components/modals/providers";
 import { Analytics } from "@/components/analytics";
@@ -44,8 +43,7 @@ export default async function RootLayout({
         className={`${cairo.className} bg-background antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
-          <SessionProvider>
-            <ThemeProvider
+             <ThemeProvider
               attribute="class"
               defaultTheme="system"
               enableSystem
@@ -56,8 +54,7 @@ export default async function RootLayout({
               <Toaster richColors closeButton />
               <TailwindIndicator />
             </ThemeProvider>
-          </SessionProvider>
-        </NextIntlClientProvider>
+         </NextIntlClientProvider>
       </body>
     </html>
   );

@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LayoutDashboard, Lock, LogOut, Settings } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
 import { Drawer } from "vaul";
-
-import { useMediaQuery } from "@/hooks/use-media-query";
+ import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,10 +13,30 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/shared/user-avatar";
-
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import { signOut } from "@/lib/auth/auth-client";
+ 
 export function UserAccountNav() {
-  const { data: session } = useSession();
-  const user = session?.user;
+  const [user, setUser] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch user data only on client
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const u = await getCurrentUser();
+        if (mounted) setUser(u);
+      } catch (err) {
+        if (mounted) setUser(null);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const [open, setOpen] = useState(false);
   const closeDrawer = () => {
@@ -27,9 +45,17 @@ export function UserAccountNav() {
 
   const { isMobile } = useMediaQuery();
 
-  if (!user)
+  if (loading) {
     return (
       <div className="size-8 animate-pulse rounded-full border bg-muted" />
+    );
+  }
+
+  if (!user)
+    return (
+      <Link href="/login">
+        <div className="flex size-8 items-center justify-center rounded-full border bg-muted text-xs text-muted-foreground">Login</div>
+      </Link>
     );
 
   if (isMobile) {
@@ -100,9 +126,9 @@ export function UserAccountNav() {
 
               <li
                 className="rounded-lg text-foreground hover:bg-muted"
-                onClick={(event) => {
+                onClick={async (event) => {
                   event.preventDefault();
-                  signOut({
+                  await signOut({
                     callbackUrl: `${window.location.origin}/`,
                   });
                 }}
@@ -169,9 +195,9 @@ export function UserAccountNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="cursor-pointer"
-          onSelect={(event) => {
+          onSelect={async (event) => {
             event.preventDefault();
-            signOut({
+            await signOut({
               callbackUrl: `${window.location.origin}/`,
             });
           }}

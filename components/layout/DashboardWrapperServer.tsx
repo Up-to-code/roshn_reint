@@ -1,30 +1,30 @@
 // FILE: components/DashboardWrapperServer.tsx
-import { auth } from '@/auth';
-import { redirect } from 'next/navigation';
-import { ReactNode } from 'react';
-import { prisma } from '@/lib/db';
-import { headers } from 'next/headers';
+import { ReactNode } from 'react'
+import { headers } from 'next/headers'
+import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
+import { prisma } from '@/lib/db' // ✅ تأكد أن المسار هذا موجود فعلاً
 
 interface DashboardWrapperServerProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
-export default async function DashboardWrapperServer({ 
-  children 
+export default async function DashboardWrapperServer({
+  children,
 }: DashboardWrapperServerProps) {
+  // ✅ اجلب الجلسة الحالية مع تمرير الـ headers
   const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
-})
+    headers: await headers(),
+  })
 
+  // إذا المستخدم غير مسجل دخول → توجيه لصفحة الدخول
   if (!session?.user?.id) {
-    redirect('/login');
+    redirect('/login')
   }
 
-  // Fetch user from database to get the latest role and data
+  // ✅ جلب بيانات المستخدم من قاعدة البيانات
   const user = await prisma.user.findUnique({
-    where: {
-      id: session.user.id,
-    },
+    where: { id: session.user.id },
     select: {
       id: true,
       email: true,
@@ -32,30 +32,30 @@ export default async function DashboardWrapperServer({
       role: true,
       image: true,
     },
-  });
+  })
 
-  // If user doesn't exist in database, redirect to login
+  // إذا المستخدم مش موجود في قاعدة البيانات → توجيه لصفحة الدخول
   if (!user) {
-    redirect('/login');
+    redirect('/login')
   }
 
-  // Check if user has ADMIN role
+  // ✅ تحقق من صلاحية الدخول (يجب أن يكون ADMIN)
   if (user.role !== 'ADMIN') {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
         <div className="w-full max-w-md text-center">
           <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-            <svg 
-              className="size-10 text-red-600 dark:text-red-400" 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className="size-10 text-red-600 dark:text-red-400"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={2} 
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
           </div>
@@ -73,8 +73,9 @@ export default async function DashboardWrapperServer({
           </a>
         </div>
       </div>
-    );
+    )
   }
 
-  return <>{children}</>;
+  // ✅ السماح بالوصول في حالة ADMIN
+  return <>{children}</>
 }

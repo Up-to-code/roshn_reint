@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { Link } from "@/i18n/routing";
 import { Menu, X, Sparkles } from "lucide-react";
 import { FaTiktok, FaInstagram, FaSnapchat } from "react-icons/fa";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useSession } from "@/lib/auth/auth-client";
 
 const LocaleSwitcher = dynamic(() => import("../LocaleSwitcher"), {
   ssr: false,

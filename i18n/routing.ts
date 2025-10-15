@@ -72,6 +72,7 @@ export const routing = defineRouting({
       ar: "/404",
     },
   },
+  
 });
 
 // ✅ الأنواع (types)

@@ -1,10 +1,13 @@
 import "server-only";
 
 import { cache } from "react";
+import { headers } from "next/headers";
 import { auth } from "@/auth";
 
 export const getCurrentUser = cache(async () => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session?.user) {
     return undefined;
   }

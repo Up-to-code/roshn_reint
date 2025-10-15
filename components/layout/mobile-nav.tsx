@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth/auth-client";
 
 import { docsConfig } from "@/config/docs";
 import { marketingConfig } from "@/config/marketing";

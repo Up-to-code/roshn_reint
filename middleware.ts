@@ -1,17 +1,16 @@
-// @ts-ignore - NextAuth middleware helper is exported from our local setup
-import { auth } from "auth";
+// FILE: middleware.ts
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
-// Compose auth with i18n middleware in a single default export
 const i18n = createMiddleware(routing);
 
-export default auth((req) => {
-  return i18n(req);
-});
+export default i18n;
 
-
-// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)" , "/(en|ar)/:path*"],
-}
+  matcher: [
+    // Match all paths except static files and API routes
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    // Always match for locale-specific routes
+    "/(en|ar)/:path*"
+  ],
+};

@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "postgresql"
-  url          = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -15,59 +15,71 @@ enum UserRole {
   USER
 }
 
-// FILE: prisma/schema.prisma
-// Make sure this matches exactly - no duplicate definitions
-
+// Better Auth User Model
 model User {
   id            String    @id @default(cuid())
-  name          String?
+  name          String
   email         String    @unique
-  emailVerified DateTime?
-  password      String?
+  emailVerified Boolean   @default(false)
   image         String?
   role          UserRole  @default(USER)
-  accounts      Account[]
-  sessions      Session[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  
+  accounts      Account[]
+  sessions      Session[]
 
   @@map("users")
 }
 
-
-
-// ... rest of your models
-
- 
-
+// Better Auth Account Model
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
+  id            String    @id @default(cuid())
+  accountId     String
+  providerId    String
+  userId        String
+  accessToken   String?
+  refreshToken  String?
+  idToken       String?
+  expiresAt     DateTime?
+  password      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+  
+  @@unique([providerId, accountId])
+  @@index([userId])
   @@map("accounts")
 }
 
+// Better Auth Session Model
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+// Better Auth Verification Model
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, value])
+  @@map("verification")
 }
 
 model VerificationToken {
@@ -78,46 +90,43 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
- 
+
 model Property {
-  id          String   @id @default(cuid())
+  id            String         @id @default(cuid())
   // Language-specific fields
-  titleEn     String
-  titleAr     String
+  titleEn       String
+  titleAr       String
   descriptionEn String?
   descriptionAr String?
   // Basic property fields
-  price       Float
-  type        PropertyType
-  status      PropertyStatus @default(AVAILABLE)
-  city        String
-  district    String?
-  bedrooms    Int
-  bathrooms   Int
-  area        Int
-  parking     Int @default(0)
-  features    String[]
-  images      String[]
-  
-  // Property features (only keeping what's used in PropertyDetailPage)
-  yearBuilt   Int?
-  floors      Int @default(1)
-  furnished   Boolean @default(false)
-  petFriendly Boolean @default(false)
-  balcony     Boolean @default(false)
-  garden      Boolean @default(false)
-  pool        Boolean @default(false)
-  gym         Boolean @default(false)
-  security    Boolean @default(false)
-  elevator    Boolean @default(false)
-  
+  price         Float
+  type          PropertyType
+  status        PropertyStatus @default(AVAILABLE)
+  city          String
+  district      String?
+  bedrooms      Int
+  bathrooms     Int
+  area          Int
+  parking       Int            @default(0)
+  features      String[]
+  images        String[]
+  // Property features
+  yearBuilt     Int?
+  floors        Int            @default(1)
+  furnished     Boolean        @default(false)
+  petFriendly   Boolean        @default(false)
+  balcony       Boolean        @default(false)
+  garden        Boolean        @default(false)
+  pool          Boolean        @default(false)
+  gym           Boolean        @default(false)
+  security      Boolean        @default(false)
+  elevator      Boolean        @default(false)
   // Contact information
-  contactName String?
-  contactPhone String?
-  contactEmail String?
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  contactName   String?
+  contactPhone  String?
+  contactEmail  String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
   @@map("properties")
 }
@@ -136,15 +145,15 @@ enum PropertyStatus {
 }
 
 model Post {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   content     String
   excerpt     String?
   headerImage String?
   thumbnail   String?
   status      PostStatus @default(DRAFT)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   @@map("posts")
 }
@@ -154,7 +163,6 @@ enum PostStatus {
   PUBLISHED
   ARCHIVED
 }
-
 
 model Contact {
   id          String   @id @default(cuid())
@@ -167,9 +175,8 @@ model Contact {
   @@map("contacts")
 }
 
-// Single-row JSON-backed site settings
 model SiteSettings {
-  id        String   @id // use a stable id like "default"
+  id        String   @id
   data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -177,9 +184,8 @@ model SiteSettings {
   @@map("site_settings")
 }
 
-// About page content stored as JSON
 model AboutPage {
-  id        String   @id // use a stable id like "default"
+  id        String   @id
   data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -192,7 +198,7 @@ model Service {
   title       String
   description String
   image       String
-  features    String[] // Array of features
+  features    String[]
   order       Int      @default(0)
   enabled     Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -213,16 +219,14 @@ model ServicesPage {
   @@map("services_page")
 }
 
-// About settings content stored as JSON
 model AboutSettings {
-  id        String   @id // use a stable id like "default"
+  id        String   @id
   data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("about_settings")
 }
-
 
 model ContactSettings {
   id             String   @id @default(cuid())

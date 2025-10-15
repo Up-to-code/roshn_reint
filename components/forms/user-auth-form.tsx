@@ -1,28 +1,45 @@
-// FILE: components/forms/user-auth-form.tsx (Alternative version)
+// FILE: components/forms/user-auth-form.tsx
 "use client";
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { cn } from "@/lib/utils";
-import { userAuthSchema } from "@/lib/validations/auth";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { userAuthSchema } from "@/lib/validations/user";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/shared/icons";
+import { Icons } from "../shared/icons";
+import { authClient } from "@/lib/auth/auth-client";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: "login" | "register";
 }
 
-type FormData = z.infer<typeof userAuthSchema>;
+// Define schemas for login and register
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+});
 
-export function UserAuthForm({ className, type = "login", ...props }: UserAuthFormProps) {
+const registerSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  name: z.string().min(3, "Name must be at least 3 characters").max(32, "Name must be at most 32 characters"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+type RegisterFormData = z.infer<typeof registerSchema>;
+
+export function UserAuthForm({ 
+  className, 
+  type = "login",
+  ...props 
+}: UserAuthFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
@@ -32,61 +49,63 @@ export function UserAuthForm({ className, type = "login", ...props }: UserAuthFo
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(userAuthSchema),
+  } = useForm<LoginFormData | RegisterFormData>({
+    resolver: zodResolver(type === "register" ? registerSchema : loginSchema),
     defaultValues: {
       email: "",
       password: "",
+      ...(type === "register" && { name: "" }),
     },
   });
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: LoginFormData | RegisterFormData) {
     setIsLoading(true);
 
     try {
       if (type === "register") {
-        const response = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: data.email.toLowerCase(),
-            password: data.password,
-          }),
+        const registerData = data as RegisterFormData;
+        const result = await authClient.signUp.email({
+          email: registerData.email.toLowerCase(),
+          password: registerData.password,
+          name: registerData.name,
         });
 
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.message || "Something went wrong");
+        if (result.error) {
+          throw new Error(result.error.message || "Failed to create account");
         }
 
-        toast({
-          title: "Account created",
-          description: "Please sign in with your credentials.",
-        });
-
-        router.push("/login");
-      } else {
-        // Manual redirect approach
-        const result = await signIn("credentials", {
-          email: data.email.toLowerCase(),
-          password: data.password,
-          redirect: false, // We handle redirect manually
-        });
-
-        if (result?.error) {
-          throw new Error("Invalid email or password");
-        }
-
-        if (result?.ok) {
+        if (result.data) {
           toast({
-            title: "Welcome back!",
-            description: "You have successfully signed in.",
+            title: "Success!",
+            description: "Your account has been created. You can now sign in.",
           });
 
-          // Force a hard redirect to ensure session is loaded
-          window.location.href = callbackUrl;
+          // Redirect to login after successful registration
+          setTimeout(() => {
+            router.push("/login");
+          }, 1000);
+        }
+      } else {
+        const loginData = data as LoginFormData;
+        const result = await authClient.signIn.email({
+          email: loginData.email.toLowerCase(),
+          password: loginData.password,
+        });
+
+        if (result.error) {
+          throw new Error(result.error.message || "Invalid email or password");
+        }
+
+        if (result.data) {
+          toast({
+            title: "Success!",
+            description: "You have been signed in.",
+          });
+
+          // Redirect to callback URL or dashboard
+          setTimeout(() => {
+            window.location.href = callbackUrl;
+          }, 500);
         }
       }
     } catch (error) {
@@ -104,10 +123,26 @@ export function UserAuthForm({ className, type = "login", ...props }: UserAuthFo
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4">
+          {type === "register" && (
+            <div className="grid gap-1">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                placeholder="John Doe"
+                type="text"
+                autoCapitalize="words"
+                autoComplete="name"
+                autoCorrect="off"
+                disabled={isLoading}
+                {...register("name")}
+              />
+              {"name" in errors && errors.name && (
+                <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+              )}
+            </div>
+          )}
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               placeholder="name@example.com"
@@ -123,9 +158,7 @@ export function UserAuthForm({ className, type = "login", ...props }: UserAuthFo
             )}
           </div>
           <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               placeholder="Enter your password"
@@ -144,7 +177,7 @@ export function UserAuthForm({ className, type = "login", ...props }: UserAuthFo
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            {type === "login" ? "Sign In" : "Sign Up"}
+            {type === "register" ? "Sign Up" : "Sign In"}
           </Button>
         </div>
       </form>

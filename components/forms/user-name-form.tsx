@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateUserName, type FormData } from "@/actions/update-user-name";
+import { updateUserName, type FormData } from "@/app/actions/update-user-name";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth/auth-client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

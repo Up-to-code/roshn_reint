@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { STORAGE_BUCKETS } from './supabase';
-
+ 
 // Use service role key for administrative operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;

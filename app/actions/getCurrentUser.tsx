@@ -1,9 +1,10 @@
 import { auth } from "@/auth";
 import { headers } from "next/headers";
+import prisma from "@/lib/db"; // Import prisma client
 
 const getCurrentUser = async () => {
   const session = await auth.api.getSession({
-    headers: await headers() // you need to pass the headers object.
+    headers: await headers()
   });
 
   if (!session?.user?.id) {

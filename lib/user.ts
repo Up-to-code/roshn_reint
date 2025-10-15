@@ -1,29 +1,27 @@
+// FILE: lib/user.ts
 import { prisma } from "@/lib/db";
+import { User } from "@prisma/client";
 
-export const getUserByEmail = async (email: string) => {
+export async function getUserById(id: string): Promise<User | null> {
   try {
     const user = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
-      select: {
-        name: true,
-        emailVerified: true,
-      },
+      where: { id },
     });
-
     return user;
-  } catch {
+  } catch (error) {
+    console.error("Error getting user by id:", error);
     return null;
   }
-};
+}
 
-export const getUserById = async (id: string) => {
+export async function getUserByEmail(email: string): Promise<User | null> {
   try {
-    const user = await prisma.user.findUnique({ where: { id } });
-
+    const user = await prisma.user.findUnique({
+      where: { email },
+    });
     return user;
-  } catch {
+  } catch (error) {
+    console.error("Error getting user by email:", error);
     return null;
   }
-};
+}

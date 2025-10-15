@@ -1,5 +1,6 @@
+
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
@@ -10,7 +11,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { RichTextEditor } from '@/components/ui/rich-text-editor';
@@ -27,88 +27,48 @@ import {
   DollarSign,
   Building,
   Home,
-  Briefcase,
-  Store,
-  Star,
-  Wifi,
-  Shield,
-  TreePine,
-  Dumbbell,
-  Waves,
-  Car as CarIcon,
-  Utensils,
-  Monitor,
-  Phone,
-  Mail,
-  Globe,
-  Clock,
-  Users,
-  Eye,
-  Heart,
-  Share2,
   Plus,
   Minus,
   Save,
   RotateCcw,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
+  Upload,
+  Building2
 } from 'lucide-react';
-import { Property } from '@prisma/client';
 
-interface EnhancedCreatePropertyData extends CreatePropertyData {
-  // Additional fields
-  yearBuilt?: number;
-  floors?: number;
-  furnished?: boolean;
-  petFriendly?: boolean;
-  smokingAllowed?: boolean;
-  nearSchools?: boolean;
-  nearHospitals?: boolean;
-  nearShopping?: boolean;
-  nearTransport?: boolean;
-  balcony?: boolean;
-  garden?: boolean;
-  pool?: boolean;
-  gym?: boolean;
-  security?: boolean;
-  concierge?: boolean;
-  elevator?: boolean;
-  parkingType?: 'STREET' | 'GARAGE' | 'COVERED' | 'UNDERGROUND';
-  heating?: 'CENTRAL' | 'INDIVIDUAL' | 'NONE';
-  cooling?: 'CENTRAL' | 'INDIVIDUAL' | 'NONE';
-  waterHeater?: boolean;
-  internet?: boolean;
-  cableTV?: boolean;
-  dishwasher?: boolean;
-  washingMachine?: boolean;
-  dryer?: boolean;
-  microwave?: boolean;
-  refrigerator?: boolean;
-  oven?: boolean;
-  contactName?: string;
-  contactPhone?: string;
-  contactEmail?: string;
-  contactWhatsapp?: string;
-  virtualTour?: string;
-  videoUrl?: string;
-  floorPlan?: string;
-  energyRating?: 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G';
-  propertyTax?: number;
-  maintenanceFee?: number;
-  hoaFee?: number;
-  insurance?: number;
-  utilities?: string[];
-  nearbyAmenities?: string[];
-  transportation?: string[];
-  schools?: string[];
-  hospitals?: string[];
-  shopping?: string[];
-  restaurants?: string[];
-  entertainment?: string[];
-  views?: number;
-  favorites?: number;
-  shares?: number;
-}
+interface EditPropertyFormData extends CreatePropertyData {}
+
+// Helper function to deep compare objects
+const isEqual = (obj1: any, obj2: any): boolean => {
+  if (obj1 === obj2) return true;
+  
+  if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+    return obj1 === obj2;
+  }
+  
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  
+  if (keys1.length !== keys2.length) return false;
+  
+  for (const key of keys1) {
+    if (!keys2.includes(key)) return false;
+    
+    if (Array.isArray(obj1[key]) && Array.isArray(obj2[key])) {
+      if (obj1[key].length !== obj2[key].length) return false;
+      for (let i = 0; i < obj1[key].length; i++) {
+        if (obj1[key][i] !== obj2[key][i]) return false;
+      }
+    } else if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+      if (!isEqual(obj1[key], obj2[key])) return false;
+    } else if (obj1[key] !== obj2[key]) {
+      return false;
+    }
+  }
+  
+  return true;
+};
 
 export default function EditPropertyPage() {
   const t = useTranslations('propertyForm');
@@ -123,8 +83,8 @@ export default function EditPropertyPage() {
   const [loadingProperty, setLoadingProperty] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [hasChanges, setHasChanges] = useState(false);
-  const [originalData, setOriginalData] = useState<EnhancedCreatePropertyData | null>(null);
-  const [formData, setFormData] = useState<EnhancedCreatePropertyData>({
+  const [originalData, setOriginalData] = useState<EditPropertyFormData | null>(null);
+  const [formData, setFormData] = useState<EditPropertyFormData>({
     titleEn: '',
     titleAr: '',
     descriptionEn: '',
@@ -134,64 +94,18 @@ export default function EditPropertyPage() {
     status: 'AVAILABLE',
     city: '',
     district: '',
-    bedrooms: 0,
-    bathrooms: 0,
+    bedrooms: 1,
+    bathrooms: 1,
     area: 0,
     parking: 0,
     features: [],
     images: [],
-    // Additional fields with defaults
-    yearBuilt: new Date().getFullYear(),
-    floors: 1,
-    furnished: false,
-    petFriendly: false,
-    smokingAllowed: false,
-    nearSchools: false,
-    nearHospitals: false,
-    nearShopping: false,
-    nearTransport: false,
-    balcony: false,
-    garden: false,
-    pool: false,
-    gym: false,
-    security: false,
-    concierge: false,
-    elevator: false,
-    parkingType: 'STREET',
-    heating: 'CENTRAL',
-    cooling: 'CENTRAL',
-    waterHeater: false,
-    internet: false,
-    cableTV: false,
-    dishwasher: false,
-    washingMachine: false,
-    dryer: false,
-    microwave: false,
-    refrigerator: false,
-    oven: false,
-    contactName: '',
-    contactPhone: '',
-    contactEmail: '',
-    contactWhatsapp: '',
-    virtualTour: '',
-    videoUrl: '',
-    floorPlan: '',
-    energyRating: 'C',
-    propertyTax: 0,
-    maintenanceFee: 0,
-    hoaFee: 0,
-    insurance: 0,
-    utilities: [],
-    nearbyAmenities: [],
-    transportation: [],
-    schools: [],
-    hospitals: [],
-    shopping: [],
-    restaurants: [],
-    entertainment: [],
-    views: 0,
-    favorites: 0,
-    shares: 0
+  });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [stepCompleted, setStepCompleted] = useState<Record<number, boolean>>({
+    1: false,
+    2: false,
+    3: false
   });
 
   // Required fields configuration
@@ -205,16 +119,57 @@ export default function EditPropertyPage() {
     bedrooms: true,
     bathrooms: true,
     area: true,
+    parking: true,
   };
 
-  // Field errors state
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  // Use ref to track the latest form data for submission
+  const formDataRef = useRef(formData);
+  
+  // Update ref whenever formData changes
+  useEffect(() => {
+    formDataRef.current = formData;
+    
+    // Check if there are actual changes compared to original data
+    if (originalData) {
+      const hasActualChanges = !isEqual(formData, originalData);
+      setHasChanges(hasActualChanges);
+    }
+    
+    // Check step completion
+    checkStepCompletion();
+  }, [formData, originalData, currentStep]);
 
   useEffect(() => {
     if (propertyId) {
       loadProperty();
     }
   }, [propertyId]);
+
+  // Check if current step is completed
+  const checkStepCompletion = () => {
+    const currentData = formDataRef.current;
+    
+    const stepRequirements = {
+      1: () => 
+        currentData.titleEn.trim() !== '' &&
+        currentData.titleAr.trim() !== '' &&
+        currentData.price > 0 &&
+        Boolean(currentData.type) &&
+        Boolean(currentData.status) &&
+        currentData.city.trim() !== '',
+      2: () => 
+        currentData.bedrooms > 0 &&
+        currentData.bathrooms > 0 &&
+        currentData.area > 0 &&
+        currentData.parking >= 0,
+      3: () => currentData.images.length > 0 // Step 3 requires at least one image
+    };
+
+    setStepCompleted(prev => ({
+      ...prev,
+      [currentStep]: stepRequirements[currentStep]()
+    }));
+  };
 
   const loadProperty = async () => {
     try {
@@ -230,7 +185,7 @@ export default function EditPropertyPage() {
       
       console.log('Property loaded:', property);
       
-      const enhancedData: EnhancedCreatePropertyData = {
+      const editData: EditPropertyFormData = {
         titleEn: property.titleEn,
         titleAr: property.titleAr,
         descriptionEn: property.descriptionEn || '',
@@ -246,62 +201,12 @@ export default function EditPropertyPage() {
         parking: property.parking,
         features: property.features,
         images: property.images,
-        // Map additional fields (with fallbacks for existing properties)
-        yearBuilt: (property as any).yearBuilt || new Date().getFullYear(),
-        floors: (property as any).floors || 1,
-        furnished: (property as any).furnished || false,
-        petFriendly: (property as any).petFriendly || false,
-        smokingAllowed: (property as any).smokingAllowed || false,
-        nearSchools: (property as any).nearSchools || false,
-        nearHospitals: (property as any).nearHospitals || false,
-        nearShopping: (property as any).nearShopping || false,
-        nearTransport: (property as any).nearTransport || false,
-        balcony: (property as any).balcony || false,
-        garden: (property as any).garden || false,
-        pool: (property as any).pool || false,
-        gym: (property as any).gym || false,
-        security: (property as any).security || false,
-        concierge: (property as any).concierge || false,
-        elevator: (property as any).elevator || false,
-        parkingType: (property as any).parkingType || 'STREET',
-        heating: (property as any).heating || 'CENTRAL',
-        cooling: (property as any).cooling || 'CENTRAL',
-        waterHeater: (property as any).waterHeater || false,
-        internet: (property as any).internet || false,
-        cableTV: (property as any).cableTV || false,
-        dishwasher: (property as any).dishwasher || false,
-        washingMachine: (property as any).washingMachine || false,
-        dryer: (property as any).dryer || false,
-        microwave: (property as any).microwave || false,
-        refrigerator: (property as any).refrigerator || false,
-        oven: (property as any).oven || false,
-        contactName: (property as any).contactName || '',
-        contactPhone: (property as any).contactPhone || '',
-        contactEmail: (property as any).contactEmail || '',
-        contactWhatsapp: (property as any).contactWhatsapp || '',
-        virtualTour: (property as any).virtualTour || '',
-        videoUrl: (property as any).videoUrl || '',
-        floorPlan: (property as any).floorPlan || '',
-        energyRating: (property as any).energyRating || 'C',
-        propertyTax: (property as any).propertyTax || 0,
-        maintenanceFee: (property as any).maintenanceFee || 0,
-        hoaFee: (property as any).hoaFee || 0,
-        insurance: (property as any).insurance || 0,
-        utilities: (property as any).utilities || [],
-        nearbyAmenities: (property as any).nearbyAmenities || [],
-        transportation: (property as any).transportation || [],
-        schools: (property as any).schools || [],
-        hospitals: (property as any).hospitals || [],
-        shopping: (property as any).shopping || [],
-        restaurants: (property as any).restaurants || [],
-        entertainment: (property as any).entertainment || [],
-        views: (property as any).views || 0,
-        favorites: (property as any).favorites || 0,
-        shares: (property as any).shares || 0
       };
       
-      setFormData(enhancedData);
-      setOriginalData(enhancedData);
+      setFormData(editData);
+      formDataRef.current = editData;
+      setOriginalData(editData);
+      setHasChanges(false);
     } catch (error) {
       console.error('Error loading property:', error);
       alert(`Error loading property: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -310,9 +215,12 @@ export default function EditPropertyPage() {
     }
   };
 
-  const updateFormData = (field: keyof EnhancedCreatePropertyData, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setHasChanges(true);
+  const updateFormData = (field: keyof EditPropertyFormData, value: any) => {
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      formDataRef.current = newData;
+      return newData;
+    });
     
     // Clear field error when user starts typing
     if (fieldErrors[field]) {
@@ -324,43 +232,26 @@ export default function EditPropertyPage() {
     }
   };
 
-  const handleImageUpload = (url: string) => {
-    setFormData(prev => ({
-      ...prev,
-      images: [...prev.images, url]
-    }));
-    setHasChanges(true);
-  };
-
-  const handleMultipleImageUpload = (urls: string[]) => {
-    setFormData(prev => ({
-      ...prev,
-      images: [...prev.images, ...urls]
-    }));
-    setHasChanges(true);
+  const handleImageUpload = (urls: string[]) => {
+    setFormData(prev => {
+      const newData = { ...prev, images: [...prev.images, ...urls] };
+      formDataRef.current = newData;
+      return newData;
+    });
   };
 
   const removeImage = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index)
-    }));
-    setHasChanges(true);
-  };
-
-  const toggleFeature = (feature: string) => {
-    setFormData(prev => ({
-      ...prev,
-      features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
-    }));
-    setHasChanges(true);
+    setFormData(prev => {
+      const newData = { ...prev, images: prev.images.filter((_, i) => i !== index) };
+      formDataRef.current = newData;
+      return newData;
+    });
   };
 
   const resetToOriginal = () => {
     if (originalData) {
       setFormData(originalData);
+      formDataRef.current = originalData;
       setHasChanges(false);
       setFieldErrors({});
     }
@@ -373,28 +264,34 @@ export default function EditPropertyPage() {
 
   const validateForm = (): { isValid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
+    const currentData = formDataRef.current;
 
     // Required field validation
-    if (requiredFields.titleEn && !formData.titleEn.trim()) {
+    if (requiredFields.titleEn && !currentData.titleEn.trim()) {
       errors.titleEn = isRTL ? 'العنوان بالإنجليزية مطلوب' : 'English title is required';
     }
-    if (requiredFields.titleAr && !formData.titleAr.trim()) {
+    if (requiredFields.titleAr && !currentData.titleAr.trim()) {
       errors.titleAr = isRTL ? 'العنوان بالعربية مطلوب' : 'Arabic title is required';
     }
-    if (requiredFields.price && (!formData.price || formData.price <= 0)) {
+    if (requiredFields.price && (!currentData.price || currentData.price <= 0)) {
       errors.price = isRTL ? 'يرجى إدخال سعر صحيح' : 'Please enter a valid price';
     }
-    if (requiredFields.city && !formData.city.trim()) {
+    if (requiredFields.city && !currentData.city.trim()) {
       errors.city = isRTL ? 'يرجى إدخال مدينة صحيحة' : 'Please enter a valid city';
     }
-    if (requiredFields.area && (!formData.area || formData.area <= 0)) {
+    if (requiredFields.area && (!currentData.area || currentData.area <= 0)) {
       errors.area = isRTL ? 'يرجى إدخال مساحة صحيحة' : 'Please enter a valid area';
     }
-    if (requiredFields.bedrooms && (!formData.bedrooms || formData.bedrooms <= 0)) {
+    if (requiredFields.bedrooms && (!currentData.bedrooms || currentData.bedrooms <= 0)) {
       errors.bedrooms = isRTL ? 'يرجى إدخال عدد غرف النوم' : 'Please enter number of bedrooms';
     }
-    if (requiredFields.bathrooms && (!formData.bathrooms || formData.bathrooms <= 0)) {
+    if (requiredFields.bathrooms && (!currentData.bathrooms || currentData.bathrooms <= 0)) {
       errors.bathrooms = isRTL ? 'يرجى إدخال عدد الحمامات' : 'Please enter number of bathrooms';
+    }
+    
+    // Check if at least one image is uploaded
+    if (currentData.images.length === 0) {
+      errors.images = isRTL ? 'يرجى رفع صورة واحدة على الأقل' : 'Please upload at least one image';
     }
 
     setFieldErrors(errors);
@@ -402,39 +299,41 @@ export default function EditPropertyPage() {
   };
 
   const validateCurrentStep = (): boolean => {
-    const stepValidations: Record<number, (keyof EnhancedCreatePropertyData)[]> = {
+    const stepValidations: Record<number, (keyof EditPropertyFormData)[]> = {
       1: ['titleEn', 'titleAr', 'price', 'type', 'status', 'city'],
-      2: ['bedrooms', 'bathrooms', 'area'],
-      3: [], // Features are optional
-      4: [], // Images are optional
-      5: [], // Contact info is optional
+      2: ['bedrooms', 'bathrooms', 'area', 'parking'],
+      3: []
     };
 
     const currentStepFields = stepValidations[currentStep] || [];
     const errors: Record<string, string> = {};
+    const currentData = formDataRef.current;
 
     currentStepFields.forEach(field => {
       if (requiredFields[field]) {
-        if (field === 'titleEn' && !formData.titleEn.trim()) {
+        if (field === 'titleEn' && !currentData.titleEn.trim()) {
           errors.titleEn = isRTL ? 'العنوان بالإنجليزية مطلوب' : 'English title is required';
         }
-        if (field === 'titleAr' && !formData.titleAr.trim()) {
+        if (field === 'titleAr' && !currentData.titleAr.trim()) {
           errors.titleAr = isRTL ? 'العنوان بالعربية مطلوب' : 'Arabic title is required';
         }
-        if (field === 'price' && (!formData.price || formData.price <= 0)) {
+        if (field === 'price' && (!currentData.price || currentData.price <= 0)) {
           errors.price = isRTL ? 'يرجى إدخال سعر صحيح' : 'Please enter a valid price';
         }
-        if (field === 'city' && !formData.city.trim()) {
+        if (field === 'city' && !currentData.city.trim()) {
           errors.city = isRTL ? 'يرجى إدخال مدينة صحيحة' : 'Please enter a valid city';
         }
-        if (field === 'area' && (!formData.area || formData.area <= 0)) {
+        if (field === 'area' && (!currentData.area || currentData.area <= 0)) {
           errors.area = isRTL ? 'يرجى إدخال مساحة صحيحة' : 'Please enter a valid area';
         }
-        if (field === 'bedrooms' && (!formData.bedrooms || formData.bedrooms <= 0)) {
+        if (field === 'bedrooms' && (!currentData.bedrooms || currentData.bedrooms <= 0)) {
           errors.bedrooms = isRTL ? 'يرجى إدخال عدد غرف النوم' : 'Please enter number of bedrooms';
         }
-        if (field === 'bathrooms' && (!formData.bathrooms || formData.bathrooms <= 0)) {
+        if (field === 'bathrooms' && (!currentData.bathrooms || currentData.bathrooms <= 0)) {
           errors.bathrooms = isRTL ? 'يرجى إدخال عدد الحمامات' : 'Please enter number of bathrooms';
+        }
+        if (field === 'parking' && currentData.parking < 0) {
+          errors.parking = isRTL ? 'يرجى إدخال عدد صحيح لمواقف السيارات' : 'Please enter a valid number for parking';
         }
       }
     });
@@ -446,6 +345,31 @@ export default function EditPropertyPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check if all steps are completed
+    if (!stepCompleted[1] || !stepCompleted[2] || !stepCompleted[3]) {
+      alert(isRTL 
+        ? 'يرجى إكمال جميع الخطوات الثلاث قبل الحفظ' 
+        : 'Please complete all three steps before saving'
+      );
+      
+      // Navigate to first incomplete step
+      if (!stepCompleted[1]) setCurrentStep(1);
+      else if (!stepCompleted[2]) setCurrentStep(2);
+      else if (!stepCompleted[3]) setCurrentStep(3);
+      
+      return;
+    }
+    
+    // Check if there are actual changes
+    if (!hasChanges) {
+      alert(isRTL 
+        ? 'لم تقم بإجراء أي تغييرات. لا حاجة للحفظ.' 
+        : 'No changes were made. No need to save.'
+      );
+      return;
+    }
+    
+    // Final validation
     const validation = validateForm();
     if (!validation.isValid) {
       const errorCount = Object.keys(validation.errors).length;
@@ -453,68 +377,81 @@ export default function EditPropertyPage() {
         ? `يرجى تصحيح ${errorCount} خطأ${errorCount > 1 ? 'ء' : ''} في النموذج`
         : `Please fix ${errorCount} error${errorCount > 1 ? 's' : ''} in the form`
       );
+      
+      // Find the first step with errors and navigate to it
+      const errorFields = Object.keys(validation.errors);
+      if (errorFields.some(field => ['titleEn', 'titleAr', 'price', 'type', 'status', 'city'].includes(field))) {
+        setCurrentStep(1);
+      } else if (errorFields.some(field => ['bedrooms', 'bathrooms', 'area', 'parking'].includes(field))) {
+        setCurrentStep(2);
+      } else if (errorFields.includes('images')) {
+        setCurrentStep(3);
+      }
+      
       return;
     }
 
     setLoading(true);
     try {
-      // Convert enhanced data to basic CreatePropertyData for API
+      const currentFormData = formDataRef.current;
       const basicData: CreatePropertyData = {
-        titleEn: formData.titleEn,
-        titleAr: formData.titleAr,
-        descriptionEn: formData.descriptionEn,
-        descriptionAr: formData.descriptionAr,
-        price: formData.price,
-        type: formData.type,
-        status: formData.status,
-        city: formData.city,
-        district: formData.district,
-        bedrooms: formData.bedrooms,
-        bathrooms: formData.bathrooms,
-        area: formData.area,
-        parking: formData.parking,
-        features: formData.features,
-        images: formData.images
+        titleEn: currentFormData.titleEn,
+        titleAr: currentFormData.titleAr,
+        descriptionEn: currentFormData.descriptionEn,
+        descriptionAr: currentFormData.descriptionAr,
+        price: currentFormData.price,
+        type: currentFormData.type,
+        status: currentFormData.status,
+        city: currentFormData.city,
+        district: currentFormData.district,
+        bedrooms: currentFormData.bedrooms,
+        bathrooms: currentFormData.bathrooms,
+        area: currentFormData.area,
+        parking: currentFormData.parking,
+        features: currentFormData.features,
+        images: currentFormData.images
       };
 
+      console.log('Submitting property data:', basicData);
+      
       await PropertiesService.update(propertyId, basicData);
+      
+      // Update original data to reflect saved state
+      setOriginalData(currentFormData);
       setHasChanges(false);
+      
+      // Show success message
+      alert(isRTL ? 'تم تحديث العقار بنجاح!' : 'Property updated successfully!');
+      
+      // Redirect to properties list
       router.push(`/${locale}/dashboard/p`);
+      
     } catch (error) {
       console.error('Error updating property:', error);
       const errorMessage = error instanceof Error ? error.message : commonT('error');
-      alert(errorMessage);
+      alert(isRTL ? `خطأ في تحديث العقار: ${errorMessage}` : `Error updating property: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
   };
 
   const propertyTypes = [
-    { value: 'APARTMENT', label: t('types.apartment'), icon: Building },
-    { value: 'VILLA', label: t('types.villa'), icon: Home },
-    { value: 'OFFICE', label: t('types.office'), icon: Briefcase },
-    { value: 'SHOP', label: t('types.shop'), icon: Store }
+    { value: 'APARTMENT', label: isRTL ? 'شقة' : 'Apartment', icon: Building },
+    { value: 'VILLA', label: isRTL ? 'فيلا' : 'Villa', icon: Home },
+    { value: 'OFFICE', label: isRTL ? 'مكتب' : 'Office', icon: Building2 },
+    { value: 'SHOP', label: isRTL ? 'متجر' : 'Shop', icon: Building2 }
   ];
 
-  const amenities = [
-    { key: 'wifi', label: 'WiFi', icon: Wifi },
-    { key: 'security', label: 'Security', icon: Shield },
-    { key: 'garden', label: 'Garden', icon: TreePine },
-    { key: 'gym', label: 'Gym', icon: Dumbbell },
-    { key: 'pool', label: 'Pool', icon: Waves },
-    { key: 'parking', label: 'Parking', icon: CarIcon },
-    { key: 'kitchen', label: 'Kitchen', icon: Utensils },
-    { key: 'tv', label: 'Cable TV', icon: Monitor },
-    { key: 'phone', label: 'Phone', icon: Phone },
-    { key: 'internet', label: 'Internet', icon: Globe }
+  const statusOptions = [
+    { value: 'AVAILABLE', label: isRTL ? 'متاح' : 'Available' },
+    { value: 'RENTED', label: isRTL ? 'مؤجر' : 'Rented' },
+    { value: 'SOLD', label: isRTL ? 'مباع' : 'Sold' }
   ];
 
   const steps = [
-    { number: 1, title: 'Basic Information', icon: Home },
-    { number: 2, title: 'Property Details', icon: Building },
-    { number: 3, title: 'Amenities & Features', icon: Star },
-    { number: 4, title: 'Images & Media', icon: ImageIcon },
-    { number: 5, title: 'Contact & Final', icon: Phone }
+    { number: 1, title: isRTL ? 'المعلومات الأساسية' : 'Basic Information', icon: Building2 },
+    { number: 2, title: isRTL ? 'تفاصيل العقار' : 'Property Details', icon: Home },
+    { number: 3, title: isRTL ? 'الصور والوسائط' : 'Images & Media', icon: ImageIcon }
   ];
 
   const nextStep = () => {
@@ -533,6 +470,13 @@ export default function EditPropertyPage() {
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    }
+  };
+
+  // Allow direct navigation to completed steps
+  const goToStep = (stepNumber: number) => {
+    if (stepNumber <= currentStep || stepCompleted[stepNumber]) {
+      setCurrentStep(stepNumber);
     }
   };
 
@@ -558,15 +502,15 @@ export default function EditPropertyPage() {
             className="mb-4 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-4" />
-            {t('actions.back')}
+            {isRTL ? 'العودة إلى العقارات' : 'Back to Properties'}
           </Link>
           <div className="flex items-center justify-between">
             <div>
               <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-bold text-foreground">
-                {t('editTitle')}
+                {isRTL ? 'تعديل العقار' : 'Edit Property'}
               </h1>
               <p className="mt-2 text-lg text-muted-foreground">
-                {t('editSubtitle')}
+                {isRTL ? 'تعديل معلومات العقار الحالي' : 'Edit current property information'}
               </p>
             </div>
             <div className="text-right">
@@ -576,6 +520,83 @@ export default function EditPropertyPage() {
               <div className="text-sm text-muted-foreground">
                 {steps[currentStep - 1].title}
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Progress with clickable steps */}
+        <Card className="mb-8">
+          <CardContent className="p-6">
+            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                const isActive = currentStep === step.number;
+                const isCompleted = stepCompleted[step.number];
+                const canNavigate = step.number <= currentStep || isCompleted;
+                
+                return (
+                  <div key={step.number} className="flex items-center">
+                    <button
+                      type="button"
+                      onClick={() => canNavigate && goToStep(step.number)}
+                      className={`flex size-12 items-center justify-center rounded-full border-2 transition-all ${
+                        isActive 
+                          ? 'border-primary bg-primary text-white' 
+                          : isCompleted 
+                          ? 'cursor-pointer border-green-500 bg-green-500 text-white hover:bg-green-600'
+                          : canNavigate
+                          ? 'cursor-pointer border-muted-foreground bg-background text-muted-foreground hover:border-primary/50'
+                          : 'border-muted-foreground bg-muted text-muted-foreground'
+                      }`}
+                      disabled={!canNavigate}
+                    >
+                      {isCompleted ? (
+                        <CheckCircle className="size-5" />
+                      ) : (
+                        <Icon className="size-5" />
+                      )}
+                    </button>
+                    <div className={isRTL ? "mr-3" : "ml-3"}>
+                      <div className={`text-sm font-medium ${
+                        isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-muted-foreground'
+                      }`}>
+                        {step.title}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {isCompleted 
+                          ? (isRTL ? 'مكتمل' : 'Completed')
+                          : (isActive ? (isRTL ? 'جاري' : 'Current') : (isRTL ? 'قيد الانتظار' : 'Pending'))
+                        }
+                      </div>
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div className={`mx-4 h-0.5 w-16 ${
+                        stepCompleted[step.number] ? 'bg-green-500' : 'bg-muted-foreground'
+                      }`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Step completion status */}
+        <div className="mb-6">
+          <div className="flex items-center gap-2 text-sm">
+            <div className={`flex items-center gap-1 ${stepCompleted[1] ? 'text-green-600' : 'text-muted-foreground'}`}>
+              {stepCompleted[1] ? <CheckCircle className="size-4" /> : <div className="size-2 rounded-full bg-muted-foreground" />}
+              <span>{isRTL ? 'المعلومات الأساسية' : 'Basic Information'}</span>
+            </div>
+            <span className="text-muted-foreground">•</span>
+            <div className={`flex items-center gap-1 ${stepCompleted[2] ? 'text-green-600' : 'text-muted-foreground'}`}>
+              {stepCompleted[2] ? <CheckCircle className="size-4" /> : <div className="size-2 rounded-full bg-muted-foreground" />}
+              <span>{isRTL ? 'تفاصيل العقار' : 'Property Details'}</span>
+            </div>
+            <span className="text-muted-foreground">•</span>
+            <div className={`flex items-center gap-1 ${stepCompleted[3] ? 'text-green-600' : 'text-muted-foreground'}`}>
+              {stepCompleted[3] ? <CheckCircle className="size-4" /> : <div className="size-2 rounded-full bg-muted-foreground" />}
+              <span>{isRTL ? 'الصور والوسائط' : 'Images & Media'}</span>
             </div>
           </div>
         </div>
@@ -600,44 +621,19 @@ export default function EditPropertyPage() {
           </Card>
         )}
 
-        {/* Progress Steps */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-              {steps.map((step, index) => {
-                const Icon = step.icon;
-                const isActive = currentStep === step.number;
-                const isCompleted = currentStep > step.number;
-                
-                return (
-                  <div key={step.number} className="flex items-center">
-                    <div className={`flex size-12 items-center justify-center rounded-full border-2 transition-all ${
-                      isActive 
-                        ? 'border-primary bg-primary text-white' 
-                        : isCompleted 
-                        ? 'border-green-500 bg-green-500 text-white'
-                        : 'border-muted-foreground bg-background text-muted-foreground'
-                    }`}>
-                      <Icon className="size-5" />
-                    </div>
-                    <div className={isRTL ? "mr-3" : "ml-3"}>
-                      <div className={`text-sm font-medium ${
-                        isActive ? 'text-primary' : isCompleted ? 'text-green-600' : 'text-muted-foreground'
-                      }`}>
-                        {step.title}
-                      </div>
-                    </div>
-                    {index < steps.length - 1 && (
-                      <div className={`mx-4 h-0.5 w-16 ${
-                        isCompleted ? 'bg-green-500' : 'bg-muted-foreground'
-                      }`} />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+        {/* No Images Warning */}
+        {!stepCompleted[3] && currentStep === 3 && (
+          <Card className="mb-6 border-orange-200 bg-orange-50">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <AlertCircle className="size-5 text-orange-600" />
+                <span className="font-medium text-orange-800">
+                  {isRTL ? 'يرجى رفع صورة واحدة على الأقل قبل الحفظ' : 'Please upload at least one image before saving'}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Step 1: Basic Information */}
@@ -690,7 +686,7 @@ export default function EditPropertyPage() {
                       id="price"
                       type="number"
                       value={formData.price || ''}
-                      onChange={(e) => updateFormData('price', parseFloat(e.target.value))}
+                      onChange={(e) => updateFormData('price', parseFloat(e.target.value) || 0)}
                       placeholder={isRTL ? 'أدخل سعر العقار' : 'Enter property price'}
                       className={`text-lg ${fieldErrors.price ? 'border-destructive' : ''}`}
                       required
@@ -713,9 +709,11 @@ export default function EditPropertyPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="AVAILABLE">{isRTL ? 'متاح' : 'Available'}</SelectItem>
-                        <SelectItem value="RENTED">{isRTL ? 'مؤجر' : 'Rented'}</SelectItem>
-                        <SelectItem value="SOLD">{isRTL ? 'مباع' : 'Sold'}</SelectItem>
+                        {statusOptions.map((status) => (
+                          <SelectItem key={status.value} value={status.value}>
+                            {status.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -857,15 +855,16 @@ export default function EditPropertyPage() {
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => updateFormData('bedrooms', Math.max(0, formData.bedrooms - 1))}
+                        onClick={() => updateFormData('bedrooms', Math.max(1, formData.bedrooms - 1))}
                       >
                         <Minus className="size-4" />
                       </Button>
                       <Input
                         type="number"
                         value={formData.bedrooms}
-                        onChange={(e) => updateFormData('bedrooms', parseInt(e.target.value))}
+                        onChange={(e) => updateFormData('bedrooms', parseInt(e.target.value) || 1)}
                         className={`text-center ${fieldErrors.bedrooms ? 'border-destructive' : ''}`}
+                        min="1"
                         required
                       />
                       <Button
@@ -895,15 +894,16 @@ export default function EditPropertyPage() {
                         type="button"
                         variant="outline"
                         size="sm"
-                        onClick={() => updateFormData('bathrooms', Math.max(0, formData.bathrooms - 1))}
+                        onClick={() => updateFormData('bathrooms', Math.max(1, formData.bathrooms - 1))}
                       >
                         <Minus className="size-4" />
                       </Button>
                       <Input
                         type="number"
                         value={formData.bathrooms}
-                        onChange={(e) => updateFormData('bathrooms', parseInt(e.target.value))}
+                        onChange={(e) => updateFormData('bathrooms', parseInt(e.target.value) || 1)}
                         className={`text-center ${fieldErrors.bathrooms ? 'border-destructive' : ''}`}
+                        min="1"
                         required
                       />
                       <Button
@@ -931,9 +931,10 @@ export default function EditPropertyPage() {
                     <Input
                       type="number"
                       value={formData.area}
-                      onChange={(e) => updateFormData('area', parseInt(e.target.value))}
+                      onChange={(e) => updateFormData('area', parseInt(e.target.value) || 0)}
                       placeholder={isRTL ? 'أدخل المساحة' : 'Enter area'}
                       className={fieldErrors.area ? 'border-destructive' : ''}
+                      min="1"
                       required
                     />
                     {fieldErrors.area && (
@@ -947,7 +948,7 @@ export default function EditPropertyPage() {
                   <div className="space-y-2">
                     <Label className="flex items-center gap-2">
                       <Car className="size-4" />
-                      {isRTL ? 'مواقف السيارات' : 'Parking'}
+                      {isRTL ? 'مواقف السيارات' : 'Parking'} <RequiredIndicator />
                     </Label>
                     <div className="flex items-center gap-2">
                       <Button
@@ -961,8 +962,10 @@ export default function EditPropertyPage() {
                       <Input
                         type="number"
                         value={formData.parking}
-                        onChange={(e) => updateFormData('parking', parseInt(e.target.value))}
+                        onChange={(e) => updateFormData('parking', parseInt(e.target.value) || 0)}
                         className="text-center"
+                        min="0"
+                        required
                       />
                       <Button
                         type="button"
@@ -975,160 +978,12 @@ export default function EditPropertyPage() {
                     </div>
                   </div>
                 </div>
-
-                <Separator />
-
-                {/* Additional Details */}
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="yearBuilt">{isRTL ? 'سنة البناء' : 'Year Built'}</Label>
-                    <Input
-                      id="yearBuilt"
-                      type="number"
-                      value={formData.yearBuilt}
-                      onChange={(e) => updateFormData('yearBuilt', parseInt(e.target.value))}
-                      placeholder={isRTL ? 'أدخل سنة البناء' : 'Enter year built'}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="floors">{isRTL ? 'عدد الطوابق' : 'Number of Floors'}</Label>
-                    <Input
-                      id="floors"
-                      type="number"
-                      value={formData.floors}
-                      onChange={(e) => updateFormData('floors', parseInt(e.target.value))}
-                      placeholder={isRTL ? 'أدخل عدد الطوابق' : 'Enter number of floors'}
-                    />
-                  </div>
-                </div>
-
-                {/* Property Features */}
-                <div className="space-y-3">
-                  <Label className="text-base font-semibold">{isRTL ? 'ميزات العقار' : 'Property Features'}</Label>
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    {[
-                      { key: 'furnished', label: isRTL ? 'مؤثثة' : 'Furnished' },
-                      { key: 'petFriendly', label: isRTL ? 'مسموح بالحيوانات الأليفة' : 'Pet Friendly' },
-                      { key: 'smokingAllowed', label: isRTL ? 'مسموح بالتدخين' : 'Smoking Allowed' },
-                      { key: 'balcony', label: isRTL ? 'شرفة' : 'Balcony' },
-                      { key: 'garden', label: isRTL ? 'حديقة' : 'Garden' },
-                      { key: 'elevator', label: isRTL ? 'مصعد' : 'Elevator' }
-                    ].map((feature) => (
-                      <div key={feature.key} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={feature.key}
-                          checked={formData[feature.key as keyof EnhancedCreatePropertyData] as boolean}
-                          onCheckedChange={(checked) => updateFormData(feature.key as keyof EnhancedCreatePropertyData, checked)}
-                        />
-                        <Label htmlFor={feature.key} className="text-sm">
-                          {feature.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Step 3: Amenities & Features */}
+          {/* Step 3: Images & Media */}
           {currentStep === 3 && (
-            <Card className="border-0 shadow-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Star className="size-5 text-primary" />
-                  {isRTL ? 'المرافق والميزات' : 'Amenities & Features'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Amenities */}
-                <div className="space-y-3">
-                  <Label className="text-base font-semibold">{isRTL ? 'اختر المرافق' : 'Select Amenities'}</Label>
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    {amenities.map((amenity) => {
-                      const Icon = amenity.icon;
-                      const isSelected = formData.features.includes(amenity.key);
-                      
-                      return (
-                        <button
-                          key={amenity.key}
-                          type="button"
-                          onClick={() => toggleFeature(amenity.key)}
-                          className={`rounded-lg border-2 p-4 transition-all hover:shadow-md ${
-                            isSelected
-                              ? 'border-primary bg-primary/10 text-primary'
-                              : 'border-border hover:border-primary/50'
-                          }`}
-                        >
-                          <Icon className="mx-auto mb-2 size-6" />
-                          <div className="text-sm font-medium">{amenity.label}</div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Utilities */}
-                <div className="space-y-3">
-                  <Label className="text-base font-semibold">{isRTL ? 'المرافق' : 'Utilities'}</Label>
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    {[
-                      { key: 'waterHeater', label: isRTL ? 'سخان ماء' : 'Water Heater' },
-                      { key: 'internet', label: isRTL ? 'إنترنت' : 'Internet' },
-                      { key: 'cableTV', label: isRTL ? 'تلفزيون كبلي' : 'Cable TV' },
-                      { key: 'dishwasher', label: isRTL ? 'غسالة صحون' : 'Dishwasher' },
-                      { key: 'washingMachine', label: isRTL ? 'غسالة ملابس' : 'Washing Machine' },
-                      { key: 'dryer', label: isRTL ? 'مجفف ملابس' : 'Dryer' },
-                      { key: 'microwave', label: isRTL ? 'مايكروويف' : 'Microwave' },
-                      { key: 'refrigerator', label: isRTL ? 'ثلاجة' : 'Refrigerator' },
-                      { key: 'oven', label: isRTL ? 'فرن' : 'Oven' }
-                    ].map((utility) => (
-                      <div key={utility.key} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={utility.key}
-                          checked={formData[utility.key as keyof EnhancedCreatePropertyData] as boolean}
-                          onCheckedChange={(checked) => updateFormData(utility.key as keyof EnhancedCreatePropertyData, checked)}
-                        />
-                        <Label htmlFor={utility.key} className="text-sm">
-                          {utility.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Nearby Amenities */}
-                <div className="space-y-3">
-                  <Label className="text-base font-semibold">{isRTL ? 'المرافق القريبة' : 'Nearby Amenities'}</Label>
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    {[
-                      { key: 'nearSchools', label: isRTL ? 'قرب المدارس' : 'Near Schools' },
-                      { key: 'nearHospitals', label: isRTL ? 'قرب المستشفيات' : 'Near Hospitals' },
-                      { key: 'nearShopping', label: isRTL ? 'قرب مراكز التسوق' : 'Near Shopping' },
-                      { key: 'nearTransport', label: isRTL ? 'قرب المواصلات' : 'Near Transport' }
-                    ].map((amenity) => (
-                      <div key={amenity.key} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={amenity.key}
-                          checked={formData[amenity.key as keyof EnhancedCreatePropertyData] as boolean}
-                          onCheckedChange={(checked) => updateFormData(amenity.key as keyof EnhancedCreatePropertyData, checked)}
-                        />
-                        <Label htmlFor={amenity.key} className="text-sm">
-                          {amenity.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 4: Images & Media */}
-          {currentStep === 4 && (
             <Card className="border-0 shadow-sm">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -1137,15 +992,26 @@ export default function EditPropertyPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <CustomUploader
-                  bucket="IMAGES"
-                  onUploadComplete={handleImageUpload}
-                  onMultipleUploadComplete={handleMultipleImageUpload}
-                  buttonText={isRTL ? "رفع صور العقار" : "Upload Property Images"}
-                  multiple={true}
-                  maxFiles={20}
-                  acceptedFileTypes="image"
-                />
+                <div className="rounded-2xl border-2 border-dashed border-border bg-muted/20 p-8 text-center transition-colors hover:bg-muted/40">
+                  <Upload className="mx-auto mb-4 size-12 text-muted-foreground" />
+                  <h3 className="mb-2 text-lg font-semibold">
+                    {isRTL ? 'رفع صور العقار' : 'Upload Property Images'}
+                  </h3>
+                  <p className="mx-auto mb-6 max-w-md text-muted-foreground">
+                    {isRTL 
+                      ? 'اسحب وأفلت صورك هنا، أو انقر للتصفح. التنسيقات المدعومة: JPG, PNG, WEBP (الحد الأقصى 12 صورة)'
+                      : 'Drag and drop your images here, or click to browse. Supported formats: JPG, PNG, WEBP (Max 12 images)'
+                    }
+                  </p>
+                  <CustomUploader
+                    bucket="IMAGES"
+                    onMultipleUploadComplete={handleImageUpload}
+                    buttonText={isRTL ? "اختر الصور" : "Select Images"}
+                    multiple={true}
+                    maxFiles={12}
+                    acceptedFileTypes="image"
+                  />
+                </div>
 
                 {formData.images.length > 0 && (
                   <div className="space-y-4">
@@ -1154,7 +1020,7 @@ export default function EditPropertyPage() {
                         {isRTL ? `الصور المرفوعة (${formData.images.length})` : `Uploaded Images (${formData.images.length})`}
                       </Label>
                       <Badge variant="secondary">
-                        {formData.images.length} {isRTL ? 'صورة' : 'images'}
+                        {formData.images.length} / 12 {isRTL ? 'صورة' : 'images'}
                       </Badge>
                     </div>
                     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -1162,7 +1028,7 @@ export default function EditPropertyPage() {
                         <div key={idx} className="group relative aspect-square">
                           <img 
                             src={url} 
-                            alt={`Property image ${idx + 1}`}
+                            alt={isRTL ? `صورة العقار ${idx + 1}` : `Property image ${idx + 1}`}
                             className="size-full rounded-lg border-2 border-border object-cover" 
                           />
                           <button
@@ -1180,153 +1046,6 @@ export default function EditPropertyPage() {
                     </div>
                   </div>
                 )}
-
-                {/* Additional Media */}
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="virtualTour">{isRTL ? 'رابط الجولة الافتراضية' : 'Virtual Tour URL'}</Label>
-                    <Input
-                      id="virtualTour"
-                      value={formData.virtualTour}
-                      onChange={(e) => updateFormData('virtualTour', e.target.value)}
-                      placeholder={isRTL ? 'أدخل رابط الجولة الافتراضية' : 'Enter virtual tour URL'}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="videoUrl">{isRTL ? 'رابط الفيديو' : 'Video URL'}</Label>
-                    <Input
-                      id="videoUrl"
-                      value={formData.videoUrl}
-                      onChange={(e) => updateFormData('videoUrl', e.target.value)}
-                      placeholder={isRTL ? 'أدخل رابط الفيديو' : 'Enter video URL'}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 5: Contact & Final */}
-          {currentStep === 5 && (
-            <Card className="border-0 shadow-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Phone className="size-5 text-primary" />
-                  {isRTL ? 'معلومات الاتصال والتفاصيل النهائية' : 'Contact Information & Final Details'}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Contact Information */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">{isRTL ? 'معلومات الاتصال' : 'Contact Information'}</h3>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="contactName">{isRTL ? 'اسم جهة الاتصال' : 'Contact Name'}</Label>
-                      <Input
-                        id="contactName"
-                        value={formData.contactName}
-                        onChange={(e) => updateFormData('contactName', e.target.value)}
-                        placeholder={isRTL ? 'أدخل اسم جهة الاتصال' : 'Enter contact person name'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contactPhone">{isRTL ? 'رقم الهاتف' : 'Phone Number'}</Label>
-                      <Input
-                        id="contactPhone"
-                        value={formData.contactPhone}
-                        onChange={(e) => updateFormData('contactPhone', e.target.value)}
-                        placeholder={isRTL ? 'أدخل رقم الهاتف' : 'Enter phone number'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contactEmail">{isRTL ? 'البريد الإلكتروني' : 'Email'}</Label>
-                      <Input
-                        id="contactEmail"
-                        type="email"
-                        value={formData.contactEmail}
-                        onChange={(e) => updateFormData('contactEmail', e.target.value)}
-                        placeholder={isRTL ? 'أدخل البريد الإلكتروني' : 'Enter email address'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="contactWhatsapp">{isRTL ? 'رقم الواتساب' : 'WhatsApp'}</Label>
-                      <Input
-                        id="contactWhatsapp"
-                        value={formData.contactWhatsapp}
-                        onChange={(e) => updateFormData('contactWhatsapp', e.target.value)}
-                        placeholder={isRTL ? 'أدخل رقم الواتساب' : 'Enter WhatsApp number'}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <Separator />
-
-                {/* Additional Costs */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">{isRTL ? 'التكاليف الإضافية (اختياري)' : 'Additional Costs (Optional)'}</h3>
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <Label htmlFor="propertyTax">{isRTL ? 'ضريبة العقار (سنوية)' : 'Property Tax (Annual)'}</Label>
-                      <Input
-                        id="propertyTax"
-                        type="number"
-                        value={formData.propertyTax}
-                        onChange={(e) => updateFormData('propertyTax', parseFloat(e.target.value))}
-                        placeholder={isRTL ? 'أدخل ضريبة العقار السنوية' : 'Enter annual property tax'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="maintenanceFee">{isRTL ? 'رسوم الصيانة (شهرية)' : 'Maintenance Fee (Monthly)'}</Label>
-                      <Input
-                        id="maintenanceFee"
-                        type="number"
-                        value={formData.maintenanceFee}
-                        onChange={(e) => updateFormData('maintenanceFee', parseFloat(e.target.value))}
-                        placeholder={isRTL ? 'أدخل رسوم الصيانة الشهرية' : 'Enter monthly maintenance fee'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="hoaFee">{isRTL ? 'رسوم الجمعية (شهرية)' : 'HOA Fee (Monthly)'}</Label>
-                      <Input
-                        id="hoaFee"
-                        type="number"
-                        value={formData.hoaFee}
-                        onChange={(e) => updateFormData('hoaFee', parseFloat(e.target.value))}
-                        placeholder={isRTL ? 'أدخل رسوم الجمعية الشهرية' : 'Enter monthly HOA fee'}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="insurance">{isRTL ? 'التأمين (سنوي)' : 'Insurance (Annual)'}</Label>
-                      <Input
-                        id="insurance"
-                        type="number"
-                        value={formData.insurance}
-                        onChange={(e) => updateFormData('insurance', parseFloat(e.target.value))}
-                        placeholder={isRTL ? 'أدخل تكلفة التأمين السنوية' : 'Enter annual insurance cost'}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Energy Rating */}
-                <div className="space-y-2">
-                  <Label htmlFor="energyRating">{isRTL ? 'التصنيف الطاقة' : 'Energy Rating'}</Label>
-                  <Select value={formData.energyRating} onValueChange={(val) => updateFormData('energyRating', val)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="A">{isRTL ? 'أ - الأكثر كفاءة' : 'A - Most Efficient'}</SelectItem>
-                      <SelectItem value="B">{isRTL ? 'ب - عالي الكفاءة' : 'B - Very Efficient'}</SelectItem>
-                      <SelectItem value="C">{isRTL ? 'ج - كفاءة' : 'C - Efficient'}</SelectItem>
-                      <SelectItem value="D">{isRTL ? 'د - متوسط' : 'D - Average'}</SelectItem>
-                      <SelectItem value="E">{isRTL ? 'هـ - أقل من المتوسط' : 'E - Below Average'}</SelectItem>
-                      <SelectItem value="F">{isRTL ? 'و - غير كفء' : 'F - Inefficient'}</SelectItem>
-                      <SelectItem value="G">{isRTL ? 'ز - الأقل كفاءة' : 'G - Least Efficient'}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </CardContent>
             </Card>
           )}
@@ -1350,11 +1069,21 @@ export default function EditPropertyPage() {
               </Button>
               
               {currentStep < steps.length ? (
-                <Button type="button" onClick={nextStep}>
+                <Button 
+                  type="button" 
+                  onClick={nextStep}
+                  disabled={!stepCompleted[currentStep]}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
                   {isRTL ? 'الخطوة التالية' : 'Next Step'}
+                  {stepCompleted[currentStep] && <CheckCircle className="ml-2 size-4" />}
                 </Button>
               ) : (
-                <Button type="submit" disabled={loading} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                <Button 
+                  type="submit" 
+                  disabled={loading || !hasChanges || !stepCompleted[1] || !stepCompleted[2] || !stepCompleted[3]}
+                  className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700"
+                >
                   {loading ? (
                     <>
                       <Save className="mr-2 size-4 animate-spin" />

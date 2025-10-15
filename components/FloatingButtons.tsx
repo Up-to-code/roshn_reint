@@ -7,14 +7,28 @@ interface FloatingButtonsProps {
   locale: string;
 }
 
+interface ContactSettings {
+  phoneNumber: string;
+  whatsappNumber: string;
+  showPhone: boolean;
+  showWhatsApp: boolean;
+}
+
 export function FloatingButtons({ locale }: FloatingButtonsProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [mounted, setMounted] = useState(false);
+  const [settings, setSettings] = useState<ContactSettings>({
+    phoneNumber: "+966501234567",
+    whatsappNumber: "966501234567",
+    showPhone: true,
+    showWhatsApp: true,
+  });
 
   const isRTL = locale === "ar";
 
   useEffect(() => {
     setMounted(true);
+    loadSettings();
   }, []);
 
   useEffect(() => {
@@ -33,49 +47,80 @@ export function FloatingButtons({ locale }: FloatingButtonsProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const loadSettings = async () => {
+    try {
+      const response = await fetch('/api/contact-settings');
+      if (response.ok) {
+        const data = await response.json();
+        setSettings(data);
+      }
+    } catch (error) {
+      console.error('Failed to load contact settings:', error);
+    }
+  };
+
   if (!mounted) return null;
 
-  const phoneNumber = "+966501234567";
-  const whatsappNumber = "966501234567";
-  const whatsappMessage = isRTL ? "مرحبًا، أود الاستفسار عن خدماتكم" : "Hello, I would like to inquire about your services";
+  const whatsappMessage = isRTL 
+    ? "مرحبًا، أود الاستفسار عن خدماتكم" 
+    : "Hello, I would like to inquire about your services";
 
   const handleCall = () => {
-    window.open(`tel:${phoneNumber}`, '_self');
+    window.open(`tel:${settings.phoneNumber}`, '_self');
   };
 
   const handleWhatsApp = () => {
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    const url = `https://wa.me/${settings.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(url, '_blank');
   };
 
-  return (
-    <div className={`fixed bottom-6 z-50 flex flex-col gap-3 ${isRTL ? 'rright-10' : 'right-10'} ${
-      isVisible ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'
-    } transition-all duration-300`}>
-      
-      {/* WhatsApp Button - Simple and Clean */}
-      <button
-        onClick={handleWhatsApp}
-        className="flex items-center gap-3 rounded-xl bg-[#25D366] px-5 py-4 text-white shadow-lg transition-all hover:scale-105 hover:bg-[#128C7E] hover:shadow-xl"
-        aria-label={isRTL ? "راسلنا على واتساب" : "Message us on WhatsApp"}
-      >
-        <MessageCircle className="size-6" />
-        <span className="whitespace-nowrap text-base font-semibold">
-          {isRTL ? "واتساب" : "WhatsApp"}
-        </span>
-      </button>
+  const visibleButtons = [
+    settings.showWhatsApp && {
+      id: 'whatsapp',
+      onClick: handleWhatsApp,
+      icon: MessageCircle,
+      label: isRTL ? "واتساب" : "WhatsApp",
+      gradient: "from-[#25D366] to-[#128C7E]",
+      hoverGradient: "from-[#128C7E] to-[#075E54]",
+      shadow: "hover:shadow-[#25D366]/50",
+    },
+    settings.showPhone && {
+      id: 'phone',
+      onClick: handleCall,
+      icon: Phone,
+      label: isRTL ? "اتصال" : "Call",
+      gradient: "from-blue-600 to-blue-700",
+      hoverGradient: "from-blue-700 to-blue-800",
+      shadow: "hover:shadow-blue-600/50",
+    },
+  ].filter(Boolean);
 
-      {/* Call Button - Simple and Clean */}
-      <button
-        onClick={handleCall}
-        className="flex items-center gap-3 rounded-xl bg-blue-600 px-5 py-4 text-white shadow-lg transition-all hover:scale-105 hover:bg-blue-700 hover:shadow-xl"
-        aria-label={isRTL ? "اتصل بنا" : "Call us"}
-      >
-        <Phone className="size-6" />
-        <span className="whitespace-nowrap text-base font-semibold">
-          {isRTL ? "اتصال" : "Call"}
-        </span>
-      </button>
+  if (visibleButtons.length === 0) return null;
+
+  return (
+    <div 
+      className={`fixed bottom-8 z-50 flex flex-col gap-4 ${isRTL ? 'left-8' : 'right-8'} ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'
+      } transition-all duration-300`}
+    >
+      {visibleButtons.map((button) => {
+        const Icon = button.icon;
+        return (
+          <button
+            key={button.id}
+            onClick={button.onClick}
+            className={`group relative flex items-center justify-center gap-3 overflow-hidden rounded-full bg-gradient-to-r ${button.gradient} p-5 text-white shadow-2xl transition-all hover:scale-110 ${button.shadow}`}
+            aria-label={button.label}
+          >
+            <div className={`absolute inset-0 bg-gradient-to-r ${button.hoverGradient} opacity-0 transition-opacity group-hover:opacity-100`} />
+            <Icon className="relative z-10 size-7" />
+            <span className="relative z-10 text-base font-bold">
+              {button.label}
+            </span>
+            <div className="absolute -right-2 -top-2 size-20 rounded-full bg-white/10 blur-xl" />
+          </button>
+        );
+      })}
     </div>
   );
 }

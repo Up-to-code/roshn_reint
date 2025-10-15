@@ -27,6 +27,7 @@ export const sidebarLinks: SidebarNavItem[] = [
       //  { href: "/admin/forms", icon: "post", title: "sidebar.forms" },
       // { href: "/admin/blogs", icon: "blog", title: "sidebar.blogs" },
       // { href: "/admin/media", icon: "media", title: "sidebar.media" },
+      { href: "/dashboard/contact-settings", icon: "phone", title: "sidebar.contactSettings" },
     ],
   },
    {

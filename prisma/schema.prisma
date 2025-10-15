@@ -15,27 +15,49 @@ enum UserRole {
   USER
 }
 
+// FILE: prisma/schema.prisma
+// Make sure this matches exactly - no duplicate definitions
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          UserRole  @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+
+
+// ... rest of your models
+
+ 
+
 model Account {
-  id                String   @id @default(cuid())
+  id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?  @db.Text
-  access_token      String?  @db.Text
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?  @db.Text
+  id_token          String? @db.Text
   session_state     String?
-  createdAt         DateTime @default(now()) @map(name: "created_at")
-  updatedAt         DateTime @default(now()) @map(name: "updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
-  @@index([userId])
-  @@map(name: "accounts")
+  @@map("accounts")
 }
 
 model Session {
@@ -45,24 +67,7 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@map(name: "sessions")
-}
-
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  createdAt     DateTime  @default(now()) @map(name: "created_at")
-  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-  role          UserRole  @default(USER)
-
-  accounts Account[]
-  sessions Session[]
-
-  @@map(name: "users")
+  @@map("sessions")
 }
 
 model VerificationToken {
@@ -71,9 +76,9 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-  @@map(name: "verification_tokens")
+  @@map("verification_tokens")
 }
-
+ 
 model Property {
   id          String   @id @default(cuid())
   // Language-specific fields
@@ -216,4 +221,17 @@ model AboutSettings {
   updatedAt DateTime @updatedAt
 
   @@map("about_settings")
+}
+
+
+model ContactSettings {
+  id             String   @id @default(cuid())
+  phoneNumber    String   @default("+966501234567")
+  whatsappNumber String   @default("966501234567")
+  showPhone      Boolean  @default(true)
+  showWhatsApp   Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("contact_settings")
 }

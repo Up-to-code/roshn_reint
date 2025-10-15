@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 import { sidebarLinks } from "@/config/dashboard";
-import { getCurrentUser } from "@/lib/session";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 import { SearchCommand } from "@/components/dashboard/search-command";
 import { DashboardSidebar } from "@/components/layout/dashboard-sidebar";
 import { ModeToggle } from "@/components/layout/mode-toggle";

@@ -1,6 +1,6 @@
  
 import { prisma } from "@/lib/db";
- import { getCurrentUser } from "@/lib/session";
+ import getCurrentUser from "@/app/actions/getCurrentUser";
 import { redirect } from "next/navigation";
 import { UsersTable } from "./components/users-table";
 

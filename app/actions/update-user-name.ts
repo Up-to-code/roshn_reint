@@ -2,7 +2,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
- import { getCurrentUser } from "@/lib/session";
+ import getCurrentUser from "@/app/actions/getCurrentUser";
 import { userNameSchema } from "@/lib/validations/user";
 import { z } from "zod";
 import { prisma } from "@/lib/db";

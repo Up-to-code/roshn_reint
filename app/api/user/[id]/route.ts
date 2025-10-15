@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
   import { prisma } from "@/lib/db"; // Your prisma client instance
-import { getCurrentUser } from "@/lib/session";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 export async function PATCH(
   request: Request,

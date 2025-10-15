@@ -33,7 +33,6 @@ export default async function DashboardLayout({
   }));
 
   return (
-    <DashboardWrapperServer>
       <div className="relative flex min-h-screen w-full bg-background transition-colors duration-300">
         {/* Sidebar */}
         <DashboardSidebar links={filteredLinks} />
@@ -88,7 +87,6 @@ export default async function DashboardLayout({
             </div>
           </main>
         </div>
-      </div>{" "}
-    </DashboardWrapperServer>
+      </div>
   );
 }

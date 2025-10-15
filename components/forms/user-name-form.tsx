@@ -4,7 +4,6 @@ import { useState, useTransition } from "react";
 import { updateUserName, type FormData } from "@/app/actions/update-user-name";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@prisma/client";
-import { useSession } from "@/lib/auth/auth-client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -20,12 +19,11 @@ interface UserNameFormProps {
 }
 
 export function UserNameForm({ user }: UserNameFormProps) {
-  const { update } = useSession();
   const [updated, setUpdated] = useState(false);
   const [isPending, startTransition] = useTransition();
   const updateUserNameWithId = updateUserName.bind(null, user.id);
 
-  const checkUpdate = (value) => {
+  const checkUpdate = (value: string) => {
     setUpdated(user.name !== value);
   };
 
@@ -33,6 +31,7 @@ export function UserNameForm({ user }: UserNameFormProps) {
     handleSubmit,
     register,
     formState: { errors },
+    reset, // Needed for fixing the bug
   } = useForm<FormData>({
     resolver: zodResolver(userNameSchema),
     defaultValues: {
@@ -49,7 +48,8 @@ export function UserNameForm({ user }: UserNameFormProps) {
           description: "Your name was not updated. Please try again.",
         });
       } else {
-        await update();
+        // fix: use reset({ name: data.name }) after successful update
+        reset({ name: data.name });
         setUpdated(false);
         toast.success("Your name has been updated.");
       }
@@ -75,7 +75,7 @@ export function UserNameForm({ user }: UserNameFormProps) {
           />
           <Button
             type="submit"
-             disabled={isPending || !updated}
+            disabled={isPending || !updated}
             className="w-[67px] shrink-0 px-0 sm:w-[130px]"
           >
             {isPending ? (

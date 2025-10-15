@@ -4,7 +4,6 @@ import { useState, useTransition } from "react";
 import { updateUserRole, type FormData } from "@/app/actions/update-user-role";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User, UserRole } from "@prisma/client";
-import { useSession } from "@/lib/auth/auth-client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -34,7 +33,7 @@ interface UserNameFormProps {
 }
 
 export function UserRoleForm({ user }: UserNameFormProps) {
-  const { update } = useSession();
+  // removed destructure 'update' from useSession, as it doesn't exist
   const [updated, setUpdated] = useState(false);
   const [isPending, startTransition] = useTransition();
   const updateUserRoleWithId = updateUserRole.bind(null, user.id);
@@ -44,6 +43,9 @@ export function UserRoleForm({ user }: UserNameFormProps) {
 
   const form = useForm<FormData>({
     resolver: zodResolver(userRoleSchema),
+    defaultValues: {
+      role: role,
+    },
     values: {
       role: role,
     },
@@ -58,7 +60,6 @@ export function UserRoleForm({ user }: UserNameFormProps) {
           description: "Your role was not updated. Please try again.",
         });
       } else {
-        await update();
         setUpdated(false);
         toast.success("Your role has been updated.");
       }
@@ -70,7 +71,7 @@ export function UserRoleForm({ user }: UserNameFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <SectionColumns
           title="Your Role"
-          description="Select the role what you want for test the app."
+          description="Select the role you want to test the app."
         >
           <div className="flex w-full items-center gap-2">
             <FormField
@@ -80,14 +81,13 @@ export function UserRoleForm({ user }: UserNameFormProps) {
                 <FormItem className="w-full space-y-0">
                   <FormLabel className="sr-only">Role</FormLabel>
                   <Select
-                    // TODO:(FIX) Option value not update. Use useState for the moment
                     onValueChange={(value: UserRole) => {
                       setUpdated(user.role !== value);
                       setRole(value);
-                      // field.onChange;
+                      field.onChange(value);
                     }}
                     name={field.name}
-                    defaultValue={user.role}
+                    value={role}
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">

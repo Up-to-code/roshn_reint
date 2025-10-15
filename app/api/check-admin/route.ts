@@ -1,5 +1,5 @@
 // app/api/check-admin/route.ts
-import { getCurrentUser } from '@/lib/session';
+ import getCurrentUser from '@/app/actions/getCurrentUser';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {

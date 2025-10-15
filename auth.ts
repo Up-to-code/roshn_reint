@@ -100,53 +100,45 @@ export const {
       },
     }),
   ],
-  callbacks: {
-    async session({ token, session }) {
-      // Fix: Ensure session.user exists
-      if (token.sub && session.user) {
+// In your auth.ts, make sure you have these callbacks:
+callbacks: {
+  async session({ token, session }) {
+    if (session.user) {
+      if (token.sub) {
         session.user.id = token.sub;
       }
-
-      if (token.role && session.user) {
+      session.user.name = token.name;
+      session.user.email = token.email as string;
+      session.user.image = token.picture as string;
+      
+      if (token.role) {
         session.user.role = token.role as UserRole;
       }
-
-      if (session.user) {
-        session.user.name = token.name;
-        session.user.email = token.email!;
-        session.user.image = token.picture as string;
-      }
-
-      return session;
-    },
-
-    async jwt({ token, user }) {
-      // Fix: Handle initial sign in
-      if (user) {
-        token.id = user.id;
-        token.role = user.role;
-      }
-
-      if (!token.sub) return token;
-
-      try {
-        const dbUser = await getUserById(token.sub);
-
-        if (!dbUser) return token;
-
-        return {
-          ...token,
-          id: dbUser.id,
-          name: dbUser.name,
-          email: dbUser.email,
-          picture: dbUser.image,
-          role: dbUser.role,
-        };
-      } catch (error) {
-        console.error("JWT callback error:", error);
-        return token;
-      }
-    },
+    }
+    return session;
   },
+
+  async jwt({ token, user }) {
+    if (user) {
+      token.role = user.role;
+    }
+    
+    if (!token.sub) return token;
+
+    const dbUser = await getUserById(token.sub);
+    if (dbUser) {
+      token.role = dbUser.role;
+    }
+
+    return token;
+  },
+
+  async redirect({ url, baseUrl }) {
+    // Redirect to dashboard after successful sign in
+    if (url.startsWith(baseUrl)) return url;
+    if (url.startsWith('/')) return `${baseUrl}${url}`;
+    return baseUrl;
+  },
+},
   ...authConfig,
 });

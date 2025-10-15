@@ -1,4 +1,4 @@
-// FILE: components/forms/user-auth-form.tsx
+// FILE: components/forms/user-auth-form.tsx (Alternative version)
 "use client";
 
 import * as React from "react";
@@ -66,28 +66,28 @@ export function UserAuthForm({ className, type = "login", ...props }: UserAuthFo
           description: "Please sign in with your credentials.",
         });
 
-        // Redirect to login page after successful registration
         router.push("/login");
       } else {
-        const signInResult = await signIn("credentials", {
+        // Manual redirect approach
+        const result = await signIn("credentials", {
           email: data.email.toLowerCase(),
           password: data.password,
-          redirect: false,
-          callbackUrl,
+          redirect: false, // We handle redirect manually
         });
 
-        if (!signInResult?.ok) {
+        if (result?.error) {
           throw new Error("Invalid email or password");
         }
 
-        toast({
-          title: "Welcome back!",
-          description: "You have successfully signed in.",
-        });
+        if (result?.ok) {
+          toast({
+            title: "Welcome back!",
+            description: "You have successfully signed in.",
+          });
 
-        // Redirect to the callback URL or dashboard
-        router.push(callbackUrl);
-        router.refresh();
+          // Force a hard redirect to ensure session is loaded
+          window.location.href = callbackUrl;
+        }
       }
     } catch (error) {
       toast({
